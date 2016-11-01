@@ -1,0 +1,543 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-15 18:33+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: AlexandriaGui/tests/integration/plugins/test_systematic_plugin.py:80
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:49
+msgid "No entry to delete selected"
+msgstr ""
+
+#: AlexandriaGui/tests/integration/plugins/test_systematic_plugin.py:91
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:52
+msgid "Systematic entry with children may not be deleted"
+msgstr ""
+
+#: AlexandriaGui/tests/integration/plugins/test_systematic_plugin.py:102
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:55
+msgid "Can't delete entry when sibling exists"
+msgstr ""
+
+#: AlexandriaGui/tests/integration/plugins/test_systematic_plugin.py:113
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:58
+msgid "Entry which is in use by documents may not be deleted"
+msgstr ""
+
+#: AlexandriaGui/tests/integration/plugins/test_systematic_plugin.py:133
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:66
+msgid "Nothing to save"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/dialogs/dateselectiondialogpresenter.py:44
+#, python-format
+msgid "'%s' is not a valid day!"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/dialogs/dateselectiondialogpresenter.py:53
+#, python-format
+msgid "'%s' is not a valid month!"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/dialogs/dateselectiondialogpresenter.py:60
+#, python-format
+msgid "'%s' is not a valid year!"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/mainwindows/PostProcessors.py:38
+msgid ""
+"\\s*(\\d{1,2}\\.|January|February|March|April|May|June|July|August|September|"
+"October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|May|Jun\\.|Jul\\.|Aug"
+"\\.|Sep\\.|Oct\\.|Nov\\.|Dec\\.)\\s*"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/mainwindows/PostProcessors.py:41
+msgid "(from|,)\\s+"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/plugins/DocumentPdfPluginPresenter.py:42
+#: AlexandriaGui/alexpresenters/components/references/documentfilereferencespresenter.py:110
+#, python-format
+msgid "Document %s not found"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:34
+msgid "No parent entry selected"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:39
+msgid "Creating new entry canceled or not possible."
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/plugins/SystematicPluginPresenter.py:42
+#, python-format
+msgid "Systematic point %s saved!"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/components/references/documentfilereferencespresenter.py:73
+#, python-format
+msgid "File format '%s' is not supported!"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/components/references/documentfilereferencespresenter.py:81
+#, python-brace-format
+msgid "File resolution {0:d} x {1:d} is not supported!"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/components/references/documentfilereferencespresenter.py:92
+msgid "Unknown error while adding file"
+msgstr ""
+
+#: AlexandriaGui/alexpresenters/components/references/documentsystematicreferencespresenter.py:40
+#, python-format
+msgid "No systematic point %s"
+msgstr ""
+
+#: AlexandriaGui/tkgui/main.py:43
+msgid "Database upgrade"
+msgstr ""
+
+#: AlexandriaGui/tkgui/main.py:44
+msgid "Your database needs an upgrade. Do you want to perform it now?"
+msgstr ""
+
+#: AlexandriaGui/tkgui/main.py:45
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:68
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:69
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:76
+msgid "Yes"
+msgstr ""
+
+#: AlexandriaGui/tkgui/main.py:45 AlexandriaGui/tkgui/main.py:48
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:68
+msgid "No"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/wizard.py:33
+#: AlexandriaGui/tkgui/dialogs/logindialog.py:28
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:23
+#: AlexandriaGui/tkgui/dialogs/abstractdialog.py:21
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:28
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:51
+#: AlexandriaGui/tkgui/dialogs/generic_tree_selection_dialog.py:29
+msgid "Cancel"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/wizard.py:35
+msgid "Next >>"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/wizard.py:38
+msgid "<< Prev"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/wizard.py:41
+msgid "Finish"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/logindialog.py:27
+msgid "User selection dialog"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/logindialog.py:28
+#: AlexandriaGui/tkgui/dialogs/logindialog.py:29
+#: AlexandriaGui/tkgui/dialogs/abstractdialog.py:21
+#: AlexandriaGui/tkgui/dialogs/abstractdialog.py:22
+msgid "OK"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/logindialog.py:31
+msgid "Please select user"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:23
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:36
+msgid "Set filter"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:23
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:33
+msgid "Clear form"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:27
+#, python-format
+msgid "%d. search expression:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:67
+msgid "Signature:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:71
+#: AlexandriaGui/tkgui/dialogs/generic_tree_selection_dialog.py:29
+#: AlexandriaGui/tkgui/dialogs/generic_tree_selection_dialog.py:30
+msgid "Select"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:96
+msgid "Earliest Date"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:98
+msgid "Latest Date"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:101
+msgid "Only local events"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/filterdialogs.py:106
+msgid "Only unverified events"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:17
+msgid "MO"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:17
+msgid "TU"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:17
+msgid "WE"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:17
+msgid "TH"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:17
+msgid "FR"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:17
+msgid "SA"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:17
+msgid "SU"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/yearselectiondialog.py:42
+msgid "Please select year"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:19
+msgid "Please edit string:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:41
+msgid "Please select:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/GenericInputDialogs.py:64
+msgid "Select yes or no"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/event_confirmation_dialog.py:28
+#: AlexandriaGui/tkgui/dialogs/event_confirmation_dialog.py:29
+msgid "Create new event"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/event_confirmation_dialog.py:30
+msgid "Confirm event creation"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/event_confirmation_dialog.py:34
+#, python-format
+msgid ""
+"Events exist on %s. Please select the event you want or create a new one"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/event_confirmation_dialog.py:45
+msgid "Goto event"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/generic_tree_selection_dialog.py:23
+msgid "Select a tree node"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/eventselectiondialog.py:59
+msgid "Please enter the event date:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/dialogs/eventselectiondialog.py:68
+msgid "Please select an event:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:107
+msgid "No event to display!"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:143
+msgid "not registered"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:143
+msgid "local"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:143
+msgid "countrywide"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:143
+msgid "national"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:143
+msgid "international"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:144
+msgid "Location"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:148
+msgid "unconfirmed"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:148
+msgid "probable"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:148
+msgid "confirmed"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/EventWindow.py:149
+msgid "State"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:144
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:145
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:148
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:151
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:154
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:157
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:160
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:163
+#: AlexandriaGui/tkgui/plugins/DocumentPdfPlugin.py:39
+msgid "Records"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:146
+msgid "First record"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:149
+msgid "Last record"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:152
+msgid "Next record"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:155
+msgid "Previous record"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:158
+msgid "New record"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:161
+msgid "Delete record"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:164
+msgid "Quit"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:167
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:168
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:171
+msgid "Navigation"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:169
+msgid "Goto record"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:172
+msgid "Filtering"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/BaseWindow.py:255
+msgid "Filter is set!"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/fileviewers.py:20
+#, python-format
+msgid ""
+"There is no viewer available\n"
+"for the filetype %s."
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/fileviewers.py:22
+msgid "No viewer"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/fileviewers.py:114
+msgid "The external viewer {} is not accessible."
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/fileviewers.py:118
+msgid "Not accessible"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/DocumentWindow.py:35
+#: AlexandriaGui/tkgui/mainwindows/DocumentWindow.py:48
+msgid "No document available"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/DocumentWindow.py:52
+msgid "Description"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/DocumentWindow.py:59
+msgid "Condition"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/DocumentWindow.py:66
+msgid "Keywords"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/DocumentWindow.py:106
+msgid "New document"
+msgstr ""
+
+#: AlexandriaGui/tkgui/mainwindows/DocumentWindow.py:108
+msgid "Document no.{0:d} ({1!s})"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:39
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:40
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:43
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:46
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:49
+#: AlexandriaGui/tkgui/components/references/documentsystematicreference.py:25
+msgid "Systematic"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:41
+msgid "Create new entry"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:44
+msgid "Delete entry"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:47
+msgid "Edit entry"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:50
+msgid "Export as pdf"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:55
+msgid "Please select parent entry for new entry"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:59
+msgid "Please select entry to delete"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:63
+msgid "Please select node to edit"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:68
+#, python-format
+msgid "Please change description for %s:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:84
+msgid ""
+"Please select which systematic\n"
+"point you want to create"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/SystematicPlugin.py:90
+#, python-format
+msgid "Please enter a description for %s:"
+msgstr ""
+
+#: AlexandriaGui/tkgui/plugins/DocumentPdfPlugin.py:40
+msgid "Show as pdf"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/event_type_references.py:30
+msgid "Event types"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/event_type_references.py:40
+#: AlexandriaGui/tkgui/components/references/eventcrossreferences.py:31
+#: AlexandriaGui/tkgui/components/references/documentsystematicreference.py:28
+#: AlexandriaGui/tkgui/components/references/eventdocumentreferences.py:42
+#: AlexandriaGui/tkgui/components/references/documentfilereference.py:33
+#: AlexandriaGui/tkgui/components/references/documenteventreferences.py:32
+msgid "New"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/event_type_references.py:41
+#: AlexandriaGui/tkgui/components/references/eventcrossreferences.py:32
+#: AlexandriaGui/tkgui/components/references/documentsystematicreference.py:29
+#: AlexandriaGui/tkgui/components/references/eventdocumentreferences.py:43
+#: AlexandriaGui/tkgui/components/references/documentfilereference.py:36
+#: AlexandriaGui/tkgui/components/references/documenteventreferences.py:33
+msgid "Delete"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/event_type_references.py:47
+msgid "Select new event type"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/eventcrossreferences.py:24
+msgid "Crossreferences"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/eventcrossreferences.py:30
+#: AlexandriaGui/tkgui/components/references/eventdocumentreferences.py:41
+#: AlexandriaGui/tkgui/components/references/documenteventreferences.py:31
+msgid "Goto"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/eventdocumentreferences.py:30
+msgid "Related documents"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/documentfilereference.py:26
+msgid "Document files"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/documentfilereference.py:34
+msgid "Replace"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/documentfilereference.py:35
+msgid "Show"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/references/documenteventreferences.py:24
+msgid "Related events"
+msgstr ""
+
+#: AlexandriaGui/tkgui/components/alexwidgets.py:33
+msgid "Date"
+msgstr ""

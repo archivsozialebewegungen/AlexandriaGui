@@ -1,0 +1,39 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<configuration>
+	<entry key="logdir">/tmp</entry>
+	<entry key="dbuser">archivar</entry>
+	<entry key="dbpassword">archivar</entry>
+	<entry key="dbhost">localhost</entry>
+	<entry key="dbname">archiv</entry>
+	<entry key="dbengine">postgresql</entry>
+	<entry key="dbport"></entry>
+	<entry key="documentbasedir">/tmp</entry>
+	<list key="documentarchives">
+		<listentry>/home/michael/Workspaces/Alexdata</listentry>
+	</list>
+	<list key="filetypes">
+		<listentry>jpg</listentry>
+		<listentry>tif</listentry>
+		<listentry>gif</listentry>
+		<listentry>txt</listentry>
+		<listentry>mpg</listentry>
+		<listentry>mp4</listentry>
+		<listentry>mp3</listentry>
+		<listentry>wav</listentry>
+		<listentry>pdf</listentry>
+	</list>
+	<list key="additional_modules">
+	</list>
+	<map key="filetypeviewers">
+		<mapentry key="default">DefaultViewer</mapentry>
+		<mapentry key="tif">GraphicsViewer</mapentry>
+		<mapentry key="gif">GraphicsViewer</mapentry>
+		<mapentry key="jpg">GraphicsViewer</mapentry>
+		<mapentry key="pdf">/usr/bin/atril</mapentry>
+	</map>
+	<map key="filetypealiases">
+		<mapentry key="tiff">tif</mapentry>
+		<mapentry key="jpeg">jpg</mapentry>
+		<mapentry key="mpeg">mpg</mapentry>
+	</map>
+</configuration>
