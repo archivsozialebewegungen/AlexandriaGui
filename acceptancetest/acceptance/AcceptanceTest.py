@@ -6,10 +6,12 @@ Created on 13.12.2015
 import unittest
 from threading import Thread, Condition
 
-from injector import Module, ClassProvider, singleton, Injector
+from injector import Module, ClassProvider, singleton, Injector, provides,\
+    inject
 from alexandriabase import baseinjectorkeys, AlexBaseModule
 from tkgui import guiinjectorkeys
-from tkgui.main import MainRunner
+from tkgui.main import MainRunner, SetupRunner, StartupTaskCheckDatabaseVersion,\
+    StartupTaskPopulateWindows
 from alexandriabase.daos.basiccreatorprovider import BasicCreatorProvider
 from alex_test_utils import TestEnvironment, setup_database_schema,\
     load_table_data, MODE_FULL
@@ -29,6 +31,9 @@ from tkgui.mainwindows.BaseWindow import BaseWindow
 from tkgui.components.references import WindowReferencesModule
 import time
 from tkinter import TclError
+from alexpresenters.messagebroker import CONF_DOCUMENT_WINDOW_READY,\
+    CONF_EVENT_WINDOW_READY
+from time import sleep
 
 def set_date_range(dialog, start_date, end_date):
     dialog.days = [start_date.day, end_date.day]
@@ -132,11 +137,34 @@ class AcceptanceTestModule(Module):
         self.config_file = config_file
         
     def configure(self, binder):
+        
         binder.bind(baseinjectorkeys.CONFIG_FILE_KEY, to=self.config_file)
         binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
                     ClassProvider(MainRunner), scope=singleton)
         binder.bind(baseinjectorkeys.CreatorProvider,
                     ClassProvider(BasicCreatorProvider), scope=singleton)
+        binder.bind(guiinjectorkeys.SETUP_RUNNER_KEY,
+                    ClassProvider(SetupRunner), scope=singleton)
+        binder.bind(guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
+                    ClassProvider(StartupTaskCheckDatabaseVersion), scope=singleton)
+        #binder.bind(guiinjectorkeys.LOGIN_KEY,
+        #            ClassProvider(StartupTaskLogin), scope=singleton)
+        binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
+                    ClassProvider(StartupTaskPopulateWindows), scope=singleton)
+
+    @provides(guiinjectorkeys.INIT_MESSAGES_KEY, scope=singleton)
+    def provide_init_messages(self):
+        return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
+        
+
+    @provides(guiinjectorkeys.SETUP_TASKS_KEY, scope=singleton)
+    @inject(populate_windows=guiinjectorkeys.POPULATE_WINDOWS_KEY)
+    def provide_startup_tasks(self, populate_windows):
+        return (populate_windows,)
+
+    @provides(guiinjectorkeys.DOCUMENT_PLUGINS_KEY, scope=singleton)
+    def document_plugins(self):
+        return ()
 
 class Test(unittest.TestCase):
 
@@ -178,7 +206,7 @@ class Test(unittest.TestCase):
         # Navigation
         print("\nChecking navigation")
         print("===================")
-        self.check_initial_records_shown()
+        #self.check_initial_records_shown()
         self.check_goto_last_event()      
         self.check_goto_last_document()
         self.check_goto_first_event()
@@ -206,9 +234,6 @@ class Test(unittest.TestCase):
         self.check_event_cross_reference_goto()
         self.check_event_cross_reference_new()
         self.check_event_cross_reference_delete()
-        print("")
-        self.check_document_systematic_reference_new()
-        self.check_document_systematic_reference_delete()
         
         # Save
         print("\nChecking saving")
@@ -378,7 +403,7 @@ class Test(unittest.TestCase):
         self.document_window_presenter.goto_first()
         self.assert_that_document_is(1)
         self.document_window_presenter.goto_last()
-        self.assert_that_document_is(8)
+        self.assert_that_document_is(14)
 
         print("OK")
 
@@ -430,7 +455,7 @@ class Test(unittest.TestCase):
         self.assertEqual(len(reference._items), 2)        
 
         dialog_executor = DialogExecutor()
-        dialog_executor.add_command(lambda: dialog.presenter.view.date_entry.set(AlexDate(1960,1,30)))
+        dialog_executor.add_command(lambda: dialog.presenter.view.date_entry.set(AlexDate(1961,5,1)))
         dialog_executor.add_command(lambda: dialog.presenter.update_event_list())
         dialog_executor.add_command(lambda: dialog.presenter.view.event_list_box.setvalue("%s" % dialog.presenter.view.event_list[0]))
         dialog_executor.add_command(lambda: dialog.presenter.close())
@@ -448,40 +473,12 @@ class Test(unittest.TestCase):
 
         self.assertEqual(len(reference._items), 3)
         
-        reference.listbox.setvalue("%s" % self.get_event(1960013001))       
+        reference.listbox.setvalue("%s" % self.get_event(1961050101))       
 
         reference.presenter.delete_cross_reference()
 
         self.assertEqual(len(reference._items), 2)
                 
-        print("OK")
-        
-    def check_document_systematic_reference_new(self):
-        print("Checking create new document systematic reference...", end='')
-        reference = self.document_window.references[0]
-        self.document_window_presenter.goto_first()
-        self.assertEqual(len(reference._items), 3)
-        
-        dialog_executor = DialogExecutor()
-        dialog_executor.add_command(lambda: reference.systematic_point_dialog.tree_widget.tree_root.children[1].select())
-        dialog_executor.add_command(lambda: reference.systematic_point_dialog.dialog.invoke(0))
-        dialog_executor.run(reference.presenter.add_new_systematic_point)
-
-        self.assertEqual(len(reference._items), 4)
-        
-        print("OK")
-    
-    def check_document_systematic_reference_delete(self):
-        print("Checking delete document systematic reference...", end='')
-        reference = self.document_window.references[0]
-        self.document_window_presenter.goto_first()
-        self.assertEqual(len(reference._items), 4)
-        
-        reference.listbox.setvalue("2: 2")
-        reference.presenter.delete_selected_systematic_point()
-
-        self.assertEqual(len(reference._items), 3)
-        
         print("OK")
 
     def check_deleting_event(self):
@@ -511,7 +508,8 @@ class Test(unittest.TestCase):
         dialog = self.event_window.dialogs[EventWindow.DATE_RANGE_DIALOG]
 
         dialog_executor = DialogExecutor()
-        dialog_executor.add_command(lambda: set_date_range(dialog, AlexDate(1940), AlexDate(1950)))
+        # TODO: Check that on existing dates the selection dialog works
+        dialog_executor.add_command(lambda: set_date_range(dialog, AlexDate(1941), AlexDate(1942)))
         dialog_executor.add_command(lambda: dialog.dialog.invoke(0))
         dialog_executor.run(self.event_window_presenter.create_new)
 
@@ -520,7 +518,7 @@ class Test(unittest.TestCase):
         self.event_window_presenter.goto_next()
         
         event = self.event_window.entity
-        self.assertEqual(1940000002, event.id)
+        self.assertEqual(1941000001, event.id)
         self.assertEqual("Completely new event.", event.description)
                 
         print("OK")
@@ -528,8 +526,8 @@ class Test(unittest.TestCase):
     def check_goto_last_document(self):
         print("Checking going to last document works...", end='')
         self.document_window_presenter.goto_last()
-        self.assert_that_document_is(8)
-        self.assert_that_document_description_is("Drittes Dokument")  
+        self.assert_that_document_is(14)
+        self.assert_that_document_description_is("Siebtes Dokument")  
         print("OK")
 
     def check_goto_first_document(self):
@@ -556,18 +554,26 @@ class Test(unittest.TestCase):
         self.document_window_presenter.goto_first()
         # Wrap around
         self.document_window_presenter.goto_previous()
-        self.assert_that_document_is(8)
-        self.assert_that_document_description_is("Drittes Dokument")  
+        self.assert_that_document_is(14)
+        self.assert_that_document_description_is("Siebtes Dokument")  
         self.document_window_presenter.goto_previous()
-        self.assert_that_document_is(4)
-        self.assert_that_document_description_is("Zweites Dokument")  
+        self.assert_that_document_is(13)
+        self.assert_that_document_description_is("Sechstes Dokument")  
         print("OK")
 
     def check_initial_records_shown(self):
         print("Checking the windows show the inital records...", end='')
-        self.assert_that_event_is(1940000001)
-        self.assert_that_document_is(1)
-        self.assert_that_document_description_is("Erstes Dokument")  
+        counter = 0
+        max_tries = 5000
+        while(counter < max_tries):
+            try:
+                self.assert_that_event_is(1940000001)
+                self.assert_that_document_is(1)
+                self.assert_that_document_description_is("Erstes Dokument")
+                counter += 1
+            except:
+                pass
+        self.assertLess(counter, max_tries)  
         print("OK")
         
     def check_deleting_of_document(self):
@@ -602,17 +608,18 @@ class Test(unittest.TestCase):
         
     def check_create_document(self):
         print("Checking creating of new document works...", end='')
+        self.document_window_presenter.goto_last()
+        next_id = self.document_window.entity.id + 1
         self.document_window_presenter.create_new()
         self.document_window._description_widget.set("Completely new document.")
-        self.assert_no_such_document(11)
+        self.assert_no_such_document(next_id)
         self.document_window_presenter.goto_next()
-        self.assert_no_such_document(11)
-        self.document_window_presenter.goto_first()
-        document = self.get_document(11)
-        self.assertEqual(11, document.id)
+        self.assert_that_document_is(1)
+        document = self.get_document(next_id)
+        self.assertEqual(next_id, document.id)
         self.assertEqual("Completely new document.", document.description)
         self.document_window_presenter.goto_last()
-        self.assertEqual(11, self.document_window.entity.id)
+        self.assertEqual(next_id, self.document_window.entity.id)
         self.assertEqual("Completely new document.", self.document_window.entity.description)
         print("OK")
 
