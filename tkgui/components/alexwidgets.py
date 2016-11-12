@@ -409,6 +409,39 @@ class AlexTree(Pmw.ScrolledCanvas):  # @UndefinedVariable
 
     selected = property(_get_selected)
 
+class AlexMenuBar(Pmw.MenuBar):  # @UndefinedVariable
+    
+    def __init__(self, *params, **kw):
+        super().__init__(*params, **kw)
+        self.entries = {}
+
+    def addmenu(self, *params, **kw):
+        self.entries[params[0]] = []
+        super().addmenu(*params, **kw)
+        
+    def addmenuitem(self, *params, before=None, **kw):
+        if before is None:
+            super().addmenuitem(*params, **kw)
+        else:
+            menu = self.component('%s-menu' % params[0])
+            position = self._findPosition(params[0], before)
+            menu.insert(position, *params[1:], **kw)
+        self.entries[params[0]].append(kw['label'])
+
+    def hasmenu(self, menuname):
+        
+        return menuname in self.entries
+    
+    def _findPosition(self, menuName, before):
+        
+        counter = 0
+        for entry in self.entries[menuName]:
+            if entry == before:
+                return counter
+            counter += 1
+            
+        return counter
+        
 if __name__ == "__main__":
 
     from tkinter import Tk
@@ -460,3 +493,4 @@ if __name__ == "__main__":
             self.root.mainloop()
             
     DateEntryTest().run()
+

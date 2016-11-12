@@ -15,7 +15,7 @@ from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT,\
     REQ_SAVE_ALL
 from alexpresenters.messagebroker import Message
 import sys
-from tkgui.components.alexwidgets import AlexMessageBar
+from tkgui.components.alexwidgets import AlexMessageBar, AlexMenuBar
 
 @singleton
 class WindowManager():
@@ -138,7 +138,7 @@ class BaseWindow(Frame):
     def _add_menu(self, parent):
         
         # pylint: disable=no-member
-        self.menubar = Pmw.MenuBar(parent)  # @UndefinedVariable
+        self.menubar = AlexMenuBar(parent)
         self.menubar.pack(side=LEFT, expand=1, fill=X, anchor=NW)
 
         self.menubar.addmenu(_('Records'), '')

@@ -47,6 +47,8 @@ class MainWindowsModule(Module):
             document_file_reference):
         '''
         Returns an array of all reference widgets for documents.
+        If you have plugins that define additional references,
+        you have to overwrite this in your applications main module.
         '''
         return [document_event_reference, document_file_reference]
     
@@ -60,6 +62,8 @@ class MainWindowsModule(Module):
                                 event_type_reference):
         '''
         Returns an array of all reference widgets for events.
+        If you have plugins that define additional references,
+        you have to overwrite this in your applications main module.
         '''
         return [event_cross_references, event_document_reference, event_type_reference]
     
