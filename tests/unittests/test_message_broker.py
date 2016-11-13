@@ -4,7 +4,7 @@ Created on 03.05.2015
 @author: michael
 '''
 import unittest
-from alexpresenters.messagebroker import MessageBroker, Message
+from alexpresenters.messagebroker import MessageBroker, Message, ERROR_MESSAGE
 
 class MessageTest(unittest.TestCase):
     
@@ -61,6 +61,50 @@ class MessageBrokerTest(unittest.TestCase):
         broker.send_message(Message("KEY1"))
         
         self.assertTrue(test_class.received_key2)
+
+class DisplayMessageTest(unittest.TestCase):
+
+
+    def setUp(self):
+        
+        self.broker = MessageBroker()
+        class TestClass:
+            
+            def __init__(self):
+                self.message_type = None
+                self.message_text = None
+            
+            def receive_message(self, message):
+                if message.key == ERROR_MESSAGE:
+                    self.message_type = message.messagetype
+                    self.message_text = message.message
+                
+        self.test_class = TestClass()
+        self.broker.subscribe(self.test_class)
+
+    def test_show_error(self):
+        
+        self.broker.show_error("error text")
+        self.assertEqual("error", self.test_class.message_type)
+        self.assertEqual("error text", self.test_class.message_text)
+
+    def test_show_info(self):
+        
+        self.broker.show_info("info text")
+        self.assertEqual("info", self.test_class.message_type)
+        self.assertEqual("info text", self.test_class.message_text)
+
+    def test_show_warning(self):
+        
+        self.broker.show_warning("warning text")
+        self.assertEqual("warning", self.test_class.message_type)
+        self.assertEqual("warning text", self.test_class.message_text)
+
+    def test_show_debug(self):
+        
+        self.broker.show_debug("debug text")
+        self.assertEqual("debug", self.test_class.message_type)
+        self.assertEqual("debug text", self.test_class.message_text)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

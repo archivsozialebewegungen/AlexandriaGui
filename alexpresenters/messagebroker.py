@@ -57,3 +57,27 @@ class MessageBroker:
         
         for receiver in self.receivers:
             receiver.receive_message(message)
+
+    def show_error(self, errormessage):
+        
+        self.send_message(Message(ERROR_MESSAGE,
+                                  messagetype='error',
+                                  message=errormessage))
+        
+    def show_warning(self, errormessage):
+        
+        self.send_message(Message(ERROR_MESSAGE,
+                                  messagetype='warning',
+                                  message=errormessage))
+        
+    def show_info(self, errormessage):
+        
+        self.send_message(Message(ERROR_MESSAGE,
+                                  messagetype='info',
+                                  message=errormessage))
+
+    def show_debug(self, errormessage):
+        
+        self.send_message(Message(ERROR_MESSAGE,
+                                  messagetype='debug',
+                                  message=errormessage))
