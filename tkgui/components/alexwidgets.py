@@ -286,9 +286,9 @@ class AlexMessageBar(Pmw.MessageBar):  # @UndefinedVariable
     def __init__(self, *params, **kw):
         if 'messagetypes' not in kw:
             kw['messagetypes'] = {
-                'error'   : (5, 10, 2, 1),
-                'warning' : (4, 5, 1, 0),
-                'info'    : (3, 5, 0, 0),
+                'error'   : (5, 60, 2, 1),
+                'warning' : (4, 15, 1, 0),
+                'info'    : (3, 15, 0, 0),
                 'debug'   : (2, 5, 0, 0),
             }
         super().__init__(*params, **kw)
@@ -300,6 +300,7 @@ class AlexMessageBar(Pmw.MessageBar):  # @UndefinedVariable
     def receive_message(self, message):
         if len(self.messages) == 0 or message in self.messages:
             if hasattr(message, 'messagetype') and hasattr(message, 'message'):
+                self.resetmessages(message.messagetype)
                 self.message(message.messagetype, message.message)
 
 class AlexComboBoxDialog(Pmw.ComboBoxDialog):  # @UndefinedVariable
