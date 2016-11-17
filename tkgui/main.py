@@ -224,7 +224,7 @@ if __name__ == '__main__':
             return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
         
         @provides(guiinjectorkeys.DOCUMENT_PLUGINS_KEY, scope=singleton)
-        def document_plugins(self, document_pdf_plugin):
+        def document_plugins(self):
             return ()
 
         @provides(guiinjectorkeys.SETUP_TASKS_KEY, scope=singleton)
