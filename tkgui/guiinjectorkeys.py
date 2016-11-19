@@ -100,6 +100,6 @@ DEFAULT_DOCUMENT_FILE_VIEWER = Key('default_document_file_viewer')
 
 # Plugins
 
-DOCUMENT_PLUGINS_KEY = Key('document_plugins')
+DOCUMENT_MENU_ADDITIONS_KEY = Key('document_menu_entries')
 
 

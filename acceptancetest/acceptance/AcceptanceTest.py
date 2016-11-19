@@ -162,7 +162,7 @@ class AcceptanceTestModule(Module):
     def provide_startup_tasks(self, populate_windows):
         return (populate_windows,)
 
-    @provides(guiinjectorkeys.DOCUMENT_PLUGINS_KEY, scope=singleton)
+    @provides(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY, scope=singleton)
     def document_plugins(self):
         return ()
 

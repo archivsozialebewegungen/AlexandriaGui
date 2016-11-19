@@ -223,7 +223,7 @@ if __name__ == '__main__':
         def provide_init_messages(self):
             return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
         
-        @provides(guiinjectorkeys.DOCUMENT_PLUGINS_KEY, scope=singleton)
+        @provides(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY, scope=singleton)
         def document_plugins(self, document_pdf_plugin):
             return ()
 

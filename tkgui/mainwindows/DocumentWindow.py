@@ -18,7 +18,7 @@ class DocumentWindow(BaseWindow):
             presenter=guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
             dialogs=guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
             reference_factories=guiinjectorkeys.DOCUMENT_WINDOW_REFERENCES_KEY,
-            document_plugins=guiinjectorkeys.DOCUMENT_PLUGINS_KEY)
+            document_plugins=guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY)
     def __init__(self, window_manager, presenter, dialogs, reference_factories, document_plugins):
         self.notebook = None
         self._description_widget = None
