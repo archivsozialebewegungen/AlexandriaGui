@@ -17,14 +17,15 @@ class DocumentWindow(BaseWindow):
     @inject(window_manager=guiinjectorkeys.WINDOW_MANAGER_KEY,
             presenter=guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
             dialogs=guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
-            reference_factories=guiinjectorkeys.DOCUMENT_WINDOW_REFERENCES_KEY,
-            document_plugins=guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY)
-    def __init__(self, window_manager, presenter, dialogs, reference_factories, document_plugins):
+            base_reference_factories=guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY,
+            additional_reference_factories=guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
+            document_menu_additions=guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY)
+    def __init__(self, window_manager, presenter, dialogs, base_reference_factories, additional_reference_factories, document_menu_additions):
         self.notebook = None
         self._description_widget = None
         self._condition_widget = None
         self._keywords_widget = None
-        super().__init__(window_manager, presenter, dialogs, reference_factories, document_plugins)
+        super().__init__(window_manager, presenter, dialogs, base_reference_factories + additional_reference_factories, document_menu_additions)
     
     def _change_widget_state(self, state):
         self._description_widget.configure(state=state)

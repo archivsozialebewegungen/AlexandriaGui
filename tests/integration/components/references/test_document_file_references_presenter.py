@@ -8,7 +8,7 @@ from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
 from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
-    ERROR_MESSAGE
+    ERROR_MESSAGE, REQ_SAVE_CURRENT_DOCUMENT
 from alexpresenters import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui.components.references.documentfilereference import DocumentFileReferencesView
@@ -16,10 +16,11 @@ from alex_test_utils import TestEnvironment, MODE_FULL
 import os
 from alexandriabase.base_exceptions import NoSuchEntityException
 from alexandriabase.domain import Document
+from ddt import ddt, data, unpack
+from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 
-
-class DocumentFileReferencesPresenterTest(BaseIntegrationTest):
-
+@ddt
+class DocumentFileReferencesPresenterTest(BaseReferenceIntegrationTest):
 
     def setUp(self):
         super().setUp()
@@ -30,7 +31,7 @@ class DocumentFileReferencesPresenterTest(BaseIntegrationTest):
         self.presenter = self.injector.get(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_PRESENTER_KEY)
         self.view = MagicMock(spec=DocumentFileReferencesView)
         self.presenter.view = self.view
-
+        
     def setup_environment(self):
         return TestEnvironment(mode=MODE_FULL)
     
@@ -48,9 +49,12 @@ class DocumentFileReferencesPresenterTest(BaseIntegrationTest):
         self.assertEqual(None, self.view.current_document)
         self.assertEqual(0, len(self.view.items))
 
-    def test_working_add(self):
+    @data([14, 14], [None, 15])
+    @unpack
+    def test_working_add(self, document_id, expected_id):
+        
         self.view.new_file = self.env.jpg_input_file
-        self.view.current_document = self.document_dao.get_last()
+        self.set_current_document(document_id)
         
         self.assertTrue(os.path.isfile(self.env.jpg_input_file))
         self.assert_file_info_does_not_exist(15)
@@ -63,7 +67,7 @@ class DocumentFileReferencesPresenterTest(BaseIntegrationTest):
         # Assert that we have the new info and that a new 
         # document file is where it should be
         file_info = self.document_file_info_dao.get_by_id(15)
-        self.assertEqual(14, file_info.document_id)
+        self.assertEqual(expected_id, file_info.document_id)
         self.assertEqual('jpg', file_info.filetype)
         self.assertEqual(400, file_info.resolution)
         file_path = self.document_file_manager.get_file_path(file_info)
@@ -249,6 +253,23 @@ class DocumentFileReferencesPresenterTest(BaseIntegrationTest):
         
         self.assertEqual(self.env.file_paths[14], self.view.show_file)
         
+    def test_show_file2(self):
+        '''
+        Test with missing file. Should produce error message
+        '''
+
+        message = Message(CONF_DOCUMENT_CHANGED, document=self.document_dao.get_last())
+        self.message_broker.send_message(message)
+
+        self.view.selected_item = self.view.items[0]        
+        self.view.show_file = None
+        
+        os.unlink(self.env.file_paths[14])
+        
+        self.presenter.show_file()
+        
+        self.assertMessage(ERROR_MESSAGE)
+
     def test_show_file_no_selection(self):
         
         self.view.show_file = None

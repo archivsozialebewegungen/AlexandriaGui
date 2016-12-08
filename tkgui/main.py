@@ -27,6 +27,7 @@ import logging
 import socket
 import re
 import importlib
+from tkgui.PluginManager import PluginManager
 
 class StartupTaskCheckDatabaseVersion():
     
@@ -178,14 +179,9 @@ def build_injector():
                    main_module]
     
     config = base_module.get_config(main_module.get_config_file())
-    regex = re.compile("(.*)\.(.*)")
-    for additional_module in config.additional_modules:
-        matcher = regex.match(additional_module)
-        class_module = matcher.group(1)
-        class_name = matcher.group(2)
-        module_class = getattr(importlib.import_module(class_module), class_name)
-        module_list.append(module_class())
-        
+    plugin_manager = PluginManager(config)
+    module_list += plugin_manager.get_plugin_modules()
+    
     return Injector(module_list)
         
 
@@ -223,10 +219,6 @@ if __name__ == '__main__':
         def provide_init_messages(self):
             return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
         
-        @provides(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY, scope=singleton)
-        def document_plugins(self):
-            return ()
-
         @provides(guiinjectorkeys.SETUP_TASKS_KEY, scope=singleton)
         @inject(check_database_version=guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
                 login=guiinjectorkeys.LOGIN_KEY,

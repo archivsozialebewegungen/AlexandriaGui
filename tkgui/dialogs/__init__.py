@@ -57,7 +57,5 @@ class DialogsTkGuiModule(Module):
                     ClassProvider(LoginDialog), scope=singleton)
         binder.bind(guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
                     ClassProvider(FileSelectionDialog), scope=singleton)
-        binder.bind(guiinjectorkeys.EVENT_TYPE_SELECTION_PRESENTER_KEY,
-                    ClassProvider(EventTypeSelectionPresenter), scope=singleton)
         binder.bind(guiinjectorkeys.EVENT_TYPE_SELECTION_DIALOG_KEY,
                     ClassProvider(EventTypeSelectionDialog), scope=singleton)

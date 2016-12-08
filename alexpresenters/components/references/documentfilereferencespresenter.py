@@ -44,8 +44,6 @@ class DocumentFileReferencesPresenter():
         if self.view.current_document.id is None:
             self.message_broker.send_message(Message(REQ_SAVE_CURRENT_DOCUMENT))
             assert(self.view.current_document.id is not None)
-        else:
-            print(self.view.current_document.id)
         if self._execute_with_errorhandling(self.document_service.add_document_file,
                                              self.view.current_document,
                                              file):

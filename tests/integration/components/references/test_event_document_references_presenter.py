@@ -12,9 +12,11 @@ from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
 from alexpresenters import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui.components.references.eventdocumentreferences import EventDocumentReferencesView
+from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
+from ddt import ddt, unpack, data
 
-
-class EventDocumentReferencesPresenterTest(BaseIntegrationTest):
+@ddt
+class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):
 
 
     def setUp(self):
@@ -40,7 +42,7 @@ class EventDocumentReferencesPresenterTest(BaseIntegrationTest):
 
     def test_receive_message_II(self):
         
-        self.set_event(1940000001)
+        self.set_current_event(1940000001)
         self.assertEqual(len(self.view.items), 2)
         
     def test_receive_message_III(self):
@@ -68,7 +70,7 @@ class EventDocumentReferencesPresenterTest(BaseIntegrationTest):
 
     def test_change_document_I(self):
 
-        self.set_event(1940000001)        
+        self.set_current_event(1940000001)        
 
         self.presenter.change_document()
         
@@ -79,29 +81,39 @@ class EventDocumentReferencesPresenterTest(BaseIntegrationTest):
         
     def test_change_document_II(self):
 
-        self.set_event(1950000001)
+        self.set_current_event(1950000001)
         self.view.selected_item = None        
         self.assertEqual(len(self.received_messages), 1)
         self.presenter.change_document()
         # Nothing happend
         self.assertEqual(len(self.received_messages), 1)
 
-    def test_add_new_reference(self):
-        self.set_event(1950000001)
+    @data([1950000001, 8], [None, 8], [1950000001, None], [None, None])
+    @unpack
+    def test_add_new_reference(self, event_id, document_id):
+        self.set_current_event(event_id)
+        self.set_current_document(document_id)
+        
         self.assertEqual(0, len(self.view.items))
         
-        self.view.new_documentid = 1
+        self.view.new_documentid = 8
+        
         self.presenter.reference_document()
+        
+        event_id = self.presenter.view.current_event.id
+        document_id = self.presenter.view.current_document.id
+        self.assertFalse(event_id is None)
+        self.assertFalse(document_id is None)
         
         self.assertEqual(1, len(self.view.items))
 
-        self.set_event(1940000001)
+        self.set_current_event(1940000001)
 
-        self.set_event(1950000001)
+        self.set_current_event(event_id)
         self.assertEqual(1, len(self.view.items))
         
     def test_add_new_reference_no_document_id(self):
-        self.set_event(1950000001)
+        self.set_current_event(1950000001)
         self.assertEqual(0, len(self.view.items))
         
         self.view.new_documentid = None
@@ -110,7 +122,7 @@ class EventDocumentReferencesPresenterTest(BaseIntegrationTest):
         self.assertEqual(0, len(self.view.items))
 
     def test_add_new_reference_illegal_document_id(self):
-        self.set_event(1950000001)
+        self.set_current_event(1950000001)
         self.assertEqual(0, len(self.view.items))
         
         self.view.new_documentid = 85
@@ -121,7 +133,7 @@ class EventDocumentReferencesPresenterTest(BaseIntegrationTest):
         self.assertEqual(self.received_messages[-1].message, 'No such document')
 
     def test_remove_reference(self):
-        self.set_event(1940000001)
+        self.set_current_event(1940000001)
         self.assertEqual(2, len(self.view.items))
 
         self.view.selected_item = self.document_dao.get_by_id(1)
@@ -131,26 +143,18 @@ class EventDocumentReferencesPresenterTest(BaseIntegrationTest):
 
         self.assertEqual(0, len(self.view.items))
 
-        self.set_event(1950000001)
+        self.set_current_event(1950000001)
 
-        self.set_event(1940000001)
+        self.set_current_event(1940000001)
         self.assertEqual(0, len(self.view.items))
 
     def test_remove_reference_edge_case(self):
-        self.set_event(1940000001)
+        self.set_current_event(1940000001)
         self.assertEqual(2, len(self.view.items))
         self.view.selected_item = None
         
         self.presenter.remove_document_reference()
         self.assertEqual(2, len(self.view.items))
-
-    def set_event(self, event_id):
-
-        event = self.event_dao.get_by_id(event_id)
-        message = Message(CONF_EVENT_CHANGED, event=event)
-        
-        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
-        self.message_broker.send_message(message)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

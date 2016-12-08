@@ -47,13 +47,13 @@ class DocumentEventReferencesPresenter:
         if self.view.current_event is not None and self.view.current_event.id is None:
             self.message_broker.send_message(Message(REQ_SAVE_CURRENT_EVENT))
             assert(self.view.current_event.id is not None)
-        event = self.view.new_event
-        if event == None:
+        reference_event = self.view.reference_event
+        if reference_event == None:
             return
         if self.view.current_document.id is None:
             self.message_broker.send_message(Message(REQ_SAVE_CURRENT_DOCUMENT))
             assert(self.view.current_document.id is not None)
-        self.reference_service.link_document_to_event(self.view.current_document, event)
+        self.reference_service.link_document_to_event(self.view.current_document, reference_event)
         self._load_document_event_references(self.view.current_document)
     
     def remove_event_reference(self):

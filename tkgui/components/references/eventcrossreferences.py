@@ -24,7 +24,7 @@ class EventCrossReferencesView(ReferenceView):
                 _('Crossreferences'))
         self.event_selection_dialog = event_selection_dialog
         self.add_buttons()
-        self.event = None
+        self.current_event = None
         
     def add_buttons(self):
         self.add_button(Action(_("Goto"), self.presenter.goto_event))

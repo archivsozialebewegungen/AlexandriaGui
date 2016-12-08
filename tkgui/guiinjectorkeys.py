@@ -13,13 +13,15 @@ INIT_MESSAGES_KEY = Key('init_messages')
 
 EVENT_WINDOW_PRESENTER_KEY = Key('event_window_presenter')
 EVENT_WINDOW_KEY = Key('event_window')
-EVENT_WINDOW_REFERENCES_KEY = Key('event_window_references')
+EVENT_WINDOW_BASE_REFERENCES_KEY = Key('event_window_base_references')
+EVENT_WINDOW_ADDITIONAL_REFERENCES_KEY = Key('event_window_additional_references')
 EVENT_WINDOW_DIALOGS_KEY = Key('event_window_dialogs')
 EVENT_WINDOW_POST_PROCESSORS_KEY = Key('event_window_post_processors')
 
 DOCUMENT_WINDOW_PRESENTER_KEY = Key('document_window_presenter')
 DOCUMENT_WINDOW_KEY = Key('document_window')
-DOCUMENT_WINDOW_REFERENCES_KEY = Key('document_window_references')
+DOCUMENT_WINDOW_BASE_REFERENCES_KEY = Key('document_window_base_references')
+DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY = Key('document_window_additional_references')
 DOCUMENT_WINDOW_DIALOGS_KEY = Key('document_window_dialogs')
 DOCUMENT_WINDOW_POST_PROCESSORS_KEY = Key('document_window_post_processors')
 DOCUMENT_TYPE_POST_PROCESSOR_KEY = Key('document_type_post_processor')
@@ -101,5 +103,4 @@ DEFAULT_DOCUMENT_FILE_VIEWER = Key('default_document_file_viewer')
 # Plugins
 
 DOCUMENT_MENU_ADDITIONS_KEY = Key('document_menu_entries')
-
-
+EVENT_MENU_ADDITIONS_KEY = Key('event_menu_entries')

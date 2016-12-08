@@ -86,9 +86,12 @@ class EventWindow(BaseWindow):
     @inject(window_manager=guiinjectorkeys.WINDOW_MANAGER_KEY,
             presenter=guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY,
             dialogs=guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY,
-            reference_factories=guiinjectorkeys.EVENT_WINDOW_REFERENCES_KEY)
-    def __init__(self, window_manager, presenter, dialogs, reference_factories):
-        super().__init__(window_manager, presenter, dialogs, reference_factories, [])
+            base_reference_factories=guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY,
+            additional_reference_factories=guiinjectorkeys.EVENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
+            event_menu_additions=guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY
+            )
+    def __init__(self, window_manager, presenter, dialogs, base_reference_factories, additional_reference_factories, event_menu_additions):
+        super().__init__(window_manager, presenter, dialogs, base_reference_factories + additional_reference_factories, event_menu_additions)
         self._new_date_range = None
 
     def _populate_entity_frame(self):

@@ -32,7 +32,7 @@ class DocumentEventReferencesView(ReferenceView):
         self.add_button(Action(_("New"), self.presenter.reference_event))
         self.add_button(Action(_("Delete"), self.presenter.remove_event_reference))
 
-    def _get_new_event(self):
+    def _get_reference_event(self):
         return self.event_selection_dialog.activate(self, default_event=self.current_event)
 
-    new_event = property(_get_new_event)
+    reference_event = property(_get_reference_event)

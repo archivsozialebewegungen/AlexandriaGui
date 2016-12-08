@@ -20,6 +20,7 @@ from alexpresenters.dialogs.filterpresenters import DocumentFilterDialogPresente
     EventFilterDialogPresenter
 from alexpresenters.components.references.event_type_references_presenter import EventTypeReferencesPresenter
 from alexpresenters.dialogs.eventconfirmationpresenter import EventConfirmationPresenter
+from alexpresenters.dialogs.eventtypeselectionpresenter import EventTypeSelectionPresenter
 
 class PresentersModule(Module):
     
@@ -62,6 +63,9 @@ class PresentersModule(Module):
                     ClassProvider(EventFilterDialogPresenter), scope=singleton)
         binder.bind(guiinjectorkeys.LOGIN_DIALOG_PRESENTER_KEY,
                     ClassProvider(LoginDialogPresenter), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_TYPE_SELECTION_PRESENTER_KEY,
+                    ClassProvider(EventTypeSelectionPresenter), scope=singleton)
+
         # Postprocessors
         binder.bind(guiinjectorkeys.DOCUMENT_TYPE_POST_PROCESSOR_KEY,
                     ClassProvider(DocumentTypePostProcessor), scope=singleton)

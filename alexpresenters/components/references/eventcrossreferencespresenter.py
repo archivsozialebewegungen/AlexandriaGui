@@ -25,11 +25,11 @@ class EventCrossReferencesPresenter:
             self._load_event_crossreferences(message)
     
     def _load_event_crossreferences(self, message):
-        self.view.event = message.event
+        self.view.current_event = message.event
         self._update_crossreferences()
     
     def _update_crossreferences(self):
-        self.view.items = self.event_service.get_cross_references(self.view.event)
+        self.view.items = self.event_service.get_cross_references(self.view.current_event)
        
     def goto_event(self):
         selected_event = self.view.selected_item
@@ -41,15 +41,15 @@ class EventCrossReferencesPresenter:
     def add_new_cross_reference(self):
         new_cross_reference_event = self.view.new_cross_reference_event
         if new_cross_reference_event != None:
-            if self.view.event.id is None:
+            if self.view.current_event.id is None:
                 self.message_broker.send_message(Message(REQ_SAVE_CURRENT_EVENT))
-            assert(not self.view.event.id is None)
-            self.event_service.add_cross_reference(self.view.event, new_cross_reference_event)
+            assert(not self.view.current_event.id is None)
+            self.event_service.add_cross_reference(self.view.current_event, new_cross_reference_event)
         self._update_crossreferences()
     
     def delete_cross_reference(self):
         selected_event = self.view.selected_item
         if not selected_event:
             return
-        self.event_service.remove_cross_reference(self.view.event, selected_event)
+        self.event_service.remove_cross_reference(self.view.current_event, selected_event)
         self._update_crossreferences()

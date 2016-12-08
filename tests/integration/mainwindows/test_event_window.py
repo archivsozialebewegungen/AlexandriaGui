@@ -14,7 +14,10 @@ from alexandriabase.domain import AlexDateRange, AlexDate, EventFilter, Event,\
 from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT
 from alexandriabase.base_exceptions import NoSuchEntityException
 from alexpresenters.messagebroker import REQ_SET_EVENT, Message,\
-    REQ_GOTO_FIRST_EVENT, CONF_EVENT_WINDOW_READY
+    REQ_GOTO_FIRST_EVENT, CONF_EVENT_WINDOW_READY, REQ_SAVE_CURRENT_EVENT,\
+    CONF_EVENT_CHANGED
+from unittest.mock import MagicMock
+from tkgui.mainwindows.EventWindow import EventWindow
 
 class ViewStub():
     
@@ -34,13 +37,28 @@ class EventWindowsTests(BaseIntegrationTest):
         self.injector = self.get_injector(PresentersModule())
         self.event_window_presenter = self.injector.get(guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY)
         self.event_service = self.injector.get(baseinjectorkeys.EventServiceKey)
-        self.view = ViewStub()
+        #self.view = ViewStub()
+        self.view = MagicMock(spec=EventWindow)
+        self.view.entity = None
+        self.view.filter_expression = None
+        self.view.entity_has_changed.return_value = False
+        
         self.event_window_presenter.view = self.view;
 
 
     def tearDown(self):
         pass
 
+    def testReceiveMessage(self):
+        
+        self.view.entity = Event()
+        self.view.entity.daterange = AlexDateRange(AlexDate(1936), None)
+        self.view.entity_has_changed.return_value = True
+        
+        self.message_broker.send_message(Message(REQ_SAVE_CURRENT_EVENT))
+        
+        self.assertMessage(REQ_SAVE_CURRENT_EVENT)
+        self.assertMessage(CONF_EVENT_CHANGED)
 
     def testGotoFirst(self):
         self.event_window_presenter.goto_first()
@@ -97,16 +115,15 @@ class EventWindowsTests(BaseIntegrationTest):
     def testSavingI(self):
         self.event_window_presenter.goto_first()
         self.view.entity.description = "Totally new description"
-        self.view._entity_has_changed = True
+        self.view.entity_has_changed.return_value = True
         self.event_window_presenter.goto_last()
         entity = self.event_service.get_by_id(1940000001)
         self.assertEqual(entity.description, "Totally new description")
 
     def testSavingII(self):
-        # TODO: Should also check that all references have changed
         self.event_window_presenter.goto_first()
         self.view.entity.daterange = AlexDateRange(AlexDate(1950), None)
-        self.view._entity_has_changed = True
+        self.view.entity_has_changed.return_value = True
         self.event_window_presenter.goto_last()
         exception_raised = False
         try:
@@ -170,6 +187,19 @@ class EventWindowsTests(BaseIntegrationTest):
         self.assertEqual(self.view.entity.daterange, AlexDateRange(AlexDate(1940), None))
         self.assertEqual(self.view.entity.id, 1940000001)
         self.assertEqual(self.view.entity.description, "Erstes Ereignis")
+
+    def testCreateNewIII(self):
+        
+        self.view.new_date_range = AlexDateRange(AlexDate(1936), None)
+        self.view.existing_new_event = None
+        self.view.entity_has_changed = MagicMock(side_effect = [False, False, True, False])
+        self.event_window_presenter.create_new()
+        
+        self.event_window_presenter.goto_last()
+        self.event_window_presenter.goto_first()
+        self.assertEqual(self.view.entity.daterange, AlexDateRange(AlexDate(1936), None))
+        self.assertEqual(self.view.entity.id, 1936000001)
+        self.assertEqual(self.view.entity.description, "")
 
     def testDeleteI(self):
         # Plain and simple deletion

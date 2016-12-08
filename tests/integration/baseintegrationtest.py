@@ -15,6 +15,10 @@ from tkgui import guiinjectorkeys
 from daotests import test_base
 from alexandriabase.daos.basiccreatorprovider import BasicCreatorProvider
 import os
+from alexandriabase.domain import Document, DocumentType, Event, AlexDateRange,\
+    AlexDate
+from alexpresenters.messagebroker import CONF_DOCUMENT_CHANGED, Message,\
+    CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT, REQ_SAVE_CURRENT_DOCUMENT
 
 
 class IntegrationTestModule(Module):
@@ -59,9 +63,10 @@ class BaseIntegrationTest(unittest.TestCase):
     def assertMessage(self, message):
         self.assertTrue(message in self.received_messages)
 
+
     def receive_message(self, message):
         self.received_messages.append(message)
-
+ 
     def get_injector(self, *test_modules):
 
         essential_modules = (AlexBaseModule(), DaoModule(), ServiceModule(), IntegrationTestModule(self.env.config_file_name))
@@ -79,4 +84,3 @@ class BaseIntegrationTest(unittest.TestCase):
     def tearDown(self):
         clear_table_data(test_base.tables, self.engine)
         self.env.cleanup()
-

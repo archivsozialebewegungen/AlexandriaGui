@@ -1,7 +1,8 @@
 '''
 Window module
 '''
-from injector import Module, ClassProvider, singleton, provides, inject
+from injector import Module, ClassProvider, singleton, provides, inject,\
+    InstanceProvider
 from alexandriabase import baseinjectorkeys
 from tkgui import guiinjectorkeys
 from tkgui.mainwindows.EventWindow import EventWindow
@@ -25,6 +26,14 @@ class MainWindowsModule(Module):
                     ClassProvider(EventWindow), scope=singleton)
         binder.bind(guiinjectorkeys.DOCUMENT_WINDOW_KEY,
                     ClassProvider(DocumentWindow), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY,
+                    InstanceProvider([]))
+        binder.bind(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY,
+                    InstanceProvider([]))
+        binder.bind(guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
+                    InstanceProvider([]))
+        binder.bind(guiinjectorkeys.EVENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
+                    InstanceProvider([]))
 
     # Windows
     @provides(guiinjectorkeys.MAIN_WINDOWS_KEY, scope=singleton)
@@ -38,10 +47,10 @@ class MainWindowsModule(Module):
         return (event_window, document_window)
 
     # References
-    @provides(guiinjectorkeys.DOCUMENT_WINDOW_REFERENCES_KEY)
+    @provides(guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY)
     @inject(document_event_reference=guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_FACTORY_KEY)
     @inject(document_file_reference=guiinjectorkeys.DOCUMENT_FILE_REFERENCES_FACTORY_KEY)
-    def get_document_references(
+    def get_document_base_references(
             self,
             document_event_reference,
             document_file_reference):
@@ -52,11 +61,18 @@ class MainWindowsModule(Module):
         '''
         return [document_event_reference, document_file_reference]
     
-    @provides(guiinjectorkeys.EVENT_WINDOW_REFERENCES_KEY)
+    @provides(guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY)
+    def get_document_additional_references(self):
+        '''
+        Empty array. Will be overridden for plugins.
+        '''
+        return []
+
+    @provides(guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY)
     @inject(event_cross_references=guiinjectorkeys.EVENT_CROSS_REFERENCES_FACTORY_KEY)
     @inject(event_document_reference=guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_FACTORY_KEY)
     @inject(event_type_reference=guiinjectorkeys.EVENT_TYPE_REFERENCES_FACTORY_KEY)
-    def create_event_references(self,
+    def create_event_base_references(self,
                                 event_cross_references,
                                 event_document_reference,
                                 event_type_reference):

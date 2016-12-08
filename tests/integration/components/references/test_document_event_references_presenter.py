@@ -8,14 +8,18 @@ from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
 from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
-    CONF_EVENT_CHANGED, REQ_SET_EVENT
+    CONF_EVENT_CHANGED, REQ_SET_EVENT, REQ_SAVE_CURRENT_DOCUMENT,\
+    REQ_SAVE_CURRENT_EVENT
 from alexpresenters import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui.components.references.documenteventreferences import DocumentEventReferencesView
+from alexandriabase.domain import Event, AlexDateRange, AlexDate, Document,\
+    DocumentType
+from ddt import ddt, data, unpack
+from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 
-
-class DocumentEventReferencesPresenterTest(BaseIntegrationTest):
-
+@ddt
+class DocumentEventReferencesPresenterTest(BaseReferenceIntegrationTest):
 
     def setUp(self):
         super().setUp()
@@ -26,7 +30,6 @@ class DocumentEventReferencesPresenterTest(BaseIntegrationTest):
         self.view = MagicMock(spec=DocumentEventReferencesView)
         self.view.current_event = None
         self.presenter.view = self.view
-
 
     def test_receive_message_I(self):
         
@@ -40,7 +43,7 @@ class DocumentEventReferencesPresenterTest(BaseIntegrationTest):
 
     def test_receive_message_II(self):
         
-        self.set_event(1)
+        self.set_current_document(1)
         self.assertEqual(len(self.view.items), 1)
         
     def test_receive_message_III(self):
@@ -54,7 +57,7 @@ class DocumentEventReferencesPresenterTest(BaseIntegrationTest):
 
     def test_change_event_I(self):
 
-        self.set_event(1)        
+        self.set_current_document(1)        
 
         self.presenter.change_event()
         
@@ -65,65 +68,70 @@ class DocumentEventReferencesPresenterTest(BaseIntegrationTest):
         
     def test_change_event_II(self):
 
-        self.set_event(8)
+        self.set_current_document(8)
         self.view.selected_item = None        
         self.assertEqual(len(self.received_messages), 1)
         self.presenter.change_event()
         # Nothing happend
         self.assertEqual(len(self.received_messages), 1)
 
-    def test_add_new_reference(self):
-        self.set_event(8)
+    @data([1940000001, 8], [None, 8], [1940000001, None], [None, None])
+    @unpack
+    def test_add_new_reference(self, event_id, document_id):
+        
+        self.set_current_document(document_id)
+        self.set_current_event(event_id)
+        
         self.assertEqual(0, len(self.view.items))
         
-        self.view.new_event = self.event_dao.get_by_id(1940000001)
+        self.view.reference_event = self.view.current_event
+        
         self.presenter.reference_event()
+        
+        document_id = self.view.current_document.id
+        event_id = self.view.current_event.id
+        self.assertFalse(document_id is None)
+        self.assertFalse(event_id is None)
+        
         
         self.assertEqual(1, len(self.view.items))
 
-        self.set_event(1)
+        self.set_current_document(1)
 
-        self.set_event(8)
+        self.set_current_document(document_id)
+        
         self.assertEqual(1, len(self.view.items))
         
     def test_add_new_reference_edge_case(self):
-        self.set_event(8)
+        self.set_current_document(8)
         self.assertEqual(0, len(self.view.items))
         
-        self.view.new_event = None
+        self.view.reference_event = None
         self.presenter.reference_event()
         
         self.assertEqual(0, len(self.view.items))
 
     def test_remove_reference(self):
-        self.set_event(1)
+        self.set_current_document(1)
         self.assertEqual(1, len(self.view.items))
         self.view.selected_item = self.event_dao.get_by_id(1940000001)
         
         self.presenter.remove_event_reference()
         self.assertEqual(0, len(self.view.items))
 
-        self.set_event(8)
+        self.set_current_document(8)
 
-        self.set_event(1)
+        self.set_current_document(1)
         self.assertEqual(0, len(self.view.items))
 
     def test_remove_reference_edge_case(self):
-        self.set_event(8)
+        self.set_current_document(8)
         self.assertEqual(0, len(self.view.items))
         self.view.selected_item = None
         
         self.presenter.remove_event_reference()
         self.assertEqual(0, len(self.view.items))
 
-
-    def set_event(self, event_id):
-
-        document = self.document_dao.get_by_id(event_id)
-        message = Message(CONF_DOCUMENT_CHANGED, document=document)
-        
-        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
-        self.message_broker.send_message(message)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

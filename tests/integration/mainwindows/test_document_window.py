@@ -14,7 +14,8 @@ from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT
 import os
 from alex_test_utils import TestEnvironment, MODE_FULL
 from alexpresenters.messagebroker import REQ_SET_DOCUMENT, Message,\
-    REQ_GOTO_FIRST_DOCUMENT, CONF_DOCUMENT_WINDOW_READY
+    REQ_GOTO_FIRST_DOCUMENT, CONF_DOCUMENT_WINDOW_READY,\
+    REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED
 
 class ViewStub():
     
@@ -104,6 +105,17 @@ class DocumentWindowsTests(BaseIntegrationTest):
         self.document_window_presenter.goto_last()
         self.assertNotEqual(self.view.entity.description, "Totally new description")
         entity = self.document_service.get_by_id(1)
+        self.assertEqual(entity.description, "Totally new description")
+
+    def testSavingII(self):
+        
+        self.document_window_presenter.goto_first()
+        self.view.entity.description = "Totally new description"
+        self.view._entity_has_changed = True
+        self.message_broker.send_message(Message(REQ_SAVE_CURRENT_DOCUMENT))
+        entity = self.document_service.get_by_id(1)
+
+        self.assertMessage(CONF_DOCUMENT_CHANGED)
         self.assertEqual(entity.description, "Totally new description")
 
     def testToggleFilterI(self):

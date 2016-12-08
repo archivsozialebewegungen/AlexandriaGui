@@ -94,7 +94,8 @@ class BaseWindowPresenter:
         return entity
     
     def _save_if_necessary(self):
-        if self.view.entity_has_changed():
+        has_changed = self.view.entity_has_changed()
+        if has_changed:
             return self._save()
         else:
             return self.view.entity
