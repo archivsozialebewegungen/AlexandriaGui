@@ -22,6 +22,7 @@ class EventConfirmationDialog(GenericTreeSelectionDialog):
         self.date = date
         self.presenter.set_event_list()
         if len(self.event_list) == 0:
+            self.dialog = None
             return
         
         self.dialog = Pmw.Dialog(master,  # @UndefinedVariable
