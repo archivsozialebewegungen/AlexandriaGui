@@ -5,24 +5,13 @@ Created on 20.11.2015
 '''
 from tkinter.constants import END
 from tkinter import Entry, Label, Frame
-from tkgui.mainwindows.BaseWindow import BaseWindow
-from alexandriabase.domain import Entity, Event, Document,\
-    AlexDateRange, DocumentFileInfo, Tree
-import Pmw
-from alex_test_utils import TestEnvironment, setup_database_schema,\
-    load_table_data, get_testfiles_dir
-from injector import Injector
-from acceptance.AcceptanceTest import AcceptanceTestModule
-from alexandriabase import AlexBaseModule, baseinjectorkeys
-from alexandriabase.daos import DaoModule
-from alexandriabase.services import ServiceModule
-from alexpresenters import PresentersModule
-from tkgui.mainwindows import MainWindowsModule
-from tkgui.dialogs import DialogsTkGuiModule
-from daotests.test_base import tables
-from tkgui import guiinjectorkeys
-from alexandriabase.services.fileformatservice import FileFormatService
 import os
+import Pmw
+from tkgui.mainwindows.BaseWindow import BaseWindow
+from alex_test_utils import get_testfiles_dir
+from alexandriabase.domain import Entity, Event, Document,\
+    AlexDateRange, DocumentFileInfo
+from alexandriabase.services.fileformatservice import FileFormatService
 from alexandriabase.config import Config
 
 
@@ -277,25 +266,3 @@ class ReferenceServiceStub:
     def delete_document_event_relation(self, document, event):
         event_list = self.events[document.id]
         self.events[document.id] = [e for e in event_list if e.id != event.id]
-    
-
-
-if __name__ == '__main__':
-    env = TestEnvironment()
-    injector = Injector([
-            AcceptanceTestModule(env.config_file_name),
-            AlexBaseModule(),
-            DaoModule(),
-            ServiceModule(),
-            PresentersModule(),
-            MainWindowsModule(),
-            DialogsTkGuiModule()
-            ])
-    
-    engine = injector.get(baseinjectorkeys.DBEngineKey)
-    setup_database_schema(engine)
-    load_table_data(tables, engine)
-
-    main_runner = injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
-    main_runner.run()
-
