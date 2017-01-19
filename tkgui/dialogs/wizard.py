@@ -8,7 +8,7 @@ import tkinter
 
 class Wizard(tkinter.Toplevel):
     
-    def __init__(self, master, presenter, number_of_pages):
+    def __init__(self, master, presenter, number_of_pages, geometry="400x200"):
         self.presenter = presenter
         self.presenter.view = self
         self.pages = []
@@ -16,6 +16,7 @@ class Wizard(tkinter.Toplevel):
         self.current = 0
         self.master = master
         tkinter.Toplevel.__init__(self)
+        self.geometry(geometry)
         self.transient(self.master)
         
         self.protocol("WM_DELETE_WINDOW", self.close)

@@ -33,7 +33,8 @@ class DateEntryFrame(Frame):
     def __init__(self, parent, label=_('Date'), labelwidth=15):
         Frame.__init__(self, parent)
 
-        Label(self, text=label, width=labelwidth).pack(side=LEFT)
+        self._label = AlexLabel(self, text=label, width=labelwidth)
+        self._label.pack(side=LEFT)
         self.day_entry = AlexEntry(self,width=2)
         self.day_entry.pack(side=LEFT)
 
@@ -51,6 +52,8 @@ class DateEntryFrame(Frame):
                      lambda self, value: self.month_entry.set(value))
     year = property(lambda self: self.year_entry.get(),
                     lambda self, value: self.year_entry.set(value))
+    label = property(lambda self: self._label.get(),
+                     lambda self, text: self._label.set(text))
 
 class AlexDateEntry(DateEntryFrame):
     '''
