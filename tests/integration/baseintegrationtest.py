@@ -18,7 +18,8 @@ import os
 from alexandriabase.domain import Document, DocumentType, Event, AlexDateRange,\
     AlexDate
 from alexpresenters.messagebroker import CONF_DOCUMENT_CHANGED, Message,\
-    CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT, REQ_SAVE_CURRENT_DOCUMENT
+    CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT, REQ_SAVE_CURRENT_DOCUMENT,\
+    MessageBroker
 
 
 class IntegrationTestModule(Module):
@@ -27,7 +28,9 @@ class IntegrationTestModule(Module):
         self.config_file = config_file
     
     def configure(self, binder):
-                
+
+        binder.bind(guiinjectorkeys.MESSAGE_BROKER_KEY,
+                    ClassProvider(MessageBroker), scope=singleton)
         binder.bind(baseinjectorkeys.CreatorProvider,
                     ClassProvider(BasicCreatorProvider), scope=singleton)
         binder.bind(baseinjectorkeys.CONFIG_FILE_KEY, to=self.config_file)        

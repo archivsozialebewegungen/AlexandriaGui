@@ -14,7 +14,7 @@ class GenericTreeSelectionPresenterTest(unittest.TestCase):
     def testAssembleReturnValue(self):
         generic_presenter = GenericTreeSelectionPresenter()
         generic_presenter.view = MagicMock()
-        generic_presenter.view.input = "Hello world!"
+        generic_presenter.view.input.entity = "Hello world!"
         
         generic_presenter.assemble_return_value()
         

@@ -9,4 +9,4 @@ class GenericTreeSelectionPresenter:
         self.view = None
 
     def assemble_return_value(self):
-        self.view.return_value = self.view.input
+        self.view.return_value = self.view.input.entity
