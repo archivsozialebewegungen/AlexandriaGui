@@ -22,7 +22,12 @@ from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
 from tkinter.constants import END, DISABLED, W, LEFT, NORMAL
 from alexandriabase.domain import AlexDate
 import Pmw
-from idlelib.TreeWidget import TreeItem, TreeNode
+try:
+    # Python 3.4 and Python 3.5
+    from idlelib.TreeWidget import TreeItem, TreeNode
+except:
+    # Since Python 3.6
+    from idlelib.tree import TreeItem, TreeNode  # @UnresolvedImport
 
 class DateEntryFrame(Frame):
     # pylint: disable=too-many-ancestors
