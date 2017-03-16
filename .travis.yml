@@ -2,6 +2,7 @@ language: python
 python:
   - "3.4"
   - "3.5"
+  - "3.6"
 # command to install dependencies
 install:
   - "git clone --depth 1 https://github.com/archivsozialebewegungen/AlexandriaBase.git"
