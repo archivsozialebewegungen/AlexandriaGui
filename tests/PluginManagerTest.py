@@ -39,7 +39,7 @@ class Test(unittest.TestCase):
         modules = self.plugin_manager.get_plugin_modules()
         
         self.assertEqual(2, len(modules))
-        self.assertEqual(DummyModule, modules[0])
+        self.assertEqual("DummyModule", modules[0].__name__)
         self.assertEqual("DynamicModule", modules[1].__class__.__name__)
 
     def testCodeCreation(self):
