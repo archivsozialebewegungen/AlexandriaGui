@@ -128,12 +128,17 @@ class PluginManager(object):
         module_code += "\nclass DynamicModule(Module):\n\n"
         # Bindings
         module_code += '    def configure(self, binder):\n'
+        
+        bindings = 0    
         for extension_type, additions in self.additions.items():
             for i in range(1, len(additions)+1):
+                bindings += 1
                 module_code += '        binder.bind(%s%d_KEY, ClassProvider(%s), scope=singleton)\n' % (
                     extension_type.extension_name,
                     i,
                     additions[i-1].__name__)
+        if bindings == 0:
+            module_code += '        pass\n'
         
         for extension_type, additions in self.additions.items():
             module_code += self._create_additions_provider(extension_type, additions)

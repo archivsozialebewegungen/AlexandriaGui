@@ -184,47 +184,44 @@ def build_injector():
     
     return Injector(module_list)
         
+class MainModule(Module):
+    '''
+    Initializes the application.
+    '''
+  
+    def configure(self, binder):
+        binder.bind(baseinjectorkeys.CreatorProvider,
+                    ClassProvider(LoginCreatorProvider), scope=singleton)
+        binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
+                    ClassProvider(MainRunner), scope=singleton)
+        binder.bind(guiinjectorkeys.SETUP_RUNNER_KEY,
+                    ClassProvider(SetupRunner), scope=singleton)
+        binder.bind(guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
+                    ClassProvider(StartupTaskCheckDatabaseVersion), scope=singleton)
+        binder.bind(guiinjectorkeys.LOGIN_KEY,
+                    ClassProvider(StartupTaskLogin), scope=singleton)
+        binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
+                    ClassProvider(StartupTaskPopulateWindows), scope=singleton)
+            
+    @provides(baseinjectorkeys.CONFIG_FILE_KEY)
+    def get_config_file(self):
+        config_file = os.environ.get('ALEX_CONFIG')
+        if config_file is None:
+            config_file = "config.xml"
+        return config_file
+        
+    @provides(guiinjectorkeys.INIT_MESSAGES_KEY, scope=singleton)
+    def provide_init_messages(self):
+        return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
+       
+    @provides(guiinjectorkeys.SETUP_TASKS_KEY, scope=singleton)
+    @inject(check_database_version=guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
+            login=guiinjectorkeys.LOGIN_KEY,
+            populate_windows=guiinjectorkeys.POPULATE_WINDOWS_KEY)
+    def provide_startup_tasks(self, check_database_version, login, populate_windows):
+        return [check_database_version, login, populate_windows]
 
 if __name__ == '__main__':
-    
-    class MainModule(Module):
-        '''
-        Initializes the application.
-        
-        This might be replaced for a special customer installation.
-        '''
-    
-        def configure(self, binder):
-            binder.bind(baseinjectorkeys.CreatorProvider,
-                        ClassProvider(LoginCreatorProvider), scope=singleton)
-            binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
-                        ClassProvider(MainRunner), scope=singleton)
-            binder.bind(guiinjectorkeys.SETUP_RUNNER_KEY,
-                        ClassProvider(SetupRunner), scope=singleton)
-            binder.bind(guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
-                        ClassProvider(StartupTaskCheckDatabaseVersion), scope=singleton)
-            binder.bind(guiinjectorkeys.LOGIN_KEY,
-                        ClassProvider(StartupTaskLogin), scope=singleton)
-            binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
-                        ClassProvider(StartupTaskPopulateWindows), scope=singleton)
-            
-        @provides(baseinjectorkeys.CONFIG_FILE_KEY)
-        def get_config_file(self):
-            config_file = os.environ.get('ALEX_CONFIG')
-            if config_file is None:
-                config_file = "config.xml"
-            return config_file
-        
-        @provides(guiinjectorkeys.INIT_MESSAGES_KEY, scope=singleton)
-        def provide_init_messages(self):
-            return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
-        
-        @provides(guiinjectorkeys.SETUP_TASKS_KEY, scope=singleton)
-        @inject(check_database_version=guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
-                login=guiinjectorkeys.LOGIN_KEY,
-                populate_windows=guiinjectorkeys.POPULATE_WINDOWS_KEY)
-        def provide_startup_tasks(self, check_database_version, login, populate_windows):
-            return [check_database_version, login, populate_windows]
     
     gettext.bindtextdomain('alexandria', 'locale')
     gettext.textdomain('alexandria')

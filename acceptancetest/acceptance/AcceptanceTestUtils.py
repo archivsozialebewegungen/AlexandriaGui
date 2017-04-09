@@ -20,7 +20,7 @@ from tkgui.dialogs import DialogsTkGuiModule
 from tkgui.components.references import WindowReferencesModule
 from tkgui import guiinjectorkeys
 from tkgui.main import SetupRunner, StartupTaskCheckDatabaseVersion, MainRunner,\
-    StartupTaskPopulateWindows
+    StartupTaskPopulateWindows, build_injector
 from alex_test_utils import setup_database_schema, load_table_data,\
     TestEnvironment, MODE_FULL
 from daotests.test_base import tables
@@ -59,12 +59,8 @@ class AcceptanceTestModule(Module):
     '''
     
     
-    def __init__(self, config_file):
-        self.config_file = config_file
-        
     def configure(self, binder):
         
-        binder.bind(baseinjectorkeys.CONFIG_FILE_KEY, to=self.config_file)
         binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
                     ClassProvider(MainRunner), scope=singleton)
         binder.bind(baseinjectorkeys.CreatorProvider,
@@ -160,24 +156,16 @@ class BaseAcceptanceTest(Thread, AcceptanceTestHelpers):
     DI container as properties of the class.
     '''
     
-    def __init__(self):
+    def __init__(self, additional_modules=[]):
         super().__init__()
+        additional_modules.append('acceptance.AcceptanceTestUtils')
         self.gui_initialized = False
 
         # Build up environment
-        self.env = TestEnvironment(mode=MODE_FULL)
+        self.env = TestEnvironment(mode=MODE_FULL, additional_modules=additional_modules)
 
         # Initialize dependency injection
-        self.injector = Injector([
-            AcceptanceTestModule(self.env.config_file_name),
-            AlexBaseModule(),
-            DaoModule(),
-            ServiceModule(),
-            PresentersModule(),
-            MainWindowsModule(),
-            DialogsTkGuiModule(),
-            WindowReferencesModule()
-            ])
+        self.injector = build_injector()
         
         # Set up database
         engine = self.injector.get(baseinjectorkeys.DBEngineKey)
