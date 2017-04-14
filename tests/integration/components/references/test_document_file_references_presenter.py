@@ -8,9 +8,8 @@ from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
 from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
-    ERROR_MESSAGE, REQ_SAVE_CURRENT_DOCUMENT
+    ERROR_MESSAGE
 from alexpresenters import PresentersModule
-from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui.components.references.documentfilereference import DocumentFileReferencesView
 from alex_test_utils import TestEnvironment, MODE_FULL
 import os
@@ -120,7 +119,7 @@ class DocumentFileReferencesPresenterTest(BaseReferenceIntegrationTest):
         self.presenter.add_file()
 
         self.assertMessage(ERROR_MESSAGE)
-        self.assertEqual("Unknown error while adding file",
+        self.assertEqual(_("Unknown error while adding file"),
                          self.received_messages[0].message)
 
         self.assertTrue(os.path.isfile(self.env.illegal_input_file))

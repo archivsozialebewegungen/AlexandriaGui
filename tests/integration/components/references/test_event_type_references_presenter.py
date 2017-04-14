@@ -4,20 +4,16 @@ Created on 24.10.2015
 @author: michael
 '''
 import unittest
-from tkgui import guiinjectorkeys
-from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
-from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
-    ERROR_MESSAGE, REQ_SAVE_CURRENT_DOCUMENT, CONF_EVENT_CHANGED,\
+from tkgui import guiinjectorkeys
+from tkgui.components.references.documentfilereference import DocumentFileReferencesView
+from alexandriabase import baseinjectorkeys
+from alexandriabase.domain import EventTypeIdentifier, \
+    Event, AlexDateRange, AlexDate
+from alexpresenters.messagebroker import Message,  CONF_EVENT_CHANGED,\
     REQ_SAVE_CURRENT_EVENT
 from alexpresenters import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
-from tkgui.components.references.documentfilereference import DocumentFileReferencesView
-from alex_test_utils import TestEnvironment, MODE_FULL
-import os
-from alexandriabase.base_exceptions import NoSuchEntityException
-from alexandriabase.domain import Document, EventTypeIdentifier, EventType,\
-    Event, AlexDateRange, AlexDate
 from ddt import ddt, data, unpack
 
 @ddt

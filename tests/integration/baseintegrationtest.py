@@ -6,7 +6,7 @@ Created on 24.10.2015
 import unittest
 from alexandriabase.daos.metadata import ALEXANDRIA_METADATA
 from alex_test_utils import load_table_data, clear_table_data, TestEnvironment,\
-    MODE_SIMPLE
+    MODE_SIMPLE, setup_database_schema, drop_database_schema
 from injector import Module, Injector, ClassProvider, singleton
 from alexandriabase import baseinjectorkeys, AlexBaseModule
 from alexandriabase.daos import DaoModule
@@ -70,7 +70,7 @@ class BaseIntegrationTest(unittest.TestCase):
         injector = Injector(essential_modules + test_modules)
 
         self.engine = injector.get(baseinjectorkeys.DBEngineKey)
-        ALEXANDRIA_METADATA.create_all(self.engine)
+        setup_database_schema(self.engine)
         load_table_data(test_base.tables, self.engine)
 
         self.message_broker = injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
@@ -80,4 +80,5 @@ class BaseIntegrationTest(unittest.TestCase):
 
     def tearDown(self):
         clear_table_data(test_base.tables, self.engine)
+        drop_database_schema(self.engine)
         self.env.cleanup()

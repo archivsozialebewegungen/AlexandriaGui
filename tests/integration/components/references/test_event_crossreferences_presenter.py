@@ -4,17 +4,16 @@ Created on 24.10.2015
 @author: michael
 '''
 import unittest
+from unittest.mock import MagicMock
 from tkgui import guiinjectorkeys
 from tkgui.components.references.eventcrossreferences import EventCrossReferencesView
-from unittest.mock import MagicMock
 from alexandriabase import baseinjectorkeys
 from alexpresenters import PresentersModule
 from alexpresenters.messagebroker import Message, CONF_EVENT_CHANGED,\
-    REQ_SET_EVENT, REQ_SAVE_CURRENT_EVENT
-from integration.baseintegrationtest import BaseIntegrationTest
+    REQ_SET_EVENT
 from ddt import ddt, data, unpack
-from alexandriabase.domain import Event, AlexDateRange, AlexDate
-from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
+from integration.components.references.basereferenceintegrationtest \
+    import BaseReferenceIntegrationTest
 
 @ddt
 class EventCrossReferencesPresenterTest(BaseReferenceIntegrationTest):

@@ -10,7 +10,6 @@ from unittest.mock import MagicMock
 from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
     CONF_EVENT_CHANGED, REQ_SET_DOCUMENT, ERROR_MESSAGE
 from alexpresenters import PresentersModule
-from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui.components.references.eventdocumentreferences import EventDocumentReferencesView
 from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 from ddt import ddt, unpack, data

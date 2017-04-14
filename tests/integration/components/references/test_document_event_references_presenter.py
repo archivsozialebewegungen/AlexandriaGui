@@ -8,13 +8,9 @@ from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
 from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
-    CONF_EVENT_CHANGED, REQ_SET_EVENT, REQ_SAVE_CURRENT_DOCUMENT,\
-    REQ_SAVE_CURRENT_EVENT
+    CONF_EVENT_CHANGED, REQ_SET_EVENT
 from alexpresenters import PresentersModule
-from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui.components.references.documenteventreferences import DocumentEventReferencesView
-from alexandriabase.domain import Event, AlexDateRange, AlexDate, Document,\
-    DocumentType
 from ddt import ddt, data, unpack
 from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 

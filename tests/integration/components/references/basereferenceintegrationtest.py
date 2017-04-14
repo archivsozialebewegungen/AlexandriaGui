@@ -10,13 +10,14 @@ from alexpresenters.messagebroker import REQ_SAVE_CURRENT_EVENT,\
     REQ_SAVE_CURRENT_DOCUMENT, Message, CONF_DOCUMENT_CHANGED,\
     CONF_EVENT_CHANGED
 from alexandriabase import baseinjectorkeys
+from alex_test_utils import MODE_SIMPLE
 
 class BaseReferenceIntegrationTest(BaseIntegrationTest):
     '''
     Add some helper methods to make testing references
     more easy.
     '''
-
+    
     def receive_message(self, message):
         BaseIntegrationTest.receive_message(self, message)
         if message == REQ_SAVE_CURRENT_EVENT:
