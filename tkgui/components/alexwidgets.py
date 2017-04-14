@@ -423,23 +423,35 @@ class AlexMenuBar(Pmw.MenuBar):  # @UndefinedVariable
     def __init__(self, *params, **kw):
         super().__init__(*params, **kw)
         self.entries = {}
+        self.callbacks = {}
 
     def addmenu(self, *params, **kw):
         self.entries[params[0]] = []
         super().addmenu(*params, **kw)
         
     def addmenuitem(self, *params, before=None, **kw):
+        
+        menulabel = params[0]
+        itemlabel = kw['label']
+        callback = kw['command']
+
         if before is None:
             super().addmenuitem(*params, **kw)
         else:
-            menu = self.component('%s-menu' % params[0])
-            position = self._findPosition(params[0], before)
+            menu = self.component('%s-menu' % menulabel)
+            position = self._findPosition(menulabel, before)
             menu.insert(position, *params[1:], **kw)
-        self.entries[params[0]].append(kw['label'])
-
-    def hasmenu(self, menuname):
         
-        return menuname in self.entries
+        self.entries[params[0]].append(itemlabel)
+        self.callbacks['%s-%s' % (menulabel, itemlabel)] = callback
+
+    def hasmenu(self, menulabel):
+        
+        return menulabel in self.entries
+    
+    def get_callback(self, menulabel, itemlabel):
+        
+        return self.callbacks['%s-%s' % (menulabel, itemlabel)]
     
     def _findPosition(self, menuName, before):
         
