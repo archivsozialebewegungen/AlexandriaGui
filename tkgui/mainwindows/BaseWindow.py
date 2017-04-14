@@ -16,6 +16,7 @@ from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT,\
 from alexpresenters.messagebroker import Message
 import sys
 from tkgui.components.alexwidgets import AlexMessageBar, AlexMenuBar
+from threading import Thread
 
 @singleton
 class WindowManager():
@@ -39,6 +40,7 @@ class WindowManager():
         self.message_broker.subscribe(self)
 
         self.windows = []
+        self.threads = []
         self.root = Tk()
         self.root.protocol("WM_DELETE_WINDOW", self._quit)
         # pylint: disable=no-member
@@ -65,9 +67,16 @@ class WindowManager():
         if message.key == REQ_QUIT:
             self._quit()
             
+    def run_in_thread(self, target, args=()):
+        thread = Thread(target=target, args=args)
+        self.threads.append(thread)
+        thread.start()
+
     def _quit(self):
         
         self.message_broker.send_message(Message(REQ_SAVE_ALL))
+        for thread in self.threads:
+            thread.join()
         self.root.quit()
 
     def run(self):
