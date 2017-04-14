@@ -216,10 +216,6 @@ class MainModule(Module):
 
 if __name__ == '__main__':
     
-    gettext.bindtextdomain('alexandria', 'locale')
-    gettext.textdomain('alexandria')
-    success = False
-    
     try:
         injector = build_injector()
         injector.get(guiinjectorkeys.MAIN_RUNNER_KEY).run()
