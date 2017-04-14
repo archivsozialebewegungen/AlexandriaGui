@@ -51,7 +51,7 @@ class PluginManager(object):
     provide working dependency injection for plugins.
     
     It scans the plugin python modules for injector module classes. This
-    is the easy parts. Then it scans the python modules for certain
+    is the easy part. Then it scans the python modules for certain
     class types that provide hooks for certain types of alexandria
     extensions and dynamically creates an injector module that binds
     this classes and generates provider methods for the found classes.
