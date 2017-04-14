@@ -24,16 +24,10 @@ from alexpresenters.messagebroker import CONF_DOCUMENT_CHANGED, Message,\
 
 class IntegrationTestModule(Module):
             
-    def __init__(self, config_file):
-        self.config_file = config_file
-    
     def configure(self, binder):
 
         binder.bind(guiinjectorkeys.MESSAGE_BROKER_KEY,
                     ClassProvider(MessageBroker), scope=singleton)
-        binder.bind(baseinjectorkeys.CreatorProvider,
-                    ClassProvider(BasicCreatorProvider), scope=singleton)
-        binder.bind(baseinjectorkeys.CONFIG_FILE_KEY, to=self.config_file)        
         
 class BaseIntegrationTest(unittest.TestCase):
 
@@ -72,7 +66,7 @@ class BaseIntegrationTest(unittest.TestCase):
  
     def get_injector(self, *test_modules):
 
-        essential_modules = (AlexBaseModule(), DaoModule(), ServiceModule(), IntegrationTestModule(self.env.config_file_name))
+        essential_modules = (AlexBaseModule(), DaoModule(), ServiceModule(), IntegrationTestModule())
         injector = Injector(essential_modules + test_modules)
 
         self.engine = injector.get(baseinjectorkeys.DBEngineKey)

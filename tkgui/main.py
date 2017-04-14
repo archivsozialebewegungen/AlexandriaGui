@@ -178,7 +178,7 @@ def build_injector():
                    WindowReferencesModule(),
                    main_module]
     
-    config = base_module.get_config(main_module.get_config_file())
+    config = base_module.get_config()
     plugin_manager = PluginManager(config)
     module_list += plugin_manager.get_plugin_modules()
     
@@ -203,13 +203,6 @@ class MainModule(Module):
         binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
                     ClassProvider(StartupTaskPopulateWindows), scope=singleton)
             
-    @provides(baseinjectorkeys.CONFIG_FILE_KEY)
-    def get_config_file(self):
-        config_file = os.environ.get('ALEX_CONFIG')
-        if config_file is None:
-            config_file = "config.xml"
-        return config_file
-        
     @provides(guiinjectorkeys.INIT_MESSAGES_KEY, scope=singleton)
     def provide_init_messages(self):
         return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
