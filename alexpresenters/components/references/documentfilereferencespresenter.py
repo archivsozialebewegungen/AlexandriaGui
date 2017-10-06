@@ -18,9 +18,10 @@ class DocumentFileReferencesPresenter():
     Handles the relations from document to document files
     '''
     
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY,
-            document_service=baseinjectorkeys.DocumentServiceKey)
-    def __init__(self, message_broker, document_service):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 document_service: baseinjectorkeys.DOCUMENT_SERVICE_KEY):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.document_service = document_service

@@ -1,7 +1,7 @@
 '''
 Module configuration for dialogs
 '''
-from injector import Module, singleton, provides, \
+from injector import Module, singleton, provider, \
     ClassProvider
 from tkgui import guiinjectorkeys
 from tkgui.dialogs.eventselectiondialog import EventSelectionDialog

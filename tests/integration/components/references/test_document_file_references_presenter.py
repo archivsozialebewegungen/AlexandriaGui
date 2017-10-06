@@ -24,7 +24,7 @@ class DocumentFileReferencesPresenterTest(BaseReferenceIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.document_dao = self.injector.get(baseinjectorkeys.DokumentDaoKey)
+        self.document_dao = self.injector.get(baseinjectorkeys.DOCUMENT_DAO_KEY)
         self.document_file_info_dao = self.injector.get(baseinjectorkeys.DOCUMENT_FILE_INFO_DAO_KEY)
         self.document_file_manager = self.injector.get(baseinjectorkeys.DOCUMENT_FILE_MANAGER_KEY)
         self.presenter = self.injector.get(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_PRESENTER_KEY)

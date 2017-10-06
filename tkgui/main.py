@@ -4,7 +4,7 @@ Created on 07.02.2015
 @author: michael
 '''
 from injector import inject, Injector, Module, ClassProvider, singleton,\
-    provides
+    provider
 from alexandriabase import AlexBaseModule, baseinjectorkeys
 from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
@@ -31,9 +31,10 @@ from tkgui.PluginManager import PluginManager
 
 class StartupTaskCheckDatabaseVersion():
     
-    @inject(message_broker = guiinjectorkeys.MESSAGE_BROKER_KEY,
-            database_upgrade_service=baseinjectorkeys.DATABASE_UPGRADE_SERVICE_KEY)
-    def __init__(self, message_broker, database_upgrade_service):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 database_upgrade_service: baseinjectorkeys.DATABASE_UPGRADE_SERVICE_KEY):
         self.message_broker = message_broker
         self.database_upgrade_service = database_upgrade_service
         
@@ -55,9 +56,10 @@ class StartupTaskCheckDatabaseVersion():
 
 class StartupTaskLogin(object):
     
-    @inject(login_dialog=guiinjectorkeys.LOGIN_DIALOG_KEY,
-            creator_provider=baseinjectorkeys.CreatorProvider)   
-    def __init__(self, login_dialog, creator_provider):
+    @inject
+    def __init__(self,
+                 login_dialog=guiinjectorkeys.LOGIN_DIALOG_KEY,
+                 creator_provider=baseinjectorkeys.CREATOR_PROVIDER_KEY):
         self.login_dialog=login_dialog
         self.creator_provider=creator_provider
         
@@ -71,8 +73,8 @@ class StartupTaskLogin(object):
             
 class StartupTaskPopulateWindows(object):
  
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY)   
-    def __init__(self, message_broker):
+    @inject
+    def __init__(self, message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY):
         
         self.message_broker = message_broker
         
@@ -93,10 +95,11 @@ class SetupRunner():
     messages until it runs the setup tasks defined.
     '''
     
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY,
-            init_messages=guiinjectorkeys.INIT_MESSAGES_KEY,
-            setup_tasks=guiinjectorkeys.SETUP_TASKS_KEY)
-    def __init__(self, message_broker, init_messages, setup_tasks):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 init_messages: guiinjectorkeys.INIT_MESSAGES_KEY,
+                 setup_tasks: guiinjectorkeys.SETUP_TASKS_KEY):
 
         self.message_broker = message_broker        
         self.message_broker.subscribe(self)
@@ -132,10 +135,10 @@ class SetupRunner():
             
 class MainRunner:
     
-    @inject(
-            config=baseinjectorkeys.CONFIG_KEY,
-            main_windows=guiinjectorkeys.MAIN_WINDOWS_KEY)
-    def __init__(self, config, main_windows):
+    @inject
+    def __init__(self,
+                 config: baseinjectorkeys.CONFIG_KEY,
+                 main_windows: guiinjectorkeys.MAIN_WINDOWS_KEY):
         '''
         Initializes the whole application. To force the
         initialization of all windows, the main windows
@@ -190,7 +193,7 @@ class MainModule(Module):
     '''
   
     def configure(self, binder):
-        binder.bind(baseinjectorkeys.CreatorProvider,
+        binder.bind(baseinjectorkeys.CREATOR_PROVIDER_KEY,
                     ClassProvider(LoginCreatorProvider), scope=singleton)
         binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
                     ClassProvider(MainRunner), scope=singleton)
@@ -203,15 +206,18 @@ class MainModule(Module):
         binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
                     ClassProvider(StartupTaskPopulateWindows), scope=singleton)
             
-    @provides(guiinjectorkeys.INIT_MESSAGES_KEY, scope=singleton)
-    def provide_init_messages(self):
+    @provider
+    @singleton
+    def provide_init_messages(self) -> guiinjectorkeys.INIT_MESSAGES_KEY:
         return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
        
-    @provides(guiinjectorkeys.SETUP_TASKS_KEY, scope=singleton)
-    @inject(check_database_version=guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
-            login=guiinjectorkeys.LOGIN_KEY,
-            populate_windows=guiinjectorkeys.POPULATE_WINDOWS_KEY)
-    def provide_startup_tasks(self, check_database_version, login, populate_windows):
+    @provider
+    @singleton
+    @inject
+    def provide_startup_tasks(self,
+                              check_database_version: guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
+                              login: guiinjectorkeys.LOGIN_KEY,
+                              populate_windows: guiinjectorkeys.POPULATE_WINDOWS_KEY) -> guiinjectorkeys.SETUP_TASKS_KEY:
         return [check_database_version, login, populate_windows]
 
 if __name__ == '__main__':

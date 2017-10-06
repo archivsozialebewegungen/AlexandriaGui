@@ -11,10 +11,10 @@ from tkgui.components.references.basereference import ReferencesWidgetFactory,\
 
 class DocumentEventReferencesWidgetFactory(ReferencesWidgetFactory):
     
-    @inject(view_class=guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_VIEW_CLASS_KEY,
-            presenter=guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_PRESENTER_KEY,
-            event_selection_dialog=guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY)
-    def __init__(self, view_class, presenter, event_selection_dialog):
+    @inject
+    def __init__(self, view_class: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_VIEW_CLASS_KEY,
+            presenter: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_PRESENTER_KEY,
+            event_selection_dialog: guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY):
         super().__init__(view_class, presenter, event_selection_dialog)
         
 class DocumentEventReferencesView(ReferenceView):

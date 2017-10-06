@@ -52,8 +52,8 @@ class GenericFilterDialog(AbstractInputDialog):
 
 class DocumentFilterDialog(GenericFilterDialog):  # @UndefinedVariable
 
-    @inject(presenter=guiinjectorkeys.DOCUMENT_FILTER_DIALOG_PRESENTER_KEY)    
-    def __init__(self, presenter):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.DOCUMENT_FILTER_DIALOG_PRESENTER_KEY):
         super().__init__(presenter)
 
     def _init_dialog(self, master):
@@ -73,8 +73,8 @@ class DocumentFilterDialog(GenericFilterDialog):  # @UndefinedVariable
     
 class EventFilterDialog(GenericFilterDialog):
 
-    @inject(presenter=guiinjectorkeys.EVENT_FILTER_DIALOG_PRESENTER_KEY)
-    def __init__(self, presenter):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.EVENT_FILTER_DIALOG_PRESENTER_KEY):
         super().__init__(presenter)
 
     def _init_dialog(self, master):

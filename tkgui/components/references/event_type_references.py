@@ -15,10 +15,11 @@ class EventTypeReferencesWidgetFactory(ReferencesWidgetFactory):
     we need the parent for creation)
     '''
     
-    @inject(view_class=guiinjectorkeys.EVENT_TYPE_REFERENCES_VIEW_CLASS_KEY,
-            presenter=guiinjectorkeys.EVENT_TYPE_REFERENCES_PRESENTER_KEY,
-            event_type_selection_dialog=guiinjectorkeys.EVENT_TYPE_SELECTION_DIALOG_KEY)
-    def __init__(self, view_class, presenter, event_type_selection_dialog):
+    @inject
+    def __init__(self,
+                 view_class: guiinjectorkeys.EVENT_TYPE_REFERENCES_VIEW_CLASS_KEY,
+                 presenter:guiinjectorkeys.EVENT_TYPE_REFERENCES_PRESENTER_KEY,
+                 event_type_selection_dialog: guiinjectorkeys.EVENT_TYPE_SELECTION_DIALOG_KEY):
         super().__init__(view_class, presenter, event_type_selection_dialog)
         
 class EventTypeReferencesView(ReferenceView):

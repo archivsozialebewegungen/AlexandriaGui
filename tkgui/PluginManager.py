@@ -106,13 +106,13 @@ class PluginManager(object):
     def _create_module_code(self):
         '''
         Creates code for an injector module named 'DynamicModule'. It defines
-        the necessary injector keys, provides bindings for these keys and then
+        the necessary injector keys, provider bindings for these keys and then
         writes provider methods for the plugins.
         '''
         
         # Imports
         
-        module_code = 'from injector import Key, ClassProvider, singleton, provides, inject\n\n'
+        module_code = 'from injector import Key, ClassProvider, singleton, provider, inject\n\n'
         for plugin in self.plugin_names:
             module_code += 'from %s import *\n' % plugin
             
@@ -155,16 +155,13 @@ class PluginManager(object):
         if len(additions) == 0:
             return ""
         
-        module_code = "\n\n    @provides(%s, scope=singleton)\n" % extension_type.injector_key
-        module_code += "    @inject("
-        prefix = ''
+        module_code = "\n\n    @provider\n"
+        module_code += "    @singleton\n"
+        module_code += "    @inject\n"
+        module_code += "    def get_%ss(self" % extension_type.extension_name.lower()
         for i in range(1, len(additions)+1):
-            module_code += '%sarg%d=%s%d_KEY' % (prefix, i, extension_type.extension_name, i)
-            prefix = ', '
-        module_code += ")\n    def get_%ss(self" % extension_type.extension_name.lower()
-        for i in range(1, len(additions)+1):
-            module_code += ', arg%d' % i
-        module_code += "):\n        return ["
+            module_code += ', arg%d: %s%d_KEY' % (i, extension_type.extension_name, i)
+        module_code += ") -> %s:\n        return [" % extension_type.injector_key
         for i in range(1, len(additions)+1):
             module_code += 'arg%d, ' % i
         module_code += "]\n"

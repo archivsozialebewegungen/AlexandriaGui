@@ -159,9 +159,9 @@ class SimpleDateSelectionDialog(DateSelectionDialog):
     Selects a date.
     '''
 
-    @inject(presenter=guiinjectorkeys.DATE_SELECTION_DIALOG_PRESENTER_KEY,
-            yearselectiondialog=guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY)
-    def __init__(self, presenter, yearselectiondialog):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.DATE_SELECTION_DIALOG_PRESENTER_KEY,
+            yearselectiondialog: guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY):
         super().__init__(presenter, yearselectiondialog, 1)
 
 class DateRangeSelectionDialog(DateSelectionDialog):
@@ -169,8 +169,8 @@ class DateRangeSelectionDialog(DateSelectionDialog):
     Selects a date range.
     '''
 
-    @inject(presenter=guiinjectorkeys.DATERANGE_SELECTION_DIALOG_PRESENTER_KEY,
-            yearselectiondialog=guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY)
-    def __init__(self, presenter, yearselectiondialog):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.DATERANGE_SELECTION_DIALOG_PRESENTER_KEY,
+            yearselectiondialog: guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY):
         super().__init__(presenter, yearselectiondialog, 2)
 

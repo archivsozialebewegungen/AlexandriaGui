@@ -12,9 +12,10 @@ from alexpresenters.messagebroker import CONF_EVENT_CHANGED, REQ_SET_EVENT,\
 
 class EventCrossReferencesPresenter:
 
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY,
-            event_service=baseinjectorkeys.EventServiceKey)
-    def __init__(self, message_broker, event_service):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 event_service: baseinjectorkeys.EVENT_SERVICE_KEY):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.event_service = event_service

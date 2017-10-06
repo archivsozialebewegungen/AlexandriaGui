@@ -9,6 +9,6 @@ from tkgui.dialogs.generic_tree_selection_dialog import GenericTreeSelectionDial
 
 class EventTypeSelectionDialog(GenericTreeSelectionDialog):
     
-    @inject(presenter=guiinjectorkeys.EVENT_TYPE_SELECTION_PRESENTER_KEY)
-    def __init__(self, presenter):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.EVENT_TYPE_SELECTION_PRESENTER_KEY):
         super().__init__(presenter)

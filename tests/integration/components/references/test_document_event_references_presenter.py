@@ -20,8 +20,8 @@ class DocumentEventReferencesPresenterTest(BaseReferenceIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.document_dao = self.injector.get(baseinjectorkeys.DokumentDaoKey)
-        self.event_dao = self.injector.get(baseinjectorkeys.EreignisDaoKey)
+        self.document_dao = self.injector.get(baseinjectorkeys.DOCUMENT_DAO_KEY)
+        self.event_dao = self.injector.get(baseinjectorkeys.EVENT_DAO_KEY)
         self.presenter = self.injector.get(guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_PRESENTER_KEY)
         self.view = MagicMock(spec=DocumentEventReferencesView)
         self.view.current_event = None

@@ -1,7 +1,7 @@
 '''
 Window module
 '''
-from injector import Module, ClassProvider, singleton, provides, inject,\
+from injector import Module, ClassProvider, singleton, provider, inject,\
     InstanceProvider
 from alexandriabase import baseinjectorkeys
 from tkgui import guiinjectorkeys
@@ -36,10 +36,12 @@ class MainWindowsModule(Module):
                     InstanceProvider([]))
 
     # Windows
-    @provides(guiinjectorkeys.MAIN_WINDOWS_KEY, scope=singleton)
-    @inject(event_window=guiinjectorkeys.EVENT_WINDOW_KEY,
-            document_window=guiinjectorkeys.DOCUMENT_WINDOW_KEY)
-    def create_main_windows(self, event_window, document_window):
+    @provider
+    @singleton
+    @inject
+    def create_main_windows(self,
+                            event_window: guiinjectorkeys.EVENT_WINDOW_KEY,
+                            document_window: guiinjectorkeys.DOCUMENT_WINDOW_KEY) -> guiinjectorkeys.MAIN_WINDOWS_KEY:
         '''
         Returns a tuple of the application windows and thus forces
         the initialization of the windows
@@ -47,13 +49,12 @@ class MainWindowsModule(Module):
         return (event_window, document_window)
 
     # References
-    @provides(guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY)
-    @inject(document_event_reference=guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_FACTORY_KEY)
-    @inject(document_file_reference=guiinjectorkeys.DOCUMENT_FILE_REFERENCES_FACTORY_KEY)
+    @provider
+    @inject
     def get_document_base_references(
             self,
-            document_event_reference,
-            document_file_reference):
+            document_event_reference: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_FACTORY_KEY,
+            document_file_reference: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_FACTORY_KEY) -> guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY:
         '''
         Returns an array of all reference widgets for documents.
         If you have plugins that define additional references,
@@ -61,21 +62,19 @@ class MainWindowsModule(Module):
         '''
         return [document_event_reference, document_file_reference]
     
-    @provides(guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY)
-    def get_document_additional_references(self):
+    @provider
+    def get_document_additional_references(self) -> guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY:
         '''
         Empty array. Will be overridden for plugins.
         '''
         return []
 
-    @provides(guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY)
-    @inject(event_cross_references=guiinjectorkeys.EVENT_CROSS_REFERENCES_FACTORY_KEY)
-    @inject(event_document_reference=guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_FACTORY_KEY)
-    @inject(event_type_reference=guiinjectorkeys.EVENT_TYPE_REFERENCES_FACTORY_KEY)
+    @provider
+    @inject
     def create_event_base_references(self,
-                                event_cross_references,
-                                event_document_reference,
-                                event_type_reference):
+                                event_cross_references: guiinjectorkeys.EVENT_CROSS_REFERENCES_FACTORY_KEY,
+                                event_document_reference: guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_FACTORY_KEY,
+                                event_type_reference: guiinjectorkeys.EVENT_TYPE_REFERENCES_FACTORY_KEY) -> guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY:
         '''
         Returns an array of all reference widgets for events.
         If you have plugins that define additional references,
@@ -84,10 +83,11 @@ class MainWindowsModule(Module):
         return [event_cross_references, event_document_reference, event_type_reference]
     
     # Dialogs
-    @provides(guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY)
-    @inject(documentid_selection_dialog=guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_KEY,
-            document_filter_dialog=guiinjectorkeys.DOCUMENT_FILTER_DIALOG_KEY)
-    def create_document_dialogs(self, documentid_selection_dialog, document_filter_dialog):
+    @provider
+    @inject
+    def create_document_dialogs(self,
+                                documentid_selection_dialog: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_KEY,
+                                document_filter_dialog: guiinjectorkeys.DOCUMENT_FILTER_DIALOG_KEY) -> guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY:
         '''
         Returns a dictionary of dialogs for the document window.
         '''
@@ -96,16 +96,13 @@ class MainWindowsModule(Module):
             BaseWindow.FILTER_DIALOG: document_filter_dialog
             }
     
-    @provides(guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY)
-    @inject(date_range_dialog=guiinjectorkeys.DATERANGE_SELECTION_DIALOG_KEY,
-            date_dialog=guiinjectorkeys.DATE_SELECTION_DIALOG_KEY,
-            event_filter_dialog=guiinjectorkeys.EVENT_FILTER_DIALOG_KEY,
-            confirm_new_event_dialog=guiinjectorkeys.EVENT_CONFIRMATION_DIALOG_KEY)
+    @provider
+    @inject
     def create_event_dialogs(self,
-                             date_range_dialog,
-                             date_dialog,
-                             event_filter_dialog,
-                             confirm_new_event_dialog):
+                             date_range_dialog: guiinjectorkeys.DATERANGE_SELECTION_DIALOG_KEY,
+                             date_dialog: guiinjectorkeys.DATE_SELECTION_DIALOG_KEY,
+                             event_filter_dialog: guiinjectorkeys.EVENT_FILTER_DIALOG_KEY,
+                             confirm_new_event_dialog: guiinjectorkeys.EVENT_CONFIRMATION_DIALOG_KEY) -> guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY:
         '''
         Returns a dictionary of dialogs for the event window.
         '''
@@ -116,9 +113,9 @@ class MainWindowsModule(Module):
             BaseWindow.FILTER_DIALOG: event_filter_dialog
             }
 
-    @provides(guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY)
-    @inject(config=baseinjectorkeys.CONFIG_KEY)
-    def init_viewers(self, config):
+    @provider
+    @inject
+    def init_viewers(self, config: baseinjectorkeys.CONFIG_KEY) -> guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY:
         '''
         Initializes the file viewers from the information
         given in the config.xml. The viewer may either be

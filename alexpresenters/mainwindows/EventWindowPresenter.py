@@ -13,10 +13,11 @@ from alexpresenters.messagebroker import Message, CONF_EVENT_CHANGED,\
 
 class EventWindowPresenter(BaseWindowPresenter):
     
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY,
-            event_service=baseinjectorkeys.EventServiceKey,
-            post_processors=guiinjectorkeys.EVENT_WINDOW_POST_PROCESSORS_KEY)
-    def __init__(self, message_broker, event_service, post_processors):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 event_service: baseinjectorkeys.EVENT_SERVICE_KEY,
+                 post_processors: guiinjectorkeys.EVENT_WINDOW_POST_PROCESSORS_KEY):
         super().__init__(message_broker, event_service, post_processors)
     '''
     classdocs

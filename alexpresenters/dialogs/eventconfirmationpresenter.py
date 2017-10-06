@@ -10,8 +10,8 @@ class EventConfirmationPresenter:
     '''
     Presenter for the event selection wizard
     '''    
-    @inject(event_service=baseinjectorkeys.EventServiceKey)
-    def __init__(self, event_service):
+    @inject
+    def __init__(self, event_service: baseinjectorkeys.EVENT_SERVICE_KEY):
         self.event_service = event_service
     
     def set_event_list(self):

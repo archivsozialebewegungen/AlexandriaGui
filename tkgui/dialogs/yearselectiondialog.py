@@ -18,8 +18,8 @@ weekdays = (_('MO'), _('TU'), _('WE'), _('TH'), _('FR'), _('SA'), _('SU'))
 
 class YearSelectionDialog(AbstractInputDialog):
     
-    @inject(presenter=guiinjectorkeys.YEAR_SELECTION_DIALOG_PRESENTER_KEY)
-    def __init__(self, presenter):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.YEAR_SELECTION_DIALOG_PRESENTER_KEY):
         super().__init__(presenter)
         self.day = None
         self.month = None

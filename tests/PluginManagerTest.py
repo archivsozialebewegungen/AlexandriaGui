@@ -47,7 +47,7 @@ class Test(unittest.TestCase):
         self.plugin_manager.additions = {self.plugin_manager.extension_types[0]: (DummyMenuAddition, DummyMenuAddition2)}
         module_code = self.plugin_manager._create_module_code()
         #print(module_code)
-        self.assertEqual("""from injector import Key, ClassProvider, singleton, provides, inject
+        self.assertEqual("""from injector import Key, ClassProvider, singleton, provider, inject
 
 from PluginManagerTest import *
 DOCUMENT_MENU_ADDITION1_KEY = Key("document_menu_addition1")
@@ -60,9 +60,10 @@ class DynamicModule(Module):
         binder.bind(DOCUMENT_MENU_ADDITION2_KEY, ClassProvider(DummyMenuAddition2), scope=singleton)
 
 
-    @provides(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY, scope=singleton)
-    @inject(arg1=DOCUMENT_MENU_ADDITION1_KEY, arg2=DOCUMENT_MENU_ADDITION2_KEY)
-    def get_document_menu_additions(self, arg1, arg2):
+    @provider
+    @singleton
+    @inject
+    def get_document_menu_additions(self, arg1: DOCUMENT_MENU_ADDITION1_KEY, arg2: DOCUMENT_MENU_ADDITION2_KEY) -> guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY:
         return [arg1, arg2, ]
 """, module_code)
 

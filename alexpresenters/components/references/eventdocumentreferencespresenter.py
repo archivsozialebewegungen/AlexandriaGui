@@ -16,10 +16,11 @@ class EventDocumentReferencesPresenter:
     Handles the relations from document to events
     '''
     
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY,
-            document_service=baseinjectorkeys.DocumentServiceKey,
-            reference_service=baseinjectorkeys.ReferenceServiceKey)
-    def __init__(self, message_broker, document_service, reference_service):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 document_service: baseinjectorkeys.DOCUMENT_SERVICE_KEY,
+                 reference_service: baseinjectorkeys.REFERENCE_SERVICE_KEY):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.document_service = document_service

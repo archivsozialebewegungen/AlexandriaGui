@@ -12,8 +12,8 @@ from tkinter.constants import LEFT, W
 
 class EventConfirmationDialog(GenericTreeSelectionDialog):
     
-    @inject(presenter=guiinjectorkeys.EVENT_CONFIRMATION_PRESENTER_KEY)
-    def __init__(self, presenter):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.EVENT_CONFIRMATION_PRESENTER_KEY):
         super().__init__(presenter)
         self.date = None
         self.event_list = []

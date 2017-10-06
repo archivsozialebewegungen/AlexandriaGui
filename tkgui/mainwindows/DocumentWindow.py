@@ -14,13 +14,14 @@ class DocumentWindow(BaseWindow):
     '''
     The window for manipulating documents.
     '''
-    @inject(window_manager=guiinjectorkeys.WINDOW_MANAGER_KEY,
-            presenter=guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
-            dialogs=guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
-            base_reference_factories=guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY,
-            additional_reference_factories=guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
-            document_menu_additions=guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY)
-    def __init__(self, window_manager, presenter, dialogs, base_reference_factories, additional_reference_factories, document_menu_additions):
+    @inject
+    def __init__(self,
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
+                 dialogs: guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
+                 base_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY,
+                 additional_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
+                 document_menu_additions: guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY):
         self.notebook = None
         self._description_widget = None
         self._condition_widget = None

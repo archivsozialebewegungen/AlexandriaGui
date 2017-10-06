@@ -5,7 +5,7 @@ Created on 21.12.2016
 '''
 from threading import Thread
 from time import sleep
-from injector import Injector, Module, ClassProvider, singleton, provides,\
+from injector import Injector, Module, ClassProvider, singleton, provider,\
     inject
 from alexandriabase import AlexBaseModule, baseinjectorkeys
 from alexandriabase.base_exceptions import NoSuchEntityException
@@ -63,7 +63,7 @@ class AcceptanceTestModule(Module):
         
         binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
                     ClassProvider(MainRunner), scope=singleton)
-        binder.bind(baseinjectorkeys.CreatorProvider,
+        binder.bind(baseinjectorkeys.CREATOR_PROVIDER_KEY,
                     ClassProvider(BasicCreatorProvider), scope=singleton)
         binder.bind(guiinjectorkeys.SETUP_RUNNER_KEY,
                     ClassProvider(SetupRunner), scope=singleton)
@@ -74,18 +74,21 @@ class AcceptanceTestModule(Module):
         binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
                     ClassProvider(StartupTaskPopulateWindows), scope=singleton)
 
-    @provides(guiinjectorkeys.INIT_MESSAGES_KEY, scope=singleton)
-    def provide_init_messages(self):
+    @provider
+    @singleton
+    def provide_init_messages(self) -> guiinjectorkeys.INIT_MESSAGES_KEY:
         return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
         
 
-    @provides(guiinjectorkeys.SETUP_TASKS_KEY, scope=singleton)
-    @inject(populate_windows=guiinjectorkeys.POPULATE_WINDOWS_KEY)
-    def provide_startup_tasks(self, populate_windows):
+    @provider
+    @singleton
+    @inject
+    def provide_startup_tasks(self, populate_windows: guiinjectorkeys.POPULATE_WINDOWS_KEY) -> guiinjectorkeys.SETUP_TASKS_KEY:
         return (populate_windows,)
 
-    @provides(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY, scope=singleton)
-    def document_plugins(self):
+    @provider
+    @singleton
+    def document_plugins(self) -> guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY:
         return ()
 
 class AcceptanceTestHelpers():
@@ -94,10 +97,10 @@ class AcceptanceTestHelpers():
     the acceptance test thread class.
     '''
     def get_event(self, entity_id):
-        return self.get_entity(entity_id, baseinjectorkeys.EreignisDaoKey)
+        return self.get_entity(entity_id, baseinjectorkeys.EVENT_DAO_KEY)
 
     def get_document(self, document_id):
-        return self.get_entity(document_id, baseinjectorkeys.DokumentDaoKey)
+        return self.get_entity(document_id, baseinjectorkeys.DOCUMENT_DAO_KEY)
 
     def get_entity(self, entity_id, dao_key):
         dao = self.injector.get(dao_key)
@@ -133,10 +136,10 @@ class AcceptanceTestHelpers():
         self.assertEquals(document_id, self.document_window.entity.id)
 
     def assert_no_such_event(self, event_id):
-        self.assert_no_such_entity(event_id, baseinjectorkeys.EreignisDaoKey)
+        self.assert_no_such_entity(event_id, baseinjectorkeys.EVENT_DAO_KEY)
 
     def assert_no_such_document(self, document_id):
-        self.assert_no_such_entity(document_id, baseinjectorkeys.DokumentDaoKey)
+        self.assert_no_such_entity(document_id, baseinjectorkeys.DOCUMENT_DAO_KEY)
 
     def assert_no_such_document_file_info(self, document_file_info_id):
         self.assert_no_such_entity(document_file_info_id, baseinjectorkeys.DOCUMENT_FILE_INFO_DAO_KEY)
@@ -168,7 +171,7 @@ class BaseAcceptanceTest(Thread, AcceptanceTestHelpers):
         self.injector = build_injector()
         
         # Set up database
-        engine = self.injector.get(baseinjectorkeys.DBEngineKey)
+        engine = self.injector.get(baseinjectorkeys.DB_ENGINE_KEY)
         setup_database_schema(engine)
         load_table_data(tables, engine)
         

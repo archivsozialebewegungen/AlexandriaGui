@@ -13,8 +13,8 @@ _ = gettext.gettext
 
 class DocumentTypePostProcessor(object):
 
-    @inject(document_type_service=baseinjectorkeys.DOCUMENT_TYPE_SERVICE_KEY)    
-    def __init__(self, document_type_service):
+    @inject
+    def __init__(self, document_type_service: baseinjectorkeys.DOCUMENT_TYPE_SERVICE_KEY):
         self.type_dict = document_type_service.get_document_type_dict()
         self.doctype_re = self.build_doctype_re()
         
@@ -32,8 +32,8 @@ class DocumentTypePostProcessor(object):
 
 class JournalDocTypePostProcessor(object):
 
-    @inject(document_type_service=baseinjectorkeys.DOCUMENT_TYPE_SERVICE_KEY)    
-    def __init__(self, document_type_service):
+    @inject
+    def __init__(self, document_type_service: baseinjectorkeys.DOCUMENT_TYPE_SERVICE_KEY):
         self.doc_type = document_type_service.get_by_id(13)
         month_pattern = _(r"\s*(\d{1,2}\.|January|February|March|April|May|" +
             r"June|July|August|September|October|November|December|" +

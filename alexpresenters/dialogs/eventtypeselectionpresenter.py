@@ -9,8 +9,8 @@ from alexpresenters.dialogs.generic_tree_selection_presenter import GenericTreeS
 
 class EventTypeSelectionPresenter(GenericTreeSelectionPresenter):
     
-    @inject(event_service=baseinjectorkeys.EventServiceKey)
-    def __init__(self, event_service):
+    @inject
+    def __init__(self, event_service: baseinjectorkeys.EVENT_SERVICE_KEY):
         super().__init__()
         self.event_service = event_service
         

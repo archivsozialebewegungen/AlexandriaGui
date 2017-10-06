@@ -16,8 +16,8 @@ class DocumentIdSelectionDialog(AbstractInputDialog):
     '''
     Dialog for document id selection
     '''
-    @inject(presenter=guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_PRESENTER_KEY)
-    def __init__(self, presenter):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_PRESENTER_KEY):
         super().__init__(presenter)
         self._entry_widget = None
 

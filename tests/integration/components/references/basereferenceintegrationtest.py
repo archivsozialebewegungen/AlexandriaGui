@@ -21,9 +21,9 @@ class BaseReferenceIntegrationTest(BaseIntegrationTest):
     def receive_message(self, message):
         BaseIntegrationTest.receive_message(self, message)
         if message == REQ_SAVE_CURRENT_EVENT:
-            self.injector.get(baseinjectorkeys.EreignisDaoKey).save(self.presenter.view.current_event)
+            self.injector.get(baseinjectorkeys.EVENT_DAO_KEY).save(self.presenter.view.current_event)
         if message == REQ_SAVE_CURRENT_DOCUMENT:
-            self.injector.get(baseinjectorkeys.DokumentDaoKey).save(self.presenter.view.current_document)
+            self.injector.get(baseinjectorkeys.DOCUMENT_DAO_KEY).save(self.presenter.view.current_document)
 
     def set_current_document(self, document_id):
 

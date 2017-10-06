@@ -16,10 +16,11 @@ class DocumentWindowPresenter(BaseWindowPresenter):
     The presenter class for the document window
     '''
 
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY,
-            document_service=baseinjectorkeys.DocumentServiceKey,
-            post_processors=guiinjectorkeys.DOCUMENT_WINDOW_POST_PROCESSORS_KEY)
-    def __init__(self, message_broker, document_service, post_processors):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 document_service: baseinjectorkeys.DOCUMENT_SERVICE_KEY,
+                 post_processors: guiinjectorkeys.DOCUMENT_WINDOW_POST_PROCESSORS_KEY):
         '''
         Constructor
         '''

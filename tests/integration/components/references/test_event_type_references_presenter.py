@@ -26,8 +26,8 @@ class EventTypeReferencesPresenterTest(BaseIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.event_service = self.injector.get(baseinjectorkeys.EventServiceKey)
-        self.event_type_dao = self.injector.get(baseinjectorkeys.EventTypeDaoKey)
+        self.event_service = self.injector.get(baseinjectorkeys.EVENT_SERVICE_KEY)
+        self.event_type_dao = self.injector.get(baseinjectorkeys.EVENT_TYPE_DAO_KEY)
         self.presenter = self.injector.get(guiinjectorkeys.EVENT_TYPE_REFERENCES_PRESENTER_KEY)
         self.view = MagicMock(spec=DocumentFileReferencesView)
         self.presenter.view = self.view

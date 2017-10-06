@@ -32,7 +32,7 @@ class IntegrationTestModule(Module):
 class BaseIntegrationTest(unittest.TestCase):
 
     '''
-    Sets up the database and provides easy access to the injector
+    Sets up the database and provider easy access to the injector
     and to messages.
     
     To get the injector in the child class, use the get_injector method
@@ -69,7 +69,7 @@ class BaseIntegrationTest(unittest.TestCase):
         essential_modules = (AlexBaseModule(), DaoModule(), ServiceModule(), IntegrationTestModule())
         injector = Injector(essential_modules + test_modules)
 
-        self.engine = injector.get(baseinjectorkeys.DBEngineKey)
+        self.engine = injector.get(baseinjectorkeys.DB_ENGINE_KEY)
         setup_database_schema(self.engine)
         load_table_data(test_base.tables, self.engine)
 

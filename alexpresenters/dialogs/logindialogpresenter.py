@@ -18,9 +18,10 @@ class LoginDialogPresenter(AbstractInputDialogPresenter):
     Dialog for selecting the application user
     '''
 
-    @inject(creator_service=baseinjectorkeys.CREATOR_SERVICE_KEY,
-            login_creator_provider=baseinjectorkeys.CreatorProvider)
-    def __init__(self, creator_service, login_creator_provider):
+    @inject
+    def __init__(self,
+                 creator_service: baseinjectorkeys.CREATOR_SERVICE_KEY,
+                 login_creator_provider: baseinjectorkeys.CREATOR_PROVIDER_KEY):
         '''
         Constructor
         '''

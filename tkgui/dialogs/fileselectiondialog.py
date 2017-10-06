@@ -14,8 +14,8 @@ class FileSelectionDialog:
     constant interface for dialogs
     '''
     
-    @inject(config=baseinjectorkeys.CONFIG_KEY)
-    def __init__(self, config):
+    @inject
+    def __init__(self, config: baseinjectorkeys.CONFIG_KEY):
         self.filetypes = config.filetypes + list(config.filetypealiases.keys())
         
     

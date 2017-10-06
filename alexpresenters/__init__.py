@@ -1,4 +1,4 @@
-from injector import Module, singleton, provides,\
+from injector import Module, singleton, provider,\
     ClassProvider, inject
 from tkgui import guiinjectorkeys
 from alexpresenters.dialogs.eventselectionpresenter import EventSelectionPresenter
@@ -72,14 +72,16 @@ class PresentersModule(Module):
         binder.bind(guiinjectorkeys.JOURNAL_DOCUMENT_TYPE_POST_PROCESSOR_KEY,
                     ClassProvider(JournalDocTypePostProcessor), scope=singleton)
         
-    @provides(guiinjectorkeys.DOCUMENT_WINDOW_POST_PROCESSORS_KEY, scope=singleton)
-    @inject(document_type_post_processor=guiinjectorkeys.DOCUMENT_TYPE_POST_PROCESSOR_KEY,
-            journal_document_type_post_processor=guiinjectorkeys.JOURNAL_DOCUMENT_TYPE_POST_PROCESSOR_KEY)
-    def document_window_post_processors(self, document_type_post_processor,
-                                        journal_document_type_post_processor):
+    @provider
+    @singleton
+    @inject
+    def document_window_post_processors(self,
+                                        document_type_post_processor: guiinjectorkeys.DOCUMENT_TYPE_POST_PROCESSOR_KEY,
+                                        journal_document_type_post_processor: guiinjectorkeys.JOURNAL_DOCUMENT_TYPE_POST_PROCESSOR_KEY) -> guiinjectorkeys.DOCUMENT_WINDOW_POST_PROCESSORS_KEY:
         return (document_type_post_processor,
                 journal_document_type_post_processor)
     
-    @provides(guiinjectorkeys.EVENT_WINDOW_POST_PROCESSORS_KEY, scope=singleton)
-    def event_window_post_processors(self):
+    @provider
+    @singleton
+    def event_window_post_processors(self) -> guiinjectorkeys.EVENT_WINDOW_POST_PROCESSORS_KEY:
         return ()

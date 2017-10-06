@@ -36,7 +36,7 @@ class EventWindowsTests(BaseIntegrationTest):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
         self.event_window_presenter = self.injector.get(guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY)
-        self.event_service = self.injector.get(baseinjectorkeys.EventServiceKey)
+        self.event_service = self.injector.get(baseinjectorkeys.EVENT_SERVICE_KEY)
         #self.view = ViewStub()
         self.view = MagicMock(spec=EventWindow)
         self.view.entity = None

@@ -31,9 +31,10 @@ class WindowManager():
     attach themselves to this window.
     '''
 
-    @inject(message_broker=guiinjectorkeys.MESSAGE_BROKER_KEY,
-            setup_runner=guiinjectorkeys.SETUP_RUNNER_KEY)
-    def __init__(self, message_broker, setup_runner):
+    @inject
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 setup_runner: guiinjectorkeys.SETUP_RUNNER_KEY):
         
         self.setup_runner = setup_runner
         self.message_broker = message_broker

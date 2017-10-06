@@ -34,7 +34,7 @@ class DocumentWindowsTests(BaseIntegrationTest):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
         self.document_window_presenter = self.injector.get(guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY)
-        self.document_service = self.injector.get(baseinjectorkeys.DocumentServiceKey)
+        self.document_service = self.injector.get(baseinjectorkeys.DOCUMENT_SERVICE_KEY)
         self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
         self.view = ViewStub()
         self.document_window_presenter.view = self.view;

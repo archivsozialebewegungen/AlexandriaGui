@@ -13,8 +13,8 @@ from tkgui.components.alexwidgets import AlexDateEntry
 
 class EventSelectionDialog:
     
-    @inject(presenter=guiinjectorkeys.EVENT_SELECTION_DIALOG_PRESENTER_KEY)
-    def __init__(self, presenter):
+    @inject
+    def __init__(self, presenter: guiinjectorkeys.EVENT_SELECTION_DIALOG_PRESENTER_KEY):
         
         self.presenter = presenter
         self.wizard = None

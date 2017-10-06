@@ -1,4 +1,4 @@
-from injector import Module, ClassProvider, singleton, provides, inject,\
+from injector import Module, ClassProvider, singleton, provider, inject,\
     InstanceProvider
 from tkgui import guiinjectorkeys
 from alexpresenters.components.references.eventcrossreferencespresenter import EventCrossReferencesPresenter

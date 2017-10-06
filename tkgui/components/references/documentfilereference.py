@@ -12,11 +12,12 @@ class DocumentFileReferencesWidgetFactory(ReferencesWidgetFactory):
     '''
     classdocs
     '''
-    @inject(presenter=guiinjectorkeys.DOCUMENT_FILE_REFERENCES_PRESENTER_KEY,
-            view_class=guiinjectorkeys.DOCUMENT_FILE_REFERENCES_VIEW_CLASS_KEY,
-            file_selection_dialog=guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
-            viewers=guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY)
-    def __init__(self, view_class, presenter, file_selection_dialog, viewers):
+    @inject
+    def __init__(self,
+                 presenter: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_PRESENTER_KEY,
+                 view_class: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_VIEW_CLASS_KEY,
+                 file_selection_dialog: guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
+                 viewers: guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY):
         super().__init__(view_class, presenter, file_selection_dialog, viewers)
         
 class DocumentFileReferencesView(ReferenceView):
