@@ -21,13 +21,11 @@ class DocumentWindow(BaseWindow):
                  presenter: guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
                  document_menu_additions: guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY):
-        print("Initializing document window")
         self.notebook = None
         self._description_widget = None
         self._condition_widget = None
         self._keywords_widget = None
         super().__init__(window_manager, presenter, dialogs, document_menu_additions)
-        print("Document window initialized")
     
     def _change_widget_state(self, state):
         self._description_widget.configure(state=state)

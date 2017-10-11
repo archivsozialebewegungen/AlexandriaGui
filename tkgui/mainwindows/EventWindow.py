@@ -90,10 +90,8 @@ class EventWindow(BaseWindow):
                  presenter: guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY,
                  event_menu_additions: guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY):
-        print("Initializing event window")
         super().__init__(window_manager, presenter, dialogs, event_menu_additions)
         self._new_date_range = None
-        print("Event window initalized")
 
     def _populate_entity_frame(self):
         

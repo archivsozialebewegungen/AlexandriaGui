@@ -15,14 +15,11 @@ class DocumentEventReferencesWidgetFactory(ReferencesWidgetFactory):
     def __init__(self, view_class: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_VIEW_CLASS_KEY,
             presenter: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_PRESENTER_KEY,
             event_selection_dialog: guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY):
-        print("Initalizing document event references")
         super().__init__(view_class, presenter, event_selection_dialog)
-        print("Document event references initalized")
         
 class DocumentEventReferencesView(ReferenceView):
     
     def __init__(self, parent, presenter, event_selection_dialog):
-        print("Initializing document event references view")
         super().__init__(parent, presenter,
                 _('Related events'))
         self.add_buttons()

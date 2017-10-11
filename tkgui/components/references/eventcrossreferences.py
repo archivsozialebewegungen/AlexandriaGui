@@ -16,14 +16,11 @@ class EventCrossReferencesWidgetFactory(ReferencesWidgetFactory):
                  view_class: guiinjectorkeys.EVENT_CROSS_REFERENCES_VIEW_CLASS_KEY,
                  presenter: guiinjectorkeys.EVENT_CROSS_REFERENCES_PRESENTER_KEY,
                  event_selection_dialog: guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY):
-        print("Initialize event cross references")
         super().__init__(view_class, presenter, event_selection_dialog)
-        print("Cross references initalized")
         
 class EventCrossReferencesView(ReferenceView):
     
     def __init__(self, parent, presenter, event_selection_dialog):
-        print("Initalizing event cross references view")
         super().__init__(parent, presenter,
                 _('Crossreferences'))
         self.event_selection_dialog = event_selection_dialog
