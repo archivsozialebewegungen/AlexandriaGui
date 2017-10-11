@@ -41,11 +41,21 @@ class MainWindowsModule(Module):
     @inject
     def create_main_windows(self,
                             event_window: guiinjectorkeys.EVENT_WINDOW_KEY,
-                            document_window: guiinjectorkeys.DOCUMENT_WINDOW_KEY) -> guiinjectorkeys.MAIN_WINDOWS_KEY:
+                            document_window: guiinjectorkeys.DOCUMENT_WINDOW_KEY,
+                            document_base_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY,
+                            document_additional_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
+                            event_base_reference_factories: guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY,
+                            event_additional_reference_factories: guiinjectorkeys.EVENT_WINDOW_ADDITIONAL_REFERENCES_KEY) -> guiinjectorkeys.MAIN_WINDOWS_KEY:
         '''
         Returns a tuple of the application windows and thus forces
         the initialization of the windows
+        Adding references must be done after instantiation, so it
+        is done here.
         '''
+        
+        event_window.add_references(event_base_reference_factories + event_additional_reference_factories)
+        document_window.add_references(document_base_reference_factories + document_additional_reference_factories)
+        
         return (event_window, document_window)
 
     # References

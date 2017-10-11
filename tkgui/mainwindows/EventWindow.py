@@ -13,7 +13,7 @@ from alexpresenters.dialogs.daterangeselectiondialogpresenter import DateRangeSe
 from tkgui.dialogs.yearselectiondialog import YearSelectionDialog
 from alexpresenters.dialogs.yearselectiondialogpresenter import YearSelectionDialogPresenter
 from tkgui.components.alexwidgets import AlexText, AlexButton, AlexRadioGroup
-from injector import inject
+from injector import inject, singleton
 from tkgui import guiinjectorkeys
 
 class EventProxy:
@@ -84,15 +84,16 @@ class EventWindow(BaseWindow):
     CONFIRM_NEW_EVENT_DIALOG = 'confirm_new_event_dialog'
 
     @inject
+    @singleton
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
                  presenter: guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY,
-                 base_reference_factories: guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY,
-                 additional_reference_factories: guiinjectorkeys.EVENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
                  event_menu_additions: guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY):
-        super().__init__(window_manager, presenter, dialogs, base_reference_factories + additional_reference_factories, event_menu_additions)
+        print("Initializing event window")
+        super().__init__(window_manager, presenter, dialogs, event_menu_additions)
         self._new_date_range = None
+        print("Event window initalized")
 
     def _populate_entity_frame(self):
         

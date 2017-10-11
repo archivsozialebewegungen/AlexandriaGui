@@ -13,12 +13,11 @@ import Pmw
 import os
 from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT,\
     REQ_SAVE_ALL
-from alexpresenters.messagebroker import Message
+from alexpresenters.messagebroker import Message, CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY
 import sys
 from tkgui.components.alexwidgets import AlexMessageBar, AlexMenuBar
 from threading import Thread
 
-@singleton
 class WindowManager():
     '''
     This is the class that handles all different windows. It
@@ -32,6 +31,7 @@ class WindowManager():
     '''
 
     @inject
+    @singleton
     def __init__(self,
                  message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
                  setup_runner: guiinjectorkeys.SETUP_RUNNER_KEY):
@@ -39,6 +39,9 @@ class WindowManager():
         self.setup_runner = setup_runner
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
+
+        self.event_window_ready = False
+        self.document_window_ready = False
 
         self.windows = []
         self.threads = []
@@ -67,7 +70,19 @@ class WindowManager():
         '''
         if message.key == REQ_QUIT:
             self._quit()
+        if message.key == CONF_DOCUMENT_WINDOW_READY:
+            self.document_window_ready = True
+            if (self.event_window_ready):
+                self.setup_runner.run(self.root)
+        if message.key == CONF_EVENT_WINDOW_READY:
+            self.event_window_ready = True
+            if (self.document_window_ready):
+                self.setup_runner.run(self.root)
             
+    def is_initialized(self):
+        
+        return self.document_window_ready and self.event_window_ready
+        
     def run_in_thread(self, target, args=()):
         thread = Thread(target=target, args=args)
         self.threads.append(thread)
@@ -81,7 +96,7 @@ class WindowManager():
         self.root.quit()
 
     def run(self):
-        self.root.after_idle(lambda: self.setup_runner.run(self.root))
+        #self.root.after_idle(lambda: self.setup_runner.run(self.root))
         self.root.mainloop()
         
 class BaseWindow(Frame):
@@ -95,7 +110,7 @@ class BaseWindow(Frame):
     GOTO_DIALOG = 'goto_dialog'
     FILTER_DIALOG = 'filter_dialog'
     
-    def __init__(self, window_manager, presenter, dialogs, reference_factories, plugins):
+    def __init__(self, window_manager, presenter, dialogs, plugins):
         
         self.window_manager = window_manager
         self.window = self.window_manager.create_new_window()
@@ -118,10 +133,7 @@ class BaseWindow(Frame):
         self.references = []
 
         self._add_frames()
-        self._add_references(reference_factories)
         self._add_message_bar()
-        
-        self.presenter.signal_window_ready()
         
     def _get_icon_dir(self):
         this_module = BaseWindow.__module__
@@ -212,7 +224,7 @@ class BaseWindow(Frame):
         self.filter_warning = Label(parent, text = "", foreground='red')
         self.filter_warning.pack(side=TOP)
 
-    def _add_references(self, reference_factories):
+    def add_references(self, reference_factories):
         
         self.references_frame = Frame(self.window)
         self.references_frame.pack(side=TOP, anchor=NW)
@@ -229,6 +241,8 @@ class BaseWindow(Frame):
             view = factory.get_view(row)
             self.references.append(view)
             view.pack(side=side, padx=5, pady=5)
+    
+        self.presenter.signal_window_ready()
         
     def _add_message_bar(self):
         

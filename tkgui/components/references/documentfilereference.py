@@ -18,11 +18,14 @@ class DocumentFileReferencesWidgetFactory(ReferencesWidgetFactory):
                  view_class: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_VIEW_CLASS_KEY,
                  file_selection_dialog: guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
                  viewers: guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY):
+        print("Initalizing document file references")
         super().__init__(view_class, presenter, file_selection_dialog, viewers)
+        print("Document file references initalized")
         
 class DocumentFileReferencesView(ReferenceView):
     
     def __init__(self, parent, presenter, file_selection_dialog, viewers):
+        print("Initializing document file references view")
         super().__init__(parent, presenter,
                 _('Document files'))
         self.current_document = None

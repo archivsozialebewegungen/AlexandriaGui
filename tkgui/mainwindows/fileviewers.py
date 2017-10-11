@@ -4,7 +4,7 @@ Created on 16.04.2016
 @author: michael
 '''
 import Pmw
-from tkinter import Toplevel, Frame
+from tkinter import messagebox, Toplevel, Frame
 from tkinter.constants import LEFT, VERTICAL, NW, BOTH, YES
 from PIL.ImageTk import PhotoImage
 from PIL import Image
@@ -18,12 +18,7 @@ class DefaultViewer(object):
 
     def showFile(self, file, file_info):
         text = _('There is no viewer available\nfor the filetype %s.') % file_info.filetype
-        dialog = Pmw.MessageDialog(None,  # @UndefinedVariable
-            title = _("No viewer"),
-            defaultbutton = 0,
-            message_text = text
-        )
-        dialog.activate()
+        messagebox.showwarning(_("No viewer"), text)
 
 class GraphicsViewer():
     '''

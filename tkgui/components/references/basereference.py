@@ -3,9 +3,10 @@ Created on 23.10.2015
 
 @author: michael
 '''
-from tkinter import LEFT, END, Button, Frame
-import Pmw
-from tkinter.constants import DISABLED, NORMAL
+from tkinter import StringVar, messagebox
+from tkinter.ttk import Button, Frame, Combobox
+from tkinter.constants import X, LEFT, DISABLED, NORMAL, RIDGE
+from tkgui.components.alexwidgets import AlexLabel
 
 class ReferencesWidgetFactory:
     '''
@@ -34,7 +35,7 @@ class Action:
         self.label = label
         self.callback = callback
 
-class ReferenceView(Pmw.Group):  # @UndefinedVariable
+class ReferenceView(Frame):  # @UndefinedVariable
 
     def __init__(
             self,
@@ -42,53 +43,59 @@ class ReferenceView(Pmw.Group):  # @UndefinedVariable
             presenter,
             label
         ):
-        super().__init__(parent)
+        super().__init__(parent, borderwidth=1, relief=RIDGE)
         self.parent = parent
         self.presenter = presenter
         self.presenter.view = self
 
-        self.listbox = Pmw.ComboBox(self.interior(),  # @UndefinedVariable
-                                    entryfield_entry_width=30,
-                                    dropdown=1,
-                                    history=0)
+        self._selection = StringVar()
         
-        self.listbox.pack()
+        self.labelframe = Frame(self)
+        self.labelframe.pack()
+        
+        self.listbox = Combobox(self,  
+                                state='readonly',
+                                textvariable=self._selection)
+        
+        self.listbox.pack(fill=X)
 
         self._add_label(label)
         self.pack(side=LEFT, padx=5, pady=5)
 
-        self.buttonframe = Frame(self.interior())
+        self.buttonframe = Frame(self)
         self.buttonframe.pack()
         self.buttons = []
-        self._items = []
+        self._items = {}
 
     def _add_label(self, label):
-        self.component('tag').configure(text=label)
+
+        self.label = AlexLabel(self.labelframe)
+        self.label.pack()
+        self.label.set(label)
 
     def _set_items(self, items):
         self.deactivate()
-        self._items = []
-        scrolled_list = self.listbox.component('scrolledlist')
-        scrolled_list.delete(0, scrolled_list.size())
+        self._items = {}
+        values = []
+        
         for item in items:
-            self._items.append(item)
-            scrolled_list.insert(END, str(item))
+            self._items["%s" % item] = (item)
+            values.append("%s" % item)
+
+        self.listbox.configure(values=values)
+            
         if len(items):
-            self.listbox.selectitem(0)
-        else:
-            self.listbox.component('entryfield').delete(0, END)
+            self._selection.set("%s" % items[0])
         self.activate()
 
     def _get_selected_item(self):
-        # The listbox API is completely fucked up
-        current_selection = self.listbox.curselection()
-        if len(current_selection) == 0:
+        if self._selection.get() in self.items:
+            return self.items[self._selection.get()]
+        else:
             return None
-        selected_item = int(current_selection[0])
-        return self._items[selected_item]
     
     def _get_items(self):
-        return self._items
+        return list(self._items.values())
 
     def add_button(self, action):
         self.buttons.append(Button(self.buttonframe,
@@ -105,10 +112,7 @@ class ReferenceView(Pmw.Group):  # @UndefinedVariable
             button.configure(state=NORMAL)
 
     def show_message(self, message_text):
-        dialog = Pmw.MessageDialog(  # @UndefinedVariable
-                defaultbutton = 0,
-                message_text = message_text)
-        dialog.activate()        
+        messagebox.showinfo(_("Hint"), message_text)
         
     items = property(_get_items, _set_items)
     selected_item = property(_get_selected_item)

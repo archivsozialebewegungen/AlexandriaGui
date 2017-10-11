@@ -20,13 +20,16 @@ class EventTypeReferencesWidgetFactory(ReferencesWidgetFactory):
                  view_class: guiinjectorkeys.EVENT_TYPE_REFERENCES_VIEW_CLASS_KEY,
                  presenter:guiinjectorkeys.EVENT_TYPE_REFERENCES_PRESENTER_KEY,
                  event_type_selection_dialog: guiinjectorkeys.EVENT_TYPE_SELECTION_DIALOG_KEY):
+        print("Initializing event type references")
         super().__init__(view_class, presenter, event_type_selection_dialog)
+        print("Event type references initialized")
         
 class EventTypeReferencesView(ReferenceView):
     '''
     View for managing the references between an event and its documents
     '''
     def __init__(self, parent, presenter, event_type_selection_dialog):
+        print("Initalizing event type references view")
         super().__init__(parent, presenter,
                 _('Event types'))
         self.parent = parent

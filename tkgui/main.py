@@ -18,16 +18,15 @@ from alexpresenters.messagebroker import REQ_GOTO_FIRST_DOCUMENT, Message,\
     REQ_GOTO_FIRST_EVENT, CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY,\
     REQ_INITIALIZE_MAIN_WINDOWS
 from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT
-import gettext
 from tkinter import TclError
 import os
 import sys
 import Pmw
 import logging
 import socket
-import re
-import importlib
 from tkgui.PluginManager import PluginManager
+import time
+import threading
 
 class StartupTaskCheckDatabaseVersion():
     
@@ -58,8 +57,8 @@ class StartupTaskLogin(object):
     
     @inject
     def __init__(self,
-                 login_dialog=guiinjectorkeys.LOGIN_DIALOG_KEY,
-                 creator_provider=baseinjectorkeys.CREATOR_PROVIDER_KEY):
+                 login_dialog: guiinjectorkeys.LOGIN_DIALOG_KEY,
+                 creator_provider: baseinjectorkeys.CREATOR_PROVIDER_KEY):
         self.login_dialog=login_dialog
         self.creator_provider=creator_provider
         
@@ -185,7 +184,8 @@ def build_injector():
     plugin_manager = PluginManager(config)
     module_list += plugin_manager.get_plugin_modules()
     
-    return Injector(module_list)
+    injector = Injector(module_list)
+    return injector
         
 class MainModule(Module):
     '''
@@ -222,9 +222,15 @@ class MainModule(Module):
 
 if __name__ == '__main__':
     
+#    injector = build_injector()
+#    print("%d threads running" % threading.active_count())
+#    main_runner = injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
+#    main_runner.run()
+
     try:
         injector = build_injector()
-        injector.get(guiinjectorkeys.MAIN_RUNNER_KEY).run()
+        main_runner = injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
+        main_runner.run()
     except TclError:
         python = sys.executable
         os.execl(python, python, * sys.argv)

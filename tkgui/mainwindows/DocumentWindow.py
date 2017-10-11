@@ -3,9 +3,9 @@ Created on 02.12.2015
 
 @author: michael
 '''
-from tkinter.constants import WORD, DISABLED, NORMAL
-import Pmw
-from injector import inject
+from tkinter.constants import X, WORD, DISABLED, NORMAL
+from tkinter.ttk import Notebook , Frame
+from injector import inject, singleton
 from tkgui import guiinjectorkeys
 from tkgui.mainwindows.BaseWindow import BaseWindow
 from tkgui.components.alexwidgets import AlexText, AlexLabel
@@ -15,18 +15,19 @@ class DocumentWindow(BaseWindow):
     The window for manipulating documents.
     '''
     @inject
+    @singleton
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
                  presenter: guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
-                 base_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY,
-                 additional_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
                  document_menu_additions: guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY):
+        print("Initializing document window")
         self.notebook = None
         self._description_widget = None
         self._condition_widget = None
         self._keywords_widget = None
-        super().__init__(window_manager, presenter, dialogs, base_reference_factories + additional_reference_factories, document_menu_additions)
+        super().__init__(window_manager, presenter, dialogs, document_menu_additions)
+        print("Document window initialized")
     
     def _change_widget_state(self, state):
         self._description_widget.configure(state=state)
@@ -49,30 +50,29 @@ class DocumentWindow(BaseWindow):
         # pylint: disable=no-member
         self._document_label = AlexLabel(self.entity_frame, text=_("No document available"))
         self._document_label.pack()
-        self.notebook = Pmw.NoteBook(self.entity_frame) # @UndefinedVariable
-        self.notebook.pack()
-        description = self.notebook.add(_('Description'))
+        self.notebook = Notebook(self.entity_frame) # @UndefinedVariable
+        self.notebook.pack(fill=X)
+        description = Frame(self.notebook)
+        self.notebook.add(description, text=_('Description'))
         self._description_widget = AlexText(description,
                                  font="Helvetica 12 bold",
                                  wrap=WORD,
-                                 height=6,
-                                 width=60)
-        self._description_widget.pack()
-        condition = self.notebook.add(_('Condition'))
+                                 height=6)
+        self._description_widget.pack(fill=X)
+        condition = Frame(self.notebook)
+        self.notebook.add(condition, text=_('Condition'))
         self._condition_widget = AlexText(condition,
                                  font="Helvetica 12 bold",
                                  wrap=WORD,
-                                 height=6,
-                                 width=60)
-        self._condition_widget.pack()
-        keywords = self.notebook.add(_('Keywords'))
+                                 height=6)
+        self._condition_widget.pack(fill=X)
+        keywords = Frame(self.notebook)
+        self.notebook.add(keywords, text=_('Keywords'))
         self._keywords_widget = AlexText(keywords,
                                  font="Helvetica 12 bold",
                                  wrap=WORD,
-                                 height=6,
-                                 width=60)
-        self._keywords_widget.pack()
-        self.notebook.setnaturalsize()
+                                 height=6)
+        self._keywords_widget.pack(fill=X)
 
     def _view_to_entity(self):
         if self._entity == None:
