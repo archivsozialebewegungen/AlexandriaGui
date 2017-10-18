@@ -133,6 +133,10 @@ class BaseWindow(Frame):
         self.references = []
 
         self._add_frames()
+
+        self.references_frame = Frame(self.window)
+        self.references_frame.pack(side=TOP, anchor=NW)
+        
         self._add_message_bar()
         
     def _get_icon_dir(self):
@@ -225,9 +229,6 @@ class BaseWindow(Frame):
         self.filter_warning.pack(side=TOP)
 
     def add_references(self, reference_factories):
-        
-        self.references_frame = Frame(self.window)
-        self.references_frame.pack(side=TOP, anchor=NW)
         
         side = RIGHT
         

@@ -86,11 +86,14 @@ class ReferenceView(Frame):  # @UndefinedVariable
             
         if len(items):
             self._selection.set("%s" % items[0])
+        else:
+            self._selection.set('')
+            
         self.activate()
 
     def _get_selected_item(self):
-        if self._selection.get() in self.items:
-            return self.items[self._selection.get()]
+        if self._selection.get() in self._items:
+            return self._items[self._selection.get()]
         else:
             return None
     
