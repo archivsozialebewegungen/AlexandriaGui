@@ -128,8 +128,6 @@ class BaseWindow(Frame):
 
         self._filter_expression = None
         
-        self.icondir = self._get_icon_dir()
-
         self.references = []
 
         self._add_frames()
@@ -159,69 +157,58 @@ class BaseWindow(Frame):
         self.entity_frame.pack(side=TOP, anchor=NW)
         self._populate_entity_frame()
 
-        self._add_navigation_buttons(top)
-        
     def _add_menu(self, parent):
         
         # pylint: disable=no-member
         self.menubar = AlexMenuBar(parent)
-        self.menubar.pack(side=LEFT, expand=1, fill=X, anchor=NW)
+        self.window.config(menu=self.menubar)
 
         self.menubar.addmenu(_('Records'), '')
-        self.menubar.addmenuitem(_('Records'), 'command', '',
+        self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('First record'),
                                  command=self.presenter.goto_first)
-        self.menubar.addmenuitem(_('Records'), 'command', '',
+        self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('Last record'),
                                  command=self.presenter.goto_last)
-        self.menubar.addmenuitem(_('Records'), 'command', '',
+        self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('Next record'),
                                  command=self.presenter.goto_next)
-        self.menubar.addmenuitem(_('Records'), 'command', '',
+        self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('Previous record'),
                                  command=self.presenter.goto_previous)
-        self.menubar.addmenuitem(_('Records'), 'command', '',
+        self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('New record'),
                                  command=self.presenter.create_new)
-        self.menubar.addmenuitem(_('Records'), 'command', '',
+        self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('Delete record'),
                                  command=self.presenter.delete)
-        self.menubar.addmenuitem(_('Records'), 'command', '',
+        self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('Quit'),
                                  command=self.presenter.quit)
 
-        self.menubar.addmenu(_('Navigation'), '')
-        self.menubar.addmenuitem(_('Navigation'), 'command', '',
+        self.menubar.addmenu(_('Navigation'))
+        self.menubar.addmenuitem(_('Navigation'), 'command', 
                                  label=_('Goto record'),
                                  command=self.presenter.goto_record)
-        self.menubar.addmenuitem(_('Navigation'), 'command', '',
+        self.menubar.addmenuitem(_('Navigation'), 'command',
                                  label=_('Filtering'),
                                  command=self.presenter.toggle_filter)
-        
+
+        icondir = self._get_icon_dir()
+
+        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'first.gif'),
+                                 command=self.presenter.goto_first)
+        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'previous.gif'),
+                                 command=self.presenter.goto_previous)
+        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'new.gif'),
+                                 command=self.presenter.create_new)
+        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'next.gif'),
+                                 command=self.presenter.goto_next)
+        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'last.gif'),
+                                 command=self.presenter.goto_last)
+
         for plugin in self.plugins:
             plugin.attach_to_window(self)
-
-    def _add_navigation_buttons(self, parent):
-
-        self.iconframe = Frame(parent)
-        self.iconframe.pack(side=LEFT, fill=X, anchor=NE, pady=1, padx=1)
-
-        self.nexticon = PhotoImage(master=self.iconframe, file=os.path.join(self.icondir, 'next.gif'))
-        self.previousicon = PhotoImage(master=self.iconframe, file=os.path.join(self.icondir, 'previous.gif'))
-        self.firsticon = PhotoImage(master=self.iconframe, file=os.path.join(self.icondir, 'first.gif'))
-        self.lasticon = PhotoImage(master=self.iconframe, file=os.path.join(self.icondir, 'last.gif'))
-        self.newicon = PhotoImage(master=self.iconframe, file=os.path.join(self.icondir, 'new.gif'))
-
-        Button(self.iconframe, image=self.firsticon, bd=1, relief=RAISED,
-               command=self.presenter.goto_first).pack(side=LEFT, padx=2)
-        Button(self.iconframe, image=self.previousicon, bd=1, relief=RAISED,
-               command=self.presenter.goto_previous).pack(side=LEFT, padx=2)
-        Button(self.iconframe, image=self.newicon, bd=1, relief=RAISED,
-               command=self.presenter.create_new).pack(side=LEFT, padx=2)
-        Button(self.iconframe, image=self.nexticon, bd=1, relief=RAISED,
-               command=self.presenter.goto_next).pack(side=LEFT, padx=2)
-        Button(self.iconframe, image=self.lasticon, bd=1, relief=RAISED,
-               command=self.presenter.goto_last).pack(side=LEFT, padx=2)
 
     def _add_filter_warning(self, parent):
         

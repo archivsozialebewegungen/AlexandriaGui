@@ -18,10 +18,11 @@ the expected object can't be properly initialized.
 # pylint: disable=arguments-differ
 
 from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
-    Entry, Checkbutton
+    Entry, Checkbutton, Menu, PhotoImage
 from tkinter.constants import END, DISABLED, W, LEFT, NORMAL
 from alexandriabase.domain import AlexDate
 import Pmw
+from builtins import Exception
 try:
     # Python 3.4 and Python 3.5
     from idlelib.TreeWidget import TreeItem, TreeNode
@@ -418,36 +419,61 @@ class AlexTree(Pmw.ScrolledCanvas):  # @UndefinedVariable
 
     selected = property(_get_selected)
 
-class AlexMenuBar(Pmw.MenuBar):  # @UndefinedVariable
+class AlexMenuBar(Menu):
+    '''
+    Enhances the default menu class from tkinter
+    to make adding and inserting menu items more
+    natural.
+    '''
     
     def __init__(self, *params, **kw):
         super().__init__(*params, **kw)
         self.entries = {}
+        self.menus = {}
         self.callbacks = {}
-
+        self.shortcutindex = 0
+        
     def addmenu(self, *params, **kw):
-        self.entries[params[0]] = []
-        super().addmenu(*params, **kw)
+
+        menulabel = params[0]
+        self.entries[menulabel] = []
+        self.menus[menulabel] = Menu(self, tearoff=False)
+        #if self.shortcutindex > 0:
+        self.insert(len(self.menus), 'cascade', label=menulabel, menu=self.menus[menulabel])
+        #else:
+        #    self.add_cascade(label=menulabel,
+        #                     menu=self.menus[menulabel])
+        
+    def addshortcut(self, imagefile='', command=''):
+
+        self.shortcutindex += 1
+        iconname = "icon%d" % self.shortcutindex
+        
+        image = PhotoImage(master=self, file=imagefile)
+        self.add('command', image=image, command=command, compound='right')
+        setattr(self, iconname, image)
+
         
     def addmenuitem(self, *params, before=None, **kw):
-        
         menulabel = params[0]
         itemlabel = kw['label']
         callback = kw['command']
 
+        menu = self.menus[menulabel]
+                
         if before is None:
-            super().addmenuitem(*params, **kw)
+            menu.add(*params[1:], **kw)
+            self.entries[menulabel].append(itemlabel)
         else:
-            menu = self.component('%s-menu' % menulabel)
             position = self._findPosition(menulabel, before)
             menu.insert(position, *params[1:], **kw)
-        
-        self.entries[params[0]].append(itemlabel)
+            self.entries[menulabel].insert(position, itemlabel)
+
         self.callbacks['%s-%s' % (menulabel, itemlabel)] = callback
 
     def hasmenu(self, menulabel):
         
-        return menulabel in self.entries
+        return menulabel in self.menus
     
     def get_callback(self, menulabel, itemlabel):
         
@@ -462,7 +488,7 @@ class AlexMenuBar(Pmw.MenuBar):  # @UndefinedVariable
             counter += 1
             
         return counter
-        
+
 if __name__ == "__main__":
 
     from tkinter import Tk
