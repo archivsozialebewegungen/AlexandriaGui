@@ -3,10 +3,10 @@ Created on 23.10.2015
 
 @author: michael
 '''
-from tkinter import StringVar, messagebox
-from tkinter.ttk import Button, Frame, Combobox
+from tkinter import messagebox
+from tkinter.ttk import Button, Frame
 from tkinter.constants import X, LEFT, DISABLED, NORMAL, RIDGE
-from tkgui.components.alexwidgets import AlexLabel
+from tkgui.components.alexwidgets import AlexLabel, AlexComboBox
 
 class ReferencesWidgetFactory:
     '''
@@ -48,15 +48,10 @@ class ReferenceView(Frame):  # @UndefinedVariable
         self.presenter = presenter
         self.presenter.view = self
 
-        self._selection = StringVar()
-        
         self.labelframe = Frame(self)
         self.labelframe.pack()
         
-        self.listbox = Combobox(self,  
-                                state='readonly',
-                                textvariable=self._selection)
-        
+        self.listbox = AlexComboBox(self)
         self.listbox.pack(fill=X)
 
         self._add_label(label)
@@ -65,7 +60,6 @@ class ReferenceView(Frame):  # @UndefinedVariable
         self.buttonframe = Frame(self)
         self.buttonframe.pack()
         self.buttons = []
-        self._items = {}
 
     def _add_label(self, label):
 
@@ -75,31 +69,15 @@ class ReferenceView(Frame):  # @UndefinedVariable
 
     def _set_items(self, items):
         self.deactivate()
-        self._items = {}
-        values = []
-        
-        for item in items:
-            self._items["%s" % item] = (item)
-            values.append("%s" % item)
-
-        self.listbox.configure(values=values)
-            
-        if len(items):
-            self._selection.set("%s" % items[0])
-        else:
-            self._selection.set('')
-            
+        self.listbox.set_items(items)
         self.activate()
 
     def _get_selected_item(self):
-        if self._selection.get() in self._items:
-            return self._items[self._selection.get()]
-        else:
-            return None
-    
-    def _get_items(self):
-        return list(self._items.values())
+        return self.listbox.get()
 
+    def _get_items(self):
+        return self.listbox.get_items()
+    
     def add_button(self, action):
         self.buttons.append(Button(self.buttonframe,
                text=action.label,

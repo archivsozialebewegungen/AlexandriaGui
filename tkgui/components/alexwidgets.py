@@ -23,6 +23,7 @@ from tkinter.constants import END, DISABLED, W, LEFT, NORMAL
 from alexandriabase.domain import AlexDate
 import Pmw
 from builtins import Exception
+from tkinter.ttk import Combobox
 try:
     # Python 3.4 and Python 3.5
     from idlelib.TreeWidget import TreeItem, TreeNode
@@ -279,6 +280,69 @@ class AlexRadioGroup(Frame):
             widget.configure(state=state)
             
     state = property(None, _set_state)
+
+class AlexComboBox(Combobox):
+    '''
+    A Combobox subclass that supports arbitrary objects as
+    items, as long as the __str__ method is implemented and
+    returns a unique string for each item. This string is
+    what will be displayed in the combo box.
+    '''
+    
+    def __init__(self, parent, items=[]):
+        
+        self._selection = StringVar()
+        super().__init__(parent,
+                         state='readonly',
+                         textvariable=self._selection)
+        self._item_map = {}
+        self.set_items(items)
+        
+    def set_items(self, items):
+        '''
+        Takes a list of items to be displayed in the combobox.
+        The first element will be selected.
+        '''
+        
+        values = []
+        for item in items:
+            item_string = "%s" % item
+            self._item_map[item_string] = item
+            values.append(item_string)
+            
+        self.configure(values=values)
+        if len(values) > 0:
+            self._selection.set(values[0])
+        else:
+            self._selection.set('')
+            
+    def get_items(self):
+        '''
+        Returns all the items in the combo box (for whatever
+        reason you do want this)
+        '''
+        return self._item_map.values()
+    
+    def set(self, item):
+        '''
+        Select an item in the combo box programmatically. If
+        the item is not part of the combo box, an Exception
+        will be thrown.
+        '''
+        
+        if not item in self._item_map.values():
+            raise(Exception("Item %s is not in items for combo box" % item))
+        self._selection.set("%s" % item)
+        
+    def get(self):
+        '''
+        Get the item that is selected in the combo box.
+        '''
+        if len(self._item_map) > 0:
+            return self._item_map[self._selection.get()]
+        else:
+            return None
+        
 
 class AlexMessageBar(Pmw.MessageBar):  # @UndefinedVariable
     '''
