@@ -5,8 +5,8 @@ Created on 09.01.2016
 '''
 import unittest
 from unittest.mock import MagicMock
-from tkgui.dialogs.documentidselectiondialog import DocumentIdSelectionDialog
-from alexpresenters.dialogs.documentid_selection_dialog_presenter import DocumentIdSelectionDialogPresenter
+from tkgui.Dialogs import DocumentIdSelectionDialog
+from alexpresenters.DialogPresenters import DocumentIdSelectionDialogPresenter
 
 
 class TestDocumentIdSelection(unittest.TestCase):
@@ -19,12 +19,12 @@ class TestDocumentIdSelection(unittest.TestCase):
 
     def test_with_integer(self):
         self.view.input = "42"
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         self.assertEqual(42, self.view.return_value)
         
     def test_with_non_integer(self):
         self.view.input = "foo"
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         self.assertEqual(None, self.view.return_value)
 
 if __name__ == "__main__":

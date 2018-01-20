@@ -160,7 +160,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("Checking going to nearest selected event works...", end='')
         dialog = self.event_window.dialogs[BaseWindow.GOTO_DIALOG]
 
-        self.start_dialog(self.event_window_presenter.goto_record)
+        self.start_dialog(self.event_window._activate_record_dialog)
         set_date(dialog, AlexDate(1960, 1, 1))
         self.close_dialog(dialog)
         
@@ -171,7 +171,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("Checking going to nearest selected document works...", end='')
         dialog = self.document_window.dialogs[BaseWindow.GOTO_DIALOG]
 
-        self.start_dialog(self.document_window_presenter.goto_record)
+        self.start_dialog(self.document_window._activate_record_dialog)
         dialog._entry_widget.set("7")
         self.close_dialog(dialog)
 
@@ -182,7 +182,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("Checking filtering events works...", end='')
         dialog = self.event_window.dialogs[BaseWindow.FILTER_DIALOG]
 
-        self.start_dialog(self.event_window_presenter.toggle_filter)
+        self.start_dialog(self.event_window._toggle_filter)
         dialog.earliest_date = AlexDate(1961, 1, 1)
         self.close_dialog(dialog)
         
@@ -191,7 +191,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.assert_that_event_is(1961050101)
 
         # Turn filtering off
-        self.event_window_presenter.toggle_filter()
+        self.event_window._toggle_filter()
 
         self.assert_that_event_is(1961050101)
         self.event_window_presenter.goto_first()
@@ -203,7 +203,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("Checking filtering events works even if nothing is selected...", end='')
         dialog = self.event_window.dialogs[BaseWindow.FILTER_DIALOG]
 
-        self.start_dialog(self.event_window_presenter.toggle_filter)
+        self.start_dialog(self.event_window._toggle_filter)
         dialog.earliest_date = AlexDate(1980, 1, 1)
         self.close_dialog(dialog)
         
@@ -212,7 +212,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.assert_no_event()
         
         # Turn filtering off
-        self.event_window_presenter.toggle_filter()
+        self.event_window._toggle_filter()
 
         self.assert_no_event()
         self.event_window_presenter.goto_first()
@@ -224,7 +224,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("Checking filtering documents works...", end='')
         dialog = self.document_window.dialogs[BaseWindow.FILTER_DIALOG]
 
-        self.start_dialog(self.document_window_presenter.toggle_filter)
+        self.start_dialog(self.document_window._toggle_filter)
         dialog.search_term_entries[0].set("Zweites")
         self.close_dialog(dialog)
         
@@ -235,7 +235,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.assert_that_document_is(4)
 
         # Turn filtering off
-        self.document_window_presenter.toggle_filter()
+        self.document_window._toggle_filter()
 
         self.assert_that_document_is(4)
         self.document_window_presenter.goto_first()
@@ -249,7 +249,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("Checking filtering documents works even if nothing is selected...", end='')
         dialog = self.document_window.dialogs[BaseWindow.FILTER_DIALOG]
 
-        self.start_dialog(self.document_window_presenter.toggle_filter)
+        self.start_dialog(self.document_window._toggle_filter)
         dialog.search_term_entries[0].set("no match")
         self.close_dialog(dialog)
 
@@ -258,7 +258,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.assert_no_document()
         
         # Turn filtering off
-        self.document_window_presenter.toggle_filter()
+        self.document_window._toggle_filter()
 
         self.assert_no_document()
         self.document_window_presenter.goto_first()
@@ -287,16 +287,16 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         
         self.event_window_presenter.goto_first()
 
-        self.assertEquals(len(reference._items), 2)        
+        self.assertEquals(len(reference.items), 2)        
 
-        self.start_dialog(reference.presenter.add_new_cross_reference)
+        self.start_dialog(reference._select_new_cross_reference)
         dialog.presenter.view.date_entry.set(AlexDate(1961,5,1))
         dialog.presenter.update_event_list()
-        dialog.presenter.view.event_list_box.setvalue("%s" % dialog.presenter.view.event_list[0])
-        dialog.presenter.close()
+        dialog.presenter.view.event_list_box.set(dialog.presenter.view.event_list[0])
+        dialog.presenter.ok_action()
         self.wait()
 
-        self.assertEquals(len(reference._items), 3)
+        self.assertEquals(len(reference.items), 3)
                 
         print("OK")
 
@@ -306,13 +306,13 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         
         self.event_window_presenter.goto_first()
 
-        self.assertEquals(len(reference._items), 3)
+        self.assertEquals(len(reference.items), 3)
         
-        reference.listbox.setvalue("%s" % self.get_event(1961050101))       
+        reference.listbox.set(self.get_event(1961050101))       
 
         reference.presenter.delete_cross_reference()
 
-        self.assertEquals(len(reference._items), 2)
+        self.assertEquals(len(reference.items), 2)
                 
         print("OK")
 
@@ -343,7 +343,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
         dialog = self.event_window.dialogs[EventWindow.DATE_RANGE_DIALOG]
 
-        self.start_dialog(self.event_window_presenter.create_new)
+        self.start_dialog(self.event_window._create_new)
         set_date_range(dialog, AlexDate(1941), AlexDate(1942))
         self.close_dialog(dialog)
 

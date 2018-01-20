@@ -4,12 +4,12 @@ Created on 22.10.2015
 @author: michael
 '''
 import unittest
-from tkgui.dialogs.eventselectiondialog import EventSelectionWizard
 from unittest.mock import MagicMock
 from tkgui import guiinjectorkeys
 from alexandriabase.domain import AlexDate
 from alexpresenters import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
+from tkgui.Dialogs import EventSelectionWizard
 
 
 class EventSelectionDialogPresenterTest(BaseIntegrationTest):
@@ -41,8 +41,9 @@ class EventSelectionDialogPresenterTest(BaseIntegrationTest):
         self.assertEqual(len(self.presenter.view.event_list), 0)
         
     def test_close(self):
-        self.presenter.close()
-        self.presenter.view.close.assert_called_once_with()
+        self.presenter.view.input = "testinput"
+        self.presenter.ok_action()
+        self.assertEqual(self.presenter.view.return_value, "testinput")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

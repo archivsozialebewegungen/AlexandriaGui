@@ -7,17 +7,11 @@ import unittest
 from unittest.mock import MagicMock
 from alexandriabase.domain import AlexDate, GenericFilter, DocumentFilter,\
     EventFilter
-from alexpresenters.dialogs.yearselectiondialogpresenter import YearSelectionDialogPresenter
-from tkgui.dialogs.yearselectiondialog import YearSelectionDialog
-
-import gettext
-from alexpresenters.dialogs.filterpresenters import GenericFilterDialogPresenter,\
+from alexpresenters.DialogPresenters import GenericFilterDialogPresenter,\
     DocumentFilterDialogPresenter, EventFilterDialogPresenter
-from tkgui.dialogs.filterdialogs import GenericFilterDialog,\
-    DocumentFilterDialog, EventFilterDialog
-gettext.bindtextdomain('alexandria', 'locale')
-gettext.textdomain('alexandria')
-_ = gettext.gettext
+from tkgui.Dialogs import GenericFilterDialog, DocumentFilterDialog,\
+    EventFilterDialog
+
 
 class GenericFilterDialogPresenterTest(unittest.TestCase):
 
@@ -30,10 +24,10 @@ class GenericFilterDialogPresenterTest(unittest.TestCase):
         
         self.view.searchterms = ['One', 'Two']
         
-        self.presenter.assemble_return_value()
+        generic_filter = self.presenter._build_filter_object()
         
-        self.assertEqual(GenericFilter, self.view.return_value.__class__)
-        self.assertEqual(['One', 'Two'], self.view.return_value.searchterms) 
+        self.assertEqual(GenericFilter, generic_filter.__class__)
+        self.assertEqual(['One', 'Two'], generic_filter.searchterms) 
 
 class DocumentFilterDialogPresenterTest(unittest.TestCase):
 
@@ -47,9 +41,8 @@ class DocumentFilterDialogPresenterTest(unittest.TestCase):
         self.view.searchterms = ['One', 'Two']
         self.view.signature = "1.2.III-4"
         
-        self.presenter.assemble_return_value()
+        document_filter = self.presenter._build_filter_object()
         
-        document_filter = self.view.return_value
         self.assertEqual(DocumentFilter, document_filter.__class__)
         self.assertEqual(['One', 'Two'], document_filter.searchterms) 
         self.assertEqual("1.2.III-4", document_filter.location)
@@ -69,9 +62,7 @@ class EventFilterDialogPresenterTest(unittest.TestCase):
         self.view.local_only = True
         self.view.unverified_only = False
         
-        self.presenter.assemble_return_value()
-        
-        event_filter = self.view.return_value
+        event_filter = self.presenter._build_filter_object()
         self.assertEqual(EventFilter, event_filter.__class__)
         self.assertEqual(['One', 'Two'], event_filter.searchterms) 
         self.assertEqual(AlexDate(1970), event_filter.earliest_date)

@@ -6,9 +6,12 @@ Created on 22.10.2015
 import unittest
 from unittest.mock import MagicMock
 from alexandriabase.domain import AlexDate
-from tkgui.dialogs.dateselectiondialog import DateSelectionDialog
-from alexpresenters.dialogs.dateselectiondialogpresenter import DateSelectionDialogPresenter
+import gettext
+from alexandriabase import get_locale_dir
+from alexpresenters.DialogPresenters import DateSelectionDialogPresenter
+from tkgui.Dialogs import DateSelectionDialog
 
+gettext.install('alexandriabase', get_locale_dir())
 
 class DateSelectionDialogPresenterTest(unittest.TestCase):
 
@@ -22,7 +25,7 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12"]
         self.view.years = ["1960"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual(AlexDate(1960, 12, 1), self.view.return_value)
         
@@ -31,16 +34,16 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12"]
         self.view.years = ["1960"]
 
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
-        self.assertEqual("Day 32 is out of range (1-31)!", self.view.errormessage)
+        self.assertEqual(_("Day 32 is out of range (1-31)!"), self.view.errormessage)
 
     def test_invalid_month(self):
         self.view.days = ["31"]
         self.view.months = ["13"]
         self.view.years = ["1960"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual("Month 13 is out of range (1-12)!", self.view.errormessage)
 
@@ -49,9 +52,9 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12"]
         self.view.years = ["10000"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
-        self.assertEqual("Year 10000 is out of range (0-3000)!", self.view.errormessage)
+        self.assertEqual(_("Year 10000 is out of range (0-3000)!"), self.view.errormessage)
 
     def test_illegal_date(self):
 
@@ -59,9 +62,9 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["2"]
         self.view.years = ["1970"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
-        self.assertEqual("Illegal date: 31.2.1970!", self.view.errormessage)
+        self.assertEqual(_("Illegal date: 31.2.1970!"), self.view.errormessage)
 
     def test_empty_day_and_month(self):
 
@@ -69,7 +72,7 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = [""]
         self.view.years = ["1970"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual(AlexDate(1970), self.view.return_value)
 
@@ -79,9 +82,9 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12"]
         self.view.years = ["1970"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
-        self.assertEqual("'bla' is not a valid day!", self.view.errormessage)
+        self.assertEqual(_("'bla' is not a valid day!"), self.view.errormessage)
 
     def test_illegal_month(self):
 
@@ -89,9 +92,9 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["bla"]
         self.view.years = ["1970"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
-        self.assertEqual("'bla' is not a valid month!", self.view.errormessage)
+        self.assertEqual(_("'bla' is not a valid month!"), self.view.errormessage)
 
     def test_illegal_year(self):
 
@@ -99,9 +102,9 @@ class DateSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12"]
         self.view.years = ["bla"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
-        self.assertEqual("'bla' is not a valid year!", self.view.errormessage)
+        self.assertEqual(_("'bla' is not a valid year!"), self.view.errormessage)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

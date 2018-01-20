@@ -10,7 +10,7 @@ import Pmw
 from tkgui.mainwindows.BaseWindow import BaseWindow
 from alex_test_utils import get_testfiles_dir
 from alexandriabase.domain import Entity, Event, Document,\
-    AlexDateRange, DocumentFileInfo
+    AlexDateRange, DocumentFileInfo, EventType, Tree, EventTypeIdentifier
 from alexandriabase.services.fileformatservice import FileFormatService
 from alexandriabase.config import Config
 
@@ -207,7 +207,20 @@ class EventServiceStub(EntityServiceStub):
     def remove_cross_reference(self, event1, event2):
         self.crossreferences[event1] = [x for x in self.crossreferences[event1] if x != event2]
         self.crossreferences[event2] = [x for x in self.crossreferences[event2] if x != event1]
+    
+    def get_event_type_tree(self):
         
+        event_types = (EventType(EventTypeIdentifier(0,0), "root"),
+                       EventType(EventTypeIdentifier(1,0), "parent1"),
+                       EventType(EventTypeIdentifier(1,1), "child11"),
+                       EventType(EventTypeIdentifier(1,2), "child12"),
+                       EventType(EventTypeIdentifier(2,0), "parent2"),
+                       EventType(EventTypeIdentifier(2,1), "child21"),
+                       EventType(EventTypeIdentifier(2,2), "child22"),
+                       )
+        
+        return Tree(event_types)
+
 class DocumentServiceStub(EntityServiceStub):            
 
     def __init__(self):

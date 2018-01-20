@@ -9,24 +9,19 @@ from alexandriabase import AlexBaseModule, baseinjectorkeys
 from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
 from alexpresenters import PresentersModule
-from alexpresenters.dialogs.logindialogpresenter import LoginCreatorProvider
 from tkgui import guiinjectorkeys
 from tkgui.components.references import WindowReferencesModule
-from tkgui.dialogs import DialogsTkGuiModule
 from tkgui.mainwindows import MainWindowsModule
-from alexpresenters.messagebroker import REQ_GOTO_FIRST_DOCUMENT, Message,\
-    REQ_GOTO_FIRST_EVENT, CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY,\
-    REQ_INITIALIZE_MAIN_WINDOWS
-from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT
-from tkinter import TclError
+from alexpresenters.messagebroker import Message, \
+    REQ_GOTO_FIRST_DOCUMENT, REQ_GOTO_FIRST_EVENT, CONF_SETUP_FINISHED, REQ_QUIT
 import os
-import sys
 import Pmw
 import logging
 import socket
 from tkgui.PluginManager import PluginManager
-import time
-import threading
+from tkgui.mainwindows.fileviewers import DocumentViewersModule
+from tkgui.Dialogs import DialogsTkGuiModule
+from alexpresenters.DialogPresenters import LoginCreatorProvider
 
 class StartupTaskCheckDatabaseVersion():
     
@@ -63,8 +58,8 @@ class StartupTaskLogin(object):
         self.creator_provider=creator_provider
         
     def run(self, root):
-        
-        self.login_dialog.activate(root)
+
+        self.creator_provider.creator = self.login_dialog.activate()
         if self.creator_provider.creator == None:
             return False
         else:
@@ -78,8 +73,6 @@ class StartupTaskPopulateWindows(object):
         self.message_broker = message_broker
         
     def run(self, root):
-        
-        self.message_broker.send_message(Message(REQ_INITIALIZE_MAIN_WINDOWS))
         self.message_broker.send_message(Message(REQ_GOTO_FIRST_DOCUMENT))
         self.message_broker.send_message(Message(REQ_GOTO_FIRST_EVENT))
         return True
@@ -89,41 +82,20 @@ class SetupRunner():
     This class is used to run certain tasks before the application
     really starts. It is needed to provide login, database upgrades
     etc.
-    
-    It is started on application start and waits for configured
-    messages until it runs the setup tasks defined.
     '''
     
     @inject
-    def __init__(self,
+    def __init__(self, 
                  message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
-                 init_messages: guiinjectorkeys.INIT_MESSAGES_KEY,
                  setup_tasks: guiinjectorkeys.SETUP_TASKS_KEY):
-
-        self.message_broker = message_broker        
-        self.message_broker.subscribe(self)
-        self.expected_messages = init_messages
-        self.received_messages = []
+        self.message_broker = message_broker
         self.setup_tasks = setup_tasks
         self.root = None
         
-    def receive_message(self, message):
-        if message in self.expected_messages:
-            self.received_messages.append(message)    
-    
     def run(self, root):
         self.root = root
-        if self.all_messages_received():
-            self.run_setup_tasks()
-        else:
-            self.root.after_idle(lambda: self.run(self.root))
+        self.run_setup_tasks()
             
-    def all_messages_received(self):
-        for message in self.expected_messages:
-            if message in self.received_messages:
-                return True
-        return False
-    
     def run_setup_tasks(self):
         for task in self.setup_tasks:
             continue_tasks = task.run(self.root)
@@ -131,12 +103,15 @@ class SetupRunner():
                 break
         if not continue_tasks:
             self.message_broker.send_message(Message(REQ_QUIT))
+        else:
+            self.message_broker.send_message(Message(CONF_SETUP_FINISHED))
             
 class MainRunner:
     
     @inject
     def __init__(self,
                  config: baseinjectorkeys.CONFIG_KEY,
+                 setup_runner: guiinjectorkeys.SETUP_RUNNER_KEY,
                  main_windows: guiinjectorkeys.MAIN_WINDOWS_KEY):
         '''
         Initializes the whole application. To force the
@@ -146,6 +121,7 @@ class MainRunner:
         won't initalize the windows).
         '''
         self.config = config
+        self.setup_runner = setup_runner
         self.window_manager = main_windows[0].window_manager
         
     def run(self):
@@ -161,7 +137,7 @@ class MainRunner:
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
-        self.window_manager.run()
+        self.window_manager.run(self.setup_runner)
 
 def build_injector():
     '''
@@ -176,6 +152,7 @@ def build_injector():
                    ServiceModule(),
                    PresentersModule(),
                    MainWindowsModule(),
+                   DocumentViewersModule(),
                    DialogsTkGuiModule(),
                    WindowReferencesModule(),
                    main_module]
@@ -205,12 +182,7 @@ class MainModule(Module):
                     ClassProvider(StartupTaskLogin), scope=singleton)
         binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
                     ClassProvider(StartupTaskPopulateWindows), scope=singleton)
-            
-    @provider
-    @singleton
-    def provide_init_messages(self) -> guiinjectorkeys.INIT_MESSAGES_KEY:
-        return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
-       
+                   
     @provider
     @singleton
     @inject
@@ -222,16 +194,7 @@ class MainModule(Module):
 
 if __name__ == '__main__':
     
-#    injector = build_injector()
-#    print("%d threads running" % threading.active_count())
-#    main_runner = injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
-#    main_runner.run()
-
-    try:
-        injector = build_injector()
-        main_runner = injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
-        main_runner.run()
-    except TclError:
-        python = sys.executable
-        os.execl(python, python, * sys.argv)
+    injector = build_injector()
+    main_runner = injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
+    main_runner.run()
 

@@ -3,10 +3,7 @@ Created on 06.11.2015
 
 @author: michael
 '''
-from alexpresenters.messagebroker import Message
-
-REQ_QUIT = "quit"
-REQ_SAVE_ALL = "save_all"
+from alexpresenters.messagebroker import Message, REQ_QUIT
 
 class BaseWindowPresenter:
     
@@ -15,41 +12,39 @@ class BaseWindowPresenter:
         self.message_broker.subscribe(self)
         self.entity_service = entity_service
         self.post_processors = post_processors
+        self.filter_expression = None
         self.view = None # Will be set by view
-        
+
     def goto_first(self):
-        self._change_entity(self.entity_service.get_first(self.view.filter_expression))
+        self._change_entity(self.entity_service.get_first(self.filter_expression))
     
     def goto_next(self):
         entity = self._save_if_necessary()
         if entity == None or entity.id == None:
             return
-        self._change_entity(self.entity_service.get_next(entity, self.view.filter_expression))
+        self._change_entity(self.entity_service.get_next(entity, self.filter_expression))
 
     def goto_previous(self):
         entity = self._save_if_necessary()
         if entity == None or entity.id == None:
             return
-        self._change_entity(self.entity_service.get_previous(entity, self.view.filter_expression))
+        self._change_entity(self.entity_service.get_previous(entity, self.filter_expression))
 
     def goto_last(self):
-        self._change_entity(self.entity_service.get_last(self.view.filter_expression))
+        self._change_entity(self.entity_service.get_last(self.filter_expression))
         
     def goto_record(self):
-        record_id = self.view.record_id_selection
-        if record_id == None:
+        if self.view.new_record_id == None:
             return
-        new_entity = self.entity_service.get_nearest(record_id, self.view.filter_expression)
+        new_entity = self.entity_service.get_nearest(self.view.new_record_id,
+                                                     self.filter_expression)
         self._change_entity(new_entity)
         
-    def toggle_filter(self):
-        if isinstance(self.view.filter_expression, type(None)):
-            filter_object = self.view.new_filter
-            if filter_object ==  None:
-                return
-            self.view.filter_expression = self.entity_service.create_filter_expression(filter_object)
+    def update_filter_expression(self):
+        if self.view.filter_object is not None:
+            self.filter_expression = self.entity_service.create_filter_expression(self.view.filter_object)
         else:
-            self.view.filter_expression = None
+            self.filter_expression = None
         
     def create_new(self):
         self._change_entity(self.entity_service.create_new())
@@ -62,14 +57,14 @@ class BaseWindowPresenter:
             return
         if entity.id == None:
             # Entity is not yet saved, so we just jump to the last entity
-            self.view.entity = self.entity_service.get_last(self.view.filter_expression)
+            self.view.entity = self.entity_service.get_last(self.filter_expression)
             return
         
-        first_entity = self.entity_service.get_first(self.view.filter_expression)
+        first_entity = self.entity_service.get_first(self.filter_expression)
         if first_entity == self.view.entity:
-            goto_entity = self.entity_service.get_next(entity, self.view.filter_expression)
+            goto_entity = self.entity_service.get_next(entity, self.filter_expression)
         else:
-            goto_entity = self.entity_service.get_previous(entity, self.view.filter_expression)
+            goto_entity = self.entity_service.get_previous(entity, self.filter_expression)
         self.entity_service.delete(entity)
         if goto_entity == entity:
             # We just deleted the last entity

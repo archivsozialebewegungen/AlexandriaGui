@@ -4,13 +4,12 @@ Created on 22.10.2015
 @author: michael
 '''
 import unittest
-from tkgui.dialogs.eventselectiondialog import EventSelectionWizard
 from unittest.mock import MagicMock
 from tkgui import guiinjectorkeys
-from alexandriabase.domain import AlexDate, Tree
+from alexandriabase.domain import Tree
 from alexpresenters import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
-from tkgui.dialogs.event_type_selection_dialog import EventTypeSelectionDialog
+from tkgui.Dialogs import EventTypeSelectionDialog
 
 
 class EventTypeSelectionDialogPresenterTest(BaseIntegrationTest):
@@ -22,7 +21,7 @@ class EventTypeSelectionDialogPresenterTest(BaseIntegrationTest):
         self.presenter.view = MagicMock(spec=EventTypeSelectionDialog)
 
     def testGetEventsForDate(self):
-        self.presenter.get_tree()
+        self.presenter.set_tree()
         self.assertTrue(isinstance(self.presenter.view.tree, Tree))
 
 if __name__ == "__main__":

@@ -4,11 +4,18 @@ Created on 16.04.2016
 @author: michael
 '''
 import Pmw
-from tkinter import messagebox, Toplevel, Frame
-from tkinter.constants import LEFT, VERTICAL, NW, BOTH, YES
+from tkinter import messagebox, Frame, Toplevel
+from tkinter.constants import LEFT, VERTICAL, NW, BOTH, YES, NE
 from PIL.ImageTk import PhotoImage
 from PIL import Image
 import os
+from injector import Module, inject, provider, singleton, Key, ClassProvider
+from tkgui import guiinjectorkeys
+from alexandriabase import baseinjectorkeys
+
+DOCUMENT_DEFAULT_VIEWER_KEY = Key('document_default_viewer_key')
+DOCUMENT_GRAPHICS_VIEWER_KEY = Key('document_graphics_viewer_key')
+DOCUMENT_EXTERNAL_VIEWER_FACTORY_KEY = Key('document_external_viewer_factory_key')
 
 class DefaultViewer(object):
     '''
@@ -24,18 +31,18 @@ class GraphicsViewer():
     '''
     Viewer for graphic files
     '''
-    
-    def __init__(self):
+    @inject    
+    def __init__(self, window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY):
         self.factor = 0.0
         self.photo_image = None
         
-        self.window = Toplevel()
+        self.window = window_manager.create_new_window()
         self.window.protocol("WM_DELETE_WINDOW", self.window.withdraw)
 
         self.display_frame = Frame(self.window)
-        self.display_frame.pack(side=LEFT)
+        self.display_frame.pack(anchor=NE, side=LEFT, fill=BOTH, expand = YES)
         self.button_frame = Frame(self.window)
-        self.button_frame.pack(side=LEFT)
+        self.button_frame.pack(anchor=NW, side=LEFT)
         self.buttonbox = Pmw.ButtonBox(self.button_frame,  # @UndefinedVariable
                                        orient=VERTICAL,
                                        pady=0,
@@ -88,6 +95,11 @@ class GraphicsViewer():
     
     def Quit(self):
         self.window.destroy()
+
+class ExternalViewerFactory:
+    
+    def get_viewer_for_program(self, external_program):
+        return ExternalViewer(external_program)
         
 class ExternalViewer(object):
     '''
@@ -95,10 +107,10 @@ class ExternalViewer(object):
     first parameter
     '''
     
-    def __init__(self, external_programm):
-        self.external_programm = external_programm
-        self.basename = os.path.basename(external_programm)
-
+    def __init__(self, external_program):
+        self.external_programm = external_program
+        self.basename = os.path.basename(external_program)
+        
     def showFile(self, file, file_info=None):
         if os.access(self.external_programm, os.X_OK):
             os.spawnl(os.P_NOWAIT, 
@@ -116,3 +128,38 @@ class ExternalViewer(object):
                 )
             dialog.activate()
 
+class DocumentViewersModule(Module):
+
+    def configure(self, binder):
+      
+        binder.bind(DOCUMENT_DEFAULT_VIEWER_KEY,
+                    ClassProvider(DefaultViewer), scope=singleton)
+        binder.bind(DOCUMENT_GRAPHICS_VIEWER_KEY,
+                    ClassProvider(GraphicsViewer), scope=singleton)
+        binder.bind(DOCUMENT_EXTERNAL_VIEWER_FACTORY_KEY,
+                    ClassProvider(ExternalViewerFactory), scope=singleton)
+    
+    @inject
+    @provider
+    @singleton
+    def get_viewers(self,
+                    config: baseinjectorkeys.CONFIG_KEY,
+                    default_viewer: DOCUMENT_DEFAULT_VIEWER_KEY,
+                    graphics_viewer: DOCUMENT_GRAPHICS_VIEWER_KEY,
+                    external_viewer_factory: DOCUMENT_EXTERNAL_VIEWER_FACTORY_KEY) -> guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY:
+        
+        viewers = {}
+        defined_viewers = config.filetypeviewers
+        for filetype in config.filetypes:
+            viewers[filetype] = default_viewer
+            if filetype in defined_viewers:
+                viewer = defined_viewers[filetype]
+                if viewer == 'default':
+                    continue
+                if viewer == 'GraphicsViewer':
+                    viewers[filetype] = graphics_viewer
+                    continue
+                viewers[filetype] = external_viewer_factory.get_viewer_for_program(viewer)
+        
+        return viewers
+        

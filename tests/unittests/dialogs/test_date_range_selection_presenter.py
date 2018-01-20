@@ -4,10 +4,10 @@ Created on 22.10.2015
 @author: michael
 '''
 import unittest
-from unittest.mock import MagicMock, call
+from unittest.mock import MagicMock
 from alexandriabase.domain import AlexDateRange
-from tkgui.dialogs.dateselectiondialog import DateRangeSelectionDialog
-from alexpresenters.dialogs.daterangeselectiondialogpresenter import DateRangeSelectionDialogPresenter
+from alexpresenters.DialogPresenters import DateRangeSelectionDialogPresenter
+from tkgui.Dialogs import DateRangeSelectionDialog
 
 
 class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
@@ -23,7 +23,7 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12", ""]
         self.view.years = ["1960", ""]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual(AlexDateRange(1960120100, None), self.view.return_value)
         
@@ -33,10 +33,10 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12", ""]
         self.view.years = ["1960", ""]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
                 
         self.assertEqual(None, self.view.return_value)
-        self.assertEqual("'bla' is not a valid day!", self.view.errormessage)
+        self.assertEqual(_("'bla' is not a valid day!"), self.view.errormessage)
 
     def test_illegal_start_date(self):
         
@@ -44,7 +44,7 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["11", ""]
         self.view.years = ["1960", ""]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual(None, self.view.return_value)
         self.assertEqual("Illegal date: 31.11.1960!", self.view.errormessage)
@@ -55,10 +55,10 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12", ""]
         self.view.years = ["1960", "1961"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual(None, self.view.return_value)
-        self.assertEqual("'bla' is not a valid day!", self.view.errormessage)
+        self.assertEqual(_("'bla' is not a valid day!"), self.view.errormessage)
 
     def test_illegal_end_date(self):
         
@@ -66,10 +66,10 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12", "11"]
         self.view.years = ["1960", "1961"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual(None, self.view.return_value)
-        self.assertEqual("Illegal date: 31.11.1961!", self.view.errormessage)
+        self.assertEqual(_("Illegal date: 31.11.1961!"), self.view.errormessage)
 
     def test_range(self):
         
@@ -77,7 +77,7 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.view.months = ["12", "1"]
         self.view.years = ["1960", "1961"]
         
-        self.presenter.assemble_return_value()
+        self.presenter.ok_action()
         
         self.assertEqual(AlexDateRange(1960120100, 1961013100), self.view.return_value)
 

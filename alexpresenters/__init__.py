@@ -1,26 +1,23 @@
 from injector import Module, singleton, provider,\
     ClassProvider, inject
 from tkgui import guiinjectorkeys
-from alexpresenters.dialogs.eventselectionpresenter import EventSelectionPresenter
 from alexpresenters.mainwindows.EventWindowPresenter import EventWindowPresenter
 from alexpresenters.components.references.eventcrossreferencespresenter import EventCrossReferencesPresenter
 from alexpresenters.mainwindows.DocumentWindowPresenter import DocumentWindowPresenter
-from alexpresenters.dialogs.dateselectiondialogpresenter import DateSelectionDialogPresenter
 from alexpresenters.messagebroker import MessageBroker
 from alexpresenters.components.references.documenteventreferencespresenter import DocumentEventReferencesPresenter
 from alexpresenters.components.references.documentfilereferencespresenter import DocumentFileReferencesPresenter
 from alexpresenters.components.references.eventdocumentreferencespresenter import EventDocumentReferencesPresenter
-from alexpresenters.dialogs.logindialogpresenter import LoginDialogPresenter
 from alexpresenters.mainwindows.PostProcessors import DocumentTypePostProcessor,\
     JournalDocTypePostProcessor
-from alexpresenters.dialogs.daterangeselectiondialogpresenter import DateRangeSelectionDialogPresenter
-from alexpresenters.dialogs.yearselectiondialogpresenter import YearSelectionDialogPresenter
-from alexpresenters.dialogs.documentid_selection_dialog_presenter import DocumentIdSelectionDialogPresenter
-from alexpresenters.dialogs.filterpresenters import DocumentFilterDialogPresenter,\
-    EventFilterDialogPresenter
 from alexpresenters.components.references.event_type_references_presenter import EventTypeReferencesPresenter
-from alexpresenters.dialogs.eventconfirmationpresenter import EventConfirmationPresenter
-from alexpresenters.dialogs.eventtypeselectionpresenter import EventTypeSelectionPresenter
+from alexpresenters.DialogPresenters import AbstractInputDialogPresenter,\
+    EventSelectionPresenter, DateSelectionDialogPresenter,\
+    EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter,\
+    DocumentIdSelectionDialogPresenter, YearSelectionDialogPresenter,\
+    EventTypeSelectionPresenter, DocumentFilterDialogPresenter,\
+    EventFilterDialogPresenter, LoginDialogPresenter,\
+    GenericInputDialogPresenter
 
 class PresentersModule(Module):
     
@@ -45,10 +42,14 @@ class PresentersModule(Module):
         binder.bind(guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
                     ClassProvider(DocumentWindowPresenter), scope=singleton)
         # Dialogs
+        binder.bind(guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER,
+                    ClassProvider(GenericInputDialogPresenter))
         binder.bind(guiinjectorkeys.DATE_SELECTION_DIALOG_PRESENTER_KEY,
                     ClassProvider(DateSelectionDialogPresenter))
+        binder.bind(guiinjectorkeys.EVENT_ID_SELECTION_DIALOG_PRESENTER_KEY,
+                    ClassProvider(EventIdSelectionDialogPresenter))
         binder.bind(guiinjectorkeys.EVENT_CONFIRMATION_PRESENTER_KEY,
-                    ClassProvider(EventConfirmationPresenter))
+                    ClassProvider(AbstractInputDialogPresenter))
         binder.bind(guiinjectorkeys.DATERANGE_SELECTION_DIALOG_PRESENTER_KEY,
                     ClassProvider(DateRangeSelectionDialogPresenter))
         binder.bind(guiinjectorkeys.YEAR_SELECTION_DIALOG_PRESENTER_KEY,

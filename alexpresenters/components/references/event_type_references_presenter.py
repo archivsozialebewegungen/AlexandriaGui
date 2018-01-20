@@ -7,7 +7,7 @@ from injector import inject
 from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
 from alexpresenters.messagebroker import CONF_EVENT_CHANGED,\
-    CONF_DOCUMENT_CHANGED, REQ_SET_EVENT, Message, REQ_SAVE_CURRENT_EVENT
+    Message, REQ_SAVE_CURRENT_EVENT
 
 class EventTypeReferencesPresenter:
     '''

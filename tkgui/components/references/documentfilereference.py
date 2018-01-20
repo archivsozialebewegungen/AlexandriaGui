@@ -38,10 +38,7 @@ class DocumentFileReferencesView(ReferenceView):
         
     def show_file(self, file):
         file_info = self.selected_item
-        if file_info.filetype in self.viewers:
-            viewer = self.viewers[file_info.filetype]
-        else:
-            viewer = self.viewers['default']
+        viewer = self.viewers[file_info.filetype]
         viewer.showFile(file, file_info)
 
     new_file = property(lambda self: self.file_selection_dialog.activate(self.parent))

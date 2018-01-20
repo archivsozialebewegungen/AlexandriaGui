@@ -18,18 +18,27 @@ the expected object can't be properly initialized.
 # pylint: disable=arguments-differ
 
 from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
-    Entry, Checkbutton, Menu, PhotoImage
-from tkinter.constants import END, DISABLED, W, LEFT, NORMAL
+    Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox, Grid
+from tkinter.tix import Tk
+from tkinter.constants import END, DISABLED, ALL, Y, N, S, E, W, LEFT, NORMAL,\
+    HORIZONTAL, GROOVE
 from alexandriabase.domain import AlexDate
-import Pmw
 from builtins import Exception
-from tkinter.ttk import Combobox
+from tkinter.ttk import Combobox, Scrollbar
+from tkinter.tix import ComboBox
+from locale import atoi
 try:
     # Python 3.4 and Python 3.5
     from idlelib.TreeWidget import TreeItem, TreeNode
 except:
     # Since Python 3.6
     from idlelib.tree import TreeItem, TreeNode  # @UnresolvedImport
+
+class AlexTk(Tk):
+    '''
+    Just a wrapper class to switch between
+    tkinter and tkinter.tix
+    '''
 
 class DateEntryFrame(Frame):
     # pylint: disable=too-many-ancestors
@@ -194,7 +203,9 @@ class AlexButton(Button):
     def __init__(self, *params, **kw):
         self.textvar = StringVar()
         super().__init__(*params, textvariable=self.textvar, **kw)
-        
+        if 'text' in kw:
+            self.set(kw['text'])
+            
     def set(self, value):
         '''
         Converts the value to string, strips it of leading and
@@ -281,6 +292,74 @@ class AlexRadioGroup(Frame):
             
     state = property(None, _set_state)
 
+class AlexScrollbar(Scrollbar):
+    # a scrollbar that hides itself if it's not needed.  only
+    # works if you use the grid geometry manager.
+    def set(self, lo, hi):
+        if float(lo) <= 0.0 and float(hi) >= 1.0:
+            # grid_remove is currently missing from Tkinter!
+            self.tk.call("grid", "remove", self)
+        else:
+            self.grid()
+        super().set(lo, hi)
+
+class AlexListBox(Frame):
+    
+    def __init__(self, parent, items=[], width=20, height=10,
+                 selectioncommand=None):
+        
+        super().__init__(parent)
+        
+        self.selectioncommand = selectioncommand
+        
+        self.listbox = Listbox(self, width=width, height=height)
+        self.listbox.grid(row=0, column=0)
+        scrollbar_y = AlexScrollbar(self, command=self.listbox.yview)
+        scrollbar_y.grid(row=0, column=1, sticky=N+S)
+        self.listbox.configure(yscrollcommand=scrollbar_y.set)
+        scrollbar_x = AlexScrollbar(self, command=self.listbox.xview,
+                                orient=HORIZONTAL)
+        scrollbar_x.grid(row=1, column=0, sticky=E+W)
+        self.listbox.configure(xscrollcommand=scrollbar_x.set)
+        if self.selectioncommand is not None:
+            self.listbox.bind('<<ListboxSelect>>', self._select_callback)
+        self.set_items(items)
+        
+    def _select_callback(self, event):
+        
+        selection = self.get()
+        # ignore unselect
+        if selection != None:
+            self.selectioncommand(selection)
+
+    def set_items(self, items):
+        
+        self.listbox.delete(0, END)
+        self.items = []
+        for item in items:
+            self.items.append(item)
+            self.listbox.insert(END, "%s" % item)
+            
+    def get_items(self):
+        
+        return self.items
+        
+        
+    def get(self):
+        
+        selections = self.listbox.curselection()
+        if len(selections) > 0:
+            return self.items[selections[0]]
+        else:
+            return None
+    
+    def set(self, selection):
+        
+        self.listbox.selection_clear(0, len(self.items))
+        for i in range(0, len(self.items)):
+            if self.items[i] == selection:
+                self.listbox.selection_set(i)
+        
 class AlexComboBox(Combobox):
     '''
     A Combobox subclass that supports arbitrary objects as
@@ -305,6 +384,7 @@ class AlexComboBox(Combobox):
         '''
         
         values = []
+        self._item_map = {}
         for item in items:
             item_string = "%s" % item
             self._item_map[item_string] = item
@@ -321,7 +401,10 @@ class AlexComboBox(Combobox):
         Returns all the items in the combo box (for whatever
         reason you do want this)
         '''
-        return self._item_map.values()
+        items = []
+        for item in self._item_map.values():
+            items.append(item)
+        return items
     
     def set(self, item):
         '''
@@ -342,12 +425,53 @@ class AlexComboBox(Combobox):
             return self._item_map[self._selection.get()]
         else:
             return None
-        
-
-class AlexMessageBar(Pmw.MessageBar):  # @UndefinedVariable
-    '''
-    This subclasses the Pmw.MessageBar
     
+class AlexComboBoxTix(ComboBox):
+    '''
+    A Combobox subclass that supports arbitrary objects as
+    items, as long as the __str__ method is implemented and
+    returns a unique string for each item. This string is
+    what will be displayed in the combo box.
+    '''
+    
+    def __init__(self, parent, items=[]):
+        
+        
+        self._selection = StringVar()
+        super().__init__(parent,
+                         state='readonly')
+        self._item_map = {}
+        self._item_labels = []
+        self.set_items(items)
+    
+    def set_items(self, items):
+        
+        for item in items:
+            item_label = "%s" % item
+            self._item_map[item_label] = item
+            self._item_labels.append(item_label)
+            
+        self.slistbox.listbox.delete(0, END)
+        self.slistbox.listbox.insert(0, *self._item_labels)
+            
+        if len(self._item_labels) > 0:
+            self.slistbox.listbox.selection_set(0)
+        else:
+            self.slistbox.listbox.selection_clear(0)
+        
+    def get_items(self):
+        self._item_map.values()
+        
+    def set(self, item):
+        if not item in self._item_map.values():
+            raise(Exception("Item %s is not in items for combo box" % item))
+        self._set_entry("%s" % item)
+    
+    def get(self):
+        return self._item_map(self.subwidget_list['entry'].get())
+
+class AlexMessageBar(AlexEntry):  # @UndefinedVariable
+    '''
     It displays all messages sent by the message broker that have
     the attributes 'messagetype' and 'message'. 'messagetype' may
     be error, warning, info and debug.
@@ -357,38 +481,22 @@ class AlexMessageBar(Pmw.MessageBar):  # @UndefinedVariable
     will be shown.
     '''
     def __init__(self, *params, **kw):
-        if 'messagetypes' not in kw:
-            kw['messagetypes'] = {
-                'error'   : (5, 60, 2, 1),
-                'warning' : (4, 15, 1, 0),
-                'info'    : (3, 15, 0, 0),
-                'debug'   : (2, 5, 0, 0),
-            }
         super().__init__(*params, **kw)
-        self.messages = []
+        self.current_message = None
     
-    def config_messages(self, message_key):
-        self.messages.append(message_key)
-        
+    def show_message(self, message):
+        self.current_message = message
+        self.set(message.message)
+        self.after(5000, lambda: self.clear_message(message))
+    
+    def clear_message(self, message):
+        if message == self.current_message:
+            self.set('')
+            self.current_message = None
+            
     def receive_message(self, message):
-        if len(self.messages) == 0 or message in self.messages:
-            if hasattr(message, 'messagetype') and hasattr(message, 'message'):
-                self.resetmessages(message.messagetype)
-                self.message(message.messagetype, message.message)
-
-class AlexComboBoxDialog(Pmw.ComboBoxDialog):  # @UndefinedVariable
-    
-    def __init__(self, *params, **kw):
-        self.objects = {}
-        for item in kw['scrolledlist_items']:
-            self.objects['%s' % item] = item
-        super().__init__(*params, **kw)
-        
-    def get(self):
-        key = super().get()
-        if key == None or key == '':
-            return None
-        return self.objects[key]
+        if hasattr(message, 'messagetype') and hasattr(message, 'message'):
+            self.show_message(message)
 
 class AlexTreeItem(TreeItem):
 
@@ -430,38 +538,55 @@ class AlexTreeNode(TreeNode):
         self.expand(None)
         for child in self.children:
             child.expand_recursive()
-        
-class AlexTree(Pmw.ScrolledCanvas):  # @UndefinedVariable
+      
+class AlexTree(Frame):  # @UndefinedVariable
     
     def __init__(self,
                  parent,
                  tree,
-                 borderframe=1,
-                 labelpos='n',
-                 usehullsize = 1,
-                 hull_width = 400,
-                 hull_height = 300,
-                 **kw):
+                 label):
         super().__init__(
                  parent,
-                 borderframe=1,
-                 labelpos='n',
-                 usehullsize = 1,
-                 hull_width = 400,
-                 hull_height = 300,
-                 **kw)
+                 width = 400,
+                 height = 300
+                 )
 
         self.tree = tree
-        self.canvas = self.component('canvas')
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        l = AlexLabel(self)
+        l.set(label)
+        l.grid(row=0, column=0, sticky=E+N)
+
+        xscrollbar = Scrollbar(self, orient=HORIZONTAL)
+        xscrollbar.grid(row=2, column=0, sticky=E+W)
+
+        yscrollbar = Scrollbar(self)
+        yscrollbar.grid(row=1, column=1, sticky=N+S)
+
+        canvasframe = Frame(self, bd=4, relief=GROOVE)
+        canvasframe.grid(row=1, column=0, sticky=N+S+E+W)
+        self.canvas = Canvas(canvasframe, bd=0,
+                        xscrollcommand=xscrollbar.set,
+                        yscrollcommand=yscrollbar.set)
+        self.canvas.pack(padx=1, pady=1)
+
+
+        xscrollbar.config(command=self.canvas.xview)
+        yscrollbar.config(command=self.canvas.yview)
+        
         self.tree_root = None
         self.redraw_tree()
               
 
     def redraw_tree(self):
-        self.canvas.delete('all')
+        self.canvas.delete(ALL)
         self.tree_root = AlexTreeNode(self.canvas, None, AlexTreeItem(self.tree.root_node))
         self.tree_root.update()
         self.tree_root.expand()
+        self.canvas.config(scrollregion=self.canvas.bbox(ALL))
 
     def apply_filter(self, filter_string):
         visible_nodes = self.tree.apply_filter(filter_string)
@@ -552,56 +677,3 @@ class AlexMenuBar(Menu):
             counter += 1
             
         return counter
-
-if __name__ == "__main__":
-
-    from tkinter import Tk
-    
-    class DateEntryTest:
-        '''
-        Testclass
-        '''
-
-        def __init__(self):
-            self.root = Tk()
-
-            self.date_entry = DateEntryFrame(self.root)
-            self.date_entry.pack()
-            button_frame = Frame(self.root)
-            button_frame.pack()
-
-            read = Button(button_frame, text="Read values", command=self.read_values)
-            read.pack(side=LEFT)
-            write = Button(button_frame, text="Set values", command=self.set_values)
-            write.pack(side=LEFT)
-            cancel = Button(button_frame, text="Cancel", command=self.root.quit)
-            cancel.pack(side=LEFT)
-        
-        def set_values(self):
-            '''
-            Callback for setting values programmatically.
-            '''
-            self.date_entry.day = 1
-            self.date_entry.month = 5
-            self.date_entry.year = 1917
-
-        def read_values(self):
-            '''
-            Fetches the entred values and displays them in a dialog.
-            '''
-            # pylint: disable=no-member
-            result = "%s.%s.%s" % (self.date_entry.day, self.date_entry.month, self.date_entry.year)
-            dialog = Pmw.MessageDialog(self.root,  # @UndefinedVariable
-                                       title = 'Result',
-                                       defaultbutton = 0,
-                                       message_text = result)
-            dialog.activate()
-
-        def run(self):
-            '''
-            Runs the test.
-            '''
-            self.root.mainloop()
-            
-    DateEntryTest().run()
-

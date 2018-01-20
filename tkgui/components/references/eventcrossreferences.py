@@ -26,13 +26,19 @@ class EventCrossReferencesView(ReferenceView):
         self.event_selection_dialog = event_selection_dialog
         self.add_buttons()
         self.current_event = None
+        self.new_cross_reference_event = None
         
     def add_buttons(self):
         self.add_button(Action(_("Goto"), self.presenter.goto_event))
-        self.add_button(Action(_("New"), self.presenter.add_new_cross_reference))
+        self.add_button(Action(_("New"), self._select_new_cross_reference))
         self.add_button(Action(_("Delete"), self.presenter.delete_cross_reference))
         
     def _select_new_cross_reference(self):
-        return self.event_selection_dialog.activate(self)
-                    
-    new_cross_reference_event = property(_select_new_cross_reference)
+        
+        self.event_selection_dialog.activate(self._event_selection_callback)
+        
+    def _event_selection_callback(self, value):
+        if value is not None:
+            self.new_cross_reference_event = value
+            self.presenter.add_new_cross_reference()
+            self.new_cross_reference_event = None

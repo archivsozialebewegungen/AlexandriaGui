@@ -9,7 +9,6 @@ MAIN_WINDOWS_KEY = Key('main_windows')
 WINDOW_MANAGER_KEY = Key('window_manager')
 MESSAGE_BROKER_KEY = Key('message_broker')
 SETUP_RUNNER_KEY = Key('setup_runner')
-INIT_MESSAGES_KEY = Key('init_messages')
 
 EVENT_WINDOW_PRESENTER_KEY = Key('event_window_presenter')
 EVENT_WINDOW_KEY = Key('event_window')
@@ -59,9 +58,12 @@ EVENT_TYPE_REFERENCES_VIEW_CLASS_KEY = Key('event_type_references_view_class')
 
 # Dialogs
 
+DIALOG_FACTORY_CLASS_KEY = Key('dialog_factory_class')
+
 GENERIC_STRING_EDIT_DIALOG_KEY = Key('generic_string_edit_dialog')
 GENERIC_STRING_SELECTION_DIALOG_KEY = Key('generic_string_selection_dialog')
 GENERIC_BOOLEAN_SELECTION_DIALOG_KEY = Key('generic_boolean_selection_dialog')
+GENERIC_INPUT_DIALOG_PRESENTER = Key('generic_dialog_presenter')
 
 EVENT_SELECTION_DIALOG_PRESENTER_KEY = Key('event_selection_dialog_presenter')
 EVENT_SELECTION_DIALOG_KEY = Key('event_selection_dialog')
@@ -74,6 +76,9 @@ YEAR_SELECTION_DIALOG_KEY = Key('year_selection_dialog')
 
 DATE_SELECTION_DIALOG_PRESENTER_KEY = Key('date_selection_dialog_presenter')
 DATE_SELECTION_DIALOG_KEY = Key('date_selection_dialog')
+
+EVENT_ID_SELECTION_DIALOG_PRESENTER_KEY = Key('event_id_selection_dialog_presenter')
+EVENT_ID_SELECTION_DIALOG_KEY = Key('event_id_selection_dialog')
 
 DATERANGE_SELECTION_DIALOG_PRESENTER_KEY = Key('daterange_selection_dialog_presenter')
 DATERANGE_SELECTION_DIALOG_KEY = Key('daterange_selection_dialog')
@@ -89,6 +94,7 @@ DOCUMENTID_SELECTION_DIALOG_KEY = Key('documentid_selection_dialog')
 
 FILE_SELECTION_DIALOG_KEY = Key('file_selection_dialog')
 
+LOGIN_DIALOG_FACTORY_KEY = Key('login_dialog_factory')
 LOGIN_DIALOG_PRESENTER_KEY = Key('login_dialog_presenter')
 LOGIN_DIALOG_KEY = Key('login_dialog')
 

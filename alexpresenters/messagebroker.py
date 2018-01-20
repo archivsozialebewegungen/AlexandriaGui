@@ -5,19 +5,19 @@ Created on 03.05.2015
 '''
 from injector import singleton
 
-REQ_INITIALIZE_MAIN_WINDOWS = "initialize main windows"
-
 REQ_SET_EVENT = "set event"
 REQ_SET_DOCUMENT = "set document"
 REQ_SAVE_CURRENT_DOCUMENT = "save current document"
 REQ_GOTO_FIRST_EVENT = "goto first event"
 REQ_GOTO_FIRST_DOCUMENT = "goto first document"
 REQ_SAVE_CURRENT_EVENT = "save current event"
+REQ_QUIT = "quit"
+REQ_SAVE_ALL = "save_all"
 
 CONF_DOCUMENT_CHANGED = 'document changed'
 CONF_EVENT_CHANGED = 'event changed'
-CONF_DOCUMENT_WINDOW_READY = 'document window ready'
-CONF_EVENT_WINDOW_READY = 'event window ready'
+
+CONF_SETUP_FINISHED = 'setup successful finished'
 
 ERROR_MESSAGE = 'error message'
 

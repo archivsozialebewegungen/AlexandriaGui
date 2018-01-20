@@ -14,7 +14,7 @@ from alexandriabase.domain import AlexDateRange, AlexDate, EventFilter, Event,\
 from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT
 from alexandriabase.base_exceptions import NoSuchEntityException
 from alexpresenters.messagebroker import REQ_SET_EVENT, Message,\
-    REQ_GOTO_FIRST_EVENT, CONF_EVENT_WINDOW_READY, REQ_SAVE_CURRENT_EVENT,\
+    REQ_GOTO_FIRST_EVENT, REQ_SAVE_CURRENT_EVENT,\
     CONF_EVENT_CHANGED
 from unittest.mock import MagicMock
 from tkgui.mainwindows.EventWindow import EventWindow
@@ -40,7 +40,7 @@ class EventWindowsTests(BaseIntegrationTest):
         #self.view = ViewStub()
         self.view = MagicMock(spec=EventWindow)
         self.view.entity = None
-        self.view.filter_expression = None
+        self.view.filter_object = None
         self.view.entity_has_changed.return_value = False
         
         self.event_window_presenter.view = self.view;
@@ -102,13 +102,13 @@ class EventWindowsTests(BaseIntegrationTest):
 
     def testGotoRecordI(self):
         self.event_window_presenter.goto_first()
-        self.view.record_id_selection = alex_date_from_key(1949122401)
+        self.view.new_record_id = 1949122401
         self.event_window_presenter.goto_record()
         self.assertEqual(self.view.entity.id, 1950000001)
 
     def testGotoRecordII(self):
         self.event_window_presenter.goto_first()
-        self.view.record_id_selection = None
+        self.view.new_record_id = None
         self.event_window_presenter.goto_record()
         self.assertEqual(self.view.entity.id, 1940000001)
 
@@ -135,19 +135,19 @@ class EventWindowsTests(BaseIntegrationTest):
         self.assertEqual(entity.description, "Erstes Ereignis")
         
     def testToggleFilterI(self):
-        self.view.new_filter = EventFilter()
-        self.view.new_filter.searchterms = ["Erstes"]
+        self.view.filter_object = EventFilter()
+        self.view.filter_object.searchterms = ["Erstes"]
         
-        self.event_window_presenter.toggle_filter()
+        self.event_window_presenter.update_filter_expression()
         self.event_window_presenter.goto_last()
         
         self.assertEqual(self.view.entity.id, 1940000001)
 
     def testToggleFilterII(self):
-        self.view.new_filter = EventFilter()
-        self.view.new_filter.searchterms = ["Does not match any record"]
+        self.view.filter_object = EventFilter()
+        self.view.filter_object.searchterms = ["Does not match any record"]
         
-        self.event_window_presenter.toggle_filter()
+        self.event_window_presenter.update_filter_expression()
         self.event_window_presenter.goto_last()
         
         self.assertEqual(self.view.entity, None)
@@ -155,44 +155,23 @@ class EventWindowsTests(BaseIntegrationTest):
     def testToggleFilterIII(self):
         self.view.filter_expression = "Does not matter"
         
-        self.event_window_presenter.toggle_filter()
+        self.event_window_presenter.update_filter_expression()
 
-        self.assertEqual(self.view.filter_expression, None)
+        self.assertEqual(self.event_window_presenter.filter_expression, None)
         
     def testToggleFilterIV(self):
         self.view.filter_expression = None
-        self.view.new_filter = None
+        self.view.filter_object = None
         
-        self.event_window_presenter.toggle_filter()
+        self.event_window_presenter.update_filter_expression()
 
         self.assertEqual(self.view.filter_expression, None)
         
-    def testCreateNewI(self):
+    def testCreateNew(self):
         
-        self.view.new_date_range = AlexDateRange(AlexDate(1950), None)
-        self.view.existing_new_event = Event()
-        self.view.existing_new_event.daterange = self.view.new_date_range
-        self.event_window_presenter.create_new()
-        
-        self.assertEqual(self.view.entity.daterange, AlexDateRange(AlexDate(1950), None))
-        self.assertEqual(self.view.entity.id, None)
-        self.assertEqual(self.view.entity.description, '')
-        
-    def testCreateNewII(self):
-        
-        self.view.new_date_range = None
-        self.event_window_presenter.goto_first()
-        self.event_window_presenter.create_new()
-        
-        self.assertEqual(self.view.entity.daterange, AlexDateRange(AlexDate(1940), None))
-        self.assertEqual(self.view.entity.id, 1940000001)
-        self.assertEqual(self.view.entity.description, "Erstes Ereignis")
-
-    def testCreateNewIII(self):
-        
-        self.view.new_date_range = AlexDateRange(AlexDate(1936), None)
+        self.view.date_range_for_new_event = AlexDateRange(AlexDate(1936), None)
         self.view.existing_new_event = None
-        self.view.entity_has_changed = MagicMock(side_effect = [False, False, True, False])
+        self.view.entity_has_changed = MagicMock(side_effect = [False, True, False])
         self.event_window_presenter.create_new()
         
         self.event_window_presenter.goto_last()
@@ -292,11 +271,6 @@ class EventWindowsTests(BaseIntegrationTest):
         self.message_broker.send_message(Message(REQ_GOTO_FIRST_EVENT))
         self.assertEqual(self.event_window_presenter.view.entity.id, 1940000001)
         
-    def test_signal_window_ready(self):
-        
-        self.event_window_presenter.signal_window_ready()
-        self.assertMessage(CONF_EVENT_WINDOW_READY)
-
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

@@ -8,7 +8,7 @@ from alexandriabase import baseinjectorkeys
 from tkgui import guiinjectorkeys
 from injector import inject
 from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
-    REQ_SET_DOCUMENT, CONF_DOCUMENT_WINDOW_READY, REQ_GOTO_FIRST_DOCUMENT,\
+    REQ_SET_DOCUMENT, REQ_GOTO_FIRST_DOCUMENT,\
     REQ_SAVE_CURRENT_DOCUMENT
 
 class DocumentWindowPresenter(BaseWindowPresenter):
@@ -39,6 +39,3 @@ class DocumentWindowPresenter(BaseWindowPresenter):
             self._change_entity(message.document)
         if message == REQ_GOTO_FIRST_DOCUMENT:
             self.goto_first()
-           
-    def signal_window_ready(self):
-        self.message_broker.send_message(Message(CONF_DOCUMENT_WINDOW_READY))

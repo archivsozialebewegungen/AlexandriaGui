@@ -22,14 +22,17 @@ class MainWindowsModule(Module):
       
         binder.bind(guiinjectorkeys.WINDOW_MANAGER_KEY,
                     ClassProvider(WindowManager), scope=singleton)
+        
         binder.bind(guiinjectorkeys.EVENT_WINDOW_KEY,
                     ClassProvider(EventWindow), scope=singleton)
         binder.bind(guiinjectorkeys.DOCUMENT_WINDOW_KEY,
                     ClassProvider(DocumentWindow), scope=singleton)
+
         binder.bind(guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY,
                     InstanceProvider([]))
         binder.bind(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY,
                     InstanceProvider([]))
+        
         binder.bind(guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
                     InstanceProvider([]))
         binder.bind(guiinjectorkeys.EVENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
@@ -110,7 +113,7 @@ class MainWindowsModule(Module):
     @inject
     def create_event_dialogs(self,
                              date_range_dialog: guiinjectorkeys.DATERANGE_SELECTION_DIALOG_KEY,
-                             date_dialog: guiinjectorkeys.DATE_SELECTION_DIALOG_KEY,
+                             event_id_dialog: guiinjectorkeys.EVENT_ID_SELECTION_DIALOG_KEY,
                              event_filter_dialog: guiinjectorkeys.EVENT_FILTER_DIALOG_KEY,
                              confirm_new_event_dialog: guiinjectorkeys.EVENT_CONFIRMATION_DIALOG_KEY) -> guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY:
         '''
@@ -119,25 +122,6 @@ class MainWindowsModule(Module):
         return {
             EventWindow.DATE_RANGE_DIALOG: date_range_dialog,
             EventWindow.CONFIRM_NEW_EVENT_DIALOG: confirm_new_event_dialog,
-            BaseWindow.GOTO_DIALOG: date_dialog,
+            BaseWindow.GOTO_DIALOG: event_id_dialog,
             BaseWindow.FILTER_DIALOG: event_filter_dialog
             }
-
-    @provider
-    @inject
-    def init_viewers(self, config: baseinjectorkeys.CONFIG_KEY) -> guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY:
-        '''
-        Initializes the file viewers from the information
-        given in the config.xml. The viewer may either be
-        a class in the fileviewers module or an external
-        program that is started with the file as first
-        parameter.
-        '''
-        viewers = {}
-        for (filetype, viewer) in config.filetypeviewers.items():
-            try:
-                viewers[filetype] = getattr(fileviewers, viewer)()
-            except AttributeError:
-                viewers[filetype] = ExternalViewer(viewer)
-        
-        return viewers

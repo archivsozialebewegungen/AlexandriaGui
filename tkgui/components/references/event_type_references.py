@@ -32,19 +32,27 @@ class EventTypeReferencesView(ReferenceView):
         self.parent = parent
         self.add_buttons()
         self.current_event = None
+        self.new_event_type = None
         self.event_type_selection_dialog = event_type_selection_dialog
         
     def add_buttons(self):
         '''
         Method for configuring the buttons of the references view
         '''
-        self.add_button(Action(_("New"), self.presenter.add_event_type_reference))
+        self.add_button(Action(_("New"), self._get_new_event_type))
         self.add_button(Action(_("Delete"), self.presenter.remove_event_type_reference))
 
     def _get_new_event_type(self):
         '''
         Dialog activation in the guise of a getter
         '''
-        return self.event_type_selection_dialog.activate(self.parent, _("Select new event type"))
+        return self.event_type_selection_dialog.activate(self._set_new_event_type, _("Select new event type"))
 
-    new_event_type = property(_get_new_event_type)
+    def _set_new_event_type(self, value):
+        '''
+        Callback for the event type selection dialog
+        '''
+        if value is not None:
+            self.new_event_type = value
+            self.presenter.add_event_type_reference()
+            self.new_event_type = None

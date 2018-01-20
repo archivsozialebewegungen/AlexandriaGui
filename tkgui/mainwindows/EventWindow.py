@@ -5,13 +5,8 @@ Created on 20.11.2015
 '''
 from tkgui.mainwindows.BaseWindow import BaseWindow
 from tkinter import Frame
-from alexpresenters.mainwindows.EventWindowPresenter import EventWindowPresenter
 from tkinter.constants import FLAT, TOP, CENTER, WORD, NW, LEFT, DISABLED,\
     NORMAL
-from tkgui.dialogs.dateselectiondialog import DateSelectionDialog
-from alexpresenters.dialogs.daterangeselectiondialogpresenter import DateRangeSelectionDialogPresenter
-from tkgui.dialogs.yearselectiondialog import YearSelectionDialog
-from alexpresenters.dialogs.yearselectiondialogpresenter import YearSelectionDialogPresenter
 from tkgui.components.alexwidgets import AlexText, AlexButton, AlexRadioGroup
 from injector import inject, singleton
 from tkgui import guiinjectorkeys
@@ -87,11 +82,64 @@ class EventWindow(BaseWindow):
     @singleton
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
                  presenter: guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY,
                  event_menu_additions: guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY):
-        super().__init__(window_manager, presenter, dialogs, event_menu_additions)
-        self._new_date_range = None
+        super().__init__(window_manager, message_broker, presenter, dialogs, event_menu_additions)
+        self.date_range_for_new_event = None
+
+    def _create_new(self):
+        '''
+        Creating a new event involves quit a lot of user interaction.
+        First a dialog needs to pop up for entering a data range.
+        If this dialog is closed, it is necessary to check if there
+        are already events for this date. If so, another dialog needs
+        to be shown where the user can decide, if she wants to go to
+        one of the already existing events or if she really wants
+        to create a new event for the given date range.
+        '''
+        self.dialogs[self.DATE_RANGE_DIALOG].activate(self._activate_create_new)
+        
+    def _activate_create_new(self, value):
+        '''
+        Callback for the creation of a new event.
+        '''
+        if value == None:
+            return
+        
+        self.date_range_for_new_event = value
+        self.presenter.fetch_events_for_new_event_date()
+        
+    def _select_from_event_list(self, event_list):
+        '''
+        This is (implicitely) called from the
+        fetch_events_for_new_event_date() in the presenter.
+        If there is no other event for the given date range,
+        create a new event. Otherwise open a dialog to
+        either select one of the existing events or confirm
+        that a new event needs to be created.
+        '''
+        if len(event_list) == 0:
+            self.presenter.create_new()
+        else:
+            self.dialogs[self.CONFIRM_NEW_EVENT_DIALOG].activate(self._confirm_new_event_callback,
+                                                                 event_list=event_list,
+                                                                 date=self.date_range_for_new_event.start_date)
+    
+    def _confirm_new_event_callback(self, value):
+        if value == None:
+            # None of the existing events has been selected
+            self.presenter.create_new_event()
+        else:
+            self._goto_record(value.id)
+        
+    def _change_date_range(self):
+        self.dialogs[self.DATE_RANGE_DIALOG].activate(self._activate_change_date)
+
+    def _activate_change_date(self, value):
+        self.new_date_range = value
+        self.presenter.change_event_date()
 
     def _populate_entity_frame(self):
         
@@ -121,7 +169,7 @@ class EventWindow(BaseWindow):
        
         self._daterange_widget = AlexButton(self.entity_frame,
                                   relief=FLAT,
-                                  command=self.presenter.change_event_date,
+                                  command=self._change_date_range,
                                   state=DISABLED)
         self._daterange_widget.pack(side=TOP, padx=5, pady=5, anchor=CENTER)
 
@@ -150,10 +198,6 @@ class EventWindow(BaseWindow):
         status_texts = [_('unconfirmed'), _('probable'), _('confirmed')]
         self._status_widget = AlexRadioGroup(helper_frame, choices=status_texts, title=_('State'))
         self._status_widget.pack(side=LEFT, anchor=NW, padx=5, pady=5)
-    
-    def _get_new_date_range(self):
-        self._new_date_range = self._execute_dialog(self.DATE_RANGE_DIALOG)
-        return self._new_date_range
     
     def _entity_to_view(self, entity):
         
@@ -194,9 +238,5 @@ class EventWindow(BaseWindow):
             self._entity_has_changed = True
             self._entity.status_id = self._status_widget.get()
         return self._entity
-    
-    def _confirm_new_event(self):
-        return self._execute_dialog(self.CONFIRM_NEW_EVENT_DIALOG, self._new_date_range.start_date)
-        
-    new_date_range = property(_get_new_date_range)
-    existing_new_event = property(_confirm_new_event)
+
+    event_list = property(None, _select_from_event_list)

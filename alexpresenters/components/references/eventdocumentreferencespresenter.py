@@ -52,11 +52,11 @@ class EventDocumentReferencesPresenter:
             self.message_broker.send_message(Message(REQ_SAVE_CURRENT_DOCUMENT))
             assert(not self.view.current_document.id is None)
             
-        documentid = self.view.new_documentid
-        if documentid == None:
+        document_id = self.view.new_document_id
+        if document_id == None:
             return
         try:
-            document = self.document_service.get_by_id(documentid)
+            document = self.document_service.get_by_id(document_id)
         except NoSuchEntityException:
             self.message_broker.send_message(Message(ERROR_MESSAGE, 
                                                      messagetype='error', 

@@ -18,6 +18,7 @@ class DocumentWindow(BaseWindow):
     @singleton
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
                  presenter: guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
                  document_menu_additions: guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY):
@@ -25,7 +26,10 @@ class DocumentWindow(BaseWindow):
         self._description_widget = None
         self._condition_widget = None
         self._keywords_widget = None
-        super().__init__(window_manager, presenter, dialogs, document_menu_additions)
+        super().__init__(window_manager, message_broker, presenter, dialogs, document_menu_additions)
+
+    def _create_new(self):
+        self.presenter.create_new()
     
     def _change_widget_state(self, state):
         self._description_widget.configure(state=state)

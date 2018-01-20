@@ -14,7 +14,7 @@ from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT
 import os
 from alex_test_utils import TestEnvironment, MODE_FULL
 from alexpresenters.messagebroker import REQ_SET_DOCUMENT, Message,\
-    REQ_GOTO_FIRST_DOCUMENT, CONF_DOCUMENT_WINDOW_READY,\
+    REQ_GOTO_FIRST_DOCUMENT, \
     REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED
 
 class ViewStub():
@@ -88,13 +88,13 @@ class DocumentWindowsTests(BaseIntegrationTest):
 
     def testGotoRecordI(self):
         self.document_window_presenter.goto_first()
-        self.view.record_id_selection = 4
+        self.view.new_record_id = 4
         self.document_window_presenter.goto_record()
         self.assertEqual(self.view.entity.id, 4)
 
     def testGotoRecordII(self):
         self.document_window_presenter.goto_first()
-        self.view.record_id_selection = None
+        self.view.new_record_id = None
         self.document_window_presenter.goto_record()
         self.assertEqual(self.view.entity.id, 1)
 
@@ -119,35 +119,35 @@ class DocumentWindowsTests(BaseIntegrationTest):
         self.assertEqual(entity.description, "Totally new description")
 
     def testToggleFilterI(self):
-        self.view.new_filter = DocumentFilter()
-        self.view.new_filter.searchterms = ["Erstes"]
+        self.view.filter_object = DocumentFilter()
+        self.view.filter_object.searchterms = ["Erstes"]
         
-        self.document_window_presenter.toggle_filter()
+        self.document_window_presenter.update_filter_expression()
         self.document_window_presenter.goto_last()
         
         self.assertEqual(self.view.entity.id, 1)
 
     def testToggleFilterII(self):
-        self.view.new_filter = DocumentFilter()
-        self.view.new_filter.searchterms = ["Does not match any record"]
+        self.view.filter_object = DocumentFilter()
+        self.view.filter_object.searchterms = ["Does not match any record"]
         
-        self.document_window_presenter.toggle_filter()
+        self.document_window_presenter.update_filter_expression()
         self.document_window_presenter.goto_last()
         
         self.assertEqual(self.view.entity, None)
 
     def testToggleFilterIII(self):
-        self.view.filter_expression = "Does not matter"
+        self.view.filter_object = DocumentFilter()
         
-        self.document_window_presenter.toggle_filter()
+        self.document_window_presenter.update_filter_expression()
 
-        self.assertEqual(self.view.filter_expression, None)
+        self.assertEqual(self.document_window_presenter.filter_expression, None)
         
     def testToggleFilterIV(self):
-        self.view.filter_expression = None
+        self.view.filter_object = None
         self.view.new_filter = None
         
-        self.document_window_presenter.toggle_filter()
+        self.document_window_presenter.update_filter_expression()
 
         self.assertEqual(self.view.filter_expression, None)
         
@@ -219,11 +219,6 @@ class DocumentWindowsTests(BaseIntegrationTest):
         self.message_broker.send_message(Message(REQ_SET_DOCUMENT, document=document))
         self.assertEqual(self.document_window_presenter.view.entity.id, 8)
         
-    def test_signal_window_ready(self):
-        
-        self.document_window_presenter.signal_window_ready()
-        self.assertMessage(CONF_DOCUMENT_WINDOW_READY)
-
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

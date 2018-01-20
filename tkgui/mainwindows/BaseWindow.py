@@ -3,20 +3,19 @@ Created on 06.11.2015
 
 @author: michael
 '''
-from tkinter import Tk, Frame, Button, Label, Toplevel
-from PIL.ImageTk import PhotoImage
-from tkinter.constants import LEFT, NW, NE, RAISED, X, RIGHT, TOP
+from tkinter import Frame, Toplevel
+from tkinter.constants import LEFT, NW, X, RIGHT, TOP
 from injector import singleton, inject
 from tkgui import guiinjectorkeys
 
-import Pmw
 import os
-from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT,\
-    REQ_SAVE_ALL
-from alexpresenters.messagebroker import Message, CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY
+from alexpresenters.messagebroker import Message, CONF_SETUP_FINISHED,\
+    REQ_SAVE_ALL, REQ_QUIT
 import sys
-from tkgui.components.alexwidgets import AlexMessageBar, AlexMenuBar
+from tkgui.components.alexwidgets import AlexMessageBar, AlexMenuBar, AlexTk,\
+    AlexLabel
 from threading import Thread
+import Pmw
 
 class WindowManager():
     '''
@@ -33,19 +32,17 @@ class WindowManager():
     @inject
     @singleton
     def __init__(self,
-                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
-                 setup_runner: guiinjectorkeys.SETUP_RUNNER_KEY):
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY):
         
-        self.setup_runner = setup_runner
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
 
-        self.event_window_ready = False
-        self.document_window_ready = False
-
         self.windows = []
         self.threads = []
-        self.root = Tk()
+        self.root = AlexTk()
+        # Won't be using the root window - this leads to
+        # trouble
+        self.root.withdraw()
         self.root.protocol("WM_DELETE_WINDOW", self._quit)
         # pylint: disable=no-member
         Pmw.initialise(self.root)  # @UndefinedVariable
@@ -54,15 +51,14 @@ class WindowManager():
         '''
         Returns a new toplevel window.
         '''
-        if len(self.windows) == 0:
-            self.windows.append(self.root)
-            return self.root
-        
-        else:
-            window = Toplevel(self.root)
-            window.protocol("WM_DELETE_WINDOW", self._quit)
-            self.windows.append(window)
-            return window
+        window = Toplevel(self.root)
+        window.protocol("WM_DELETE_WINDOW", self._quit)
+        self.windows.append(window)
+        return window
+
+    def remove_window(self, window):
+        self.windows.remove(window)
+        window.destroy()
 
     def receive_message(self, message):
         '''
@@ -70,19 +66,7 @@ class WindowManager():
         '''
         if message.key == REQ_QUIT:
             self._quit()
-        if message.key == CONF_DOCUMENT_WINDOW_READY:
-            self.document_window_ready = True
-            if (self.event_window_ready):
-                self.setup_runner.run(self.root)
-        if message.key == CONF_EVENT_WINDOW_READY:
-            self.event_window_ready = True
-            if (self.document_window_ready):
-                self.setup_runner.run(self.root)
             
-    def is_initialized(self):
-        
-        return self.document_window_ready and self.event_window_ready
-        
     def run_in_thread(self, target, args=()):
         thread = Thread(target=target, args=args)
         self.threads.append(thread)
@@ -95,8 +79,8 @@ class WindowManager():
             thread.join()
         self.root.quit()
 
-    def run(self):
-        #self.root.after_idle(lambda: self.setup_runner.run(self.root))
+    def run(self, setup_runner):
+        self.root.after_idle(lambda: setup_runner.run(self.root))
         self.root.mainloop()
         
 class BaseWindow(Frame):
@@ -110,10 +94,13 @@ class BaseWindow(Frame):
     GOTO_DIALOG = 'goto_dialog'
     FILTER_DIALOG = 'filter_dialog'
     
-    def __init__(self, window_manager, presenter, dialogs, plugins):
+    def __init__(self, window_manager, message_broker, presenter, dialogs, plugins):
         
         self.window_manager = window_manager
         self.window = self.window_manager.create_new_window()
+        self.window.withdraw()
+        
+        message_broker.subscribe(self)
         
         super().__init__(self.window)
         
@@ -126,16 +113,24 @@ class BaseWindow(Frame):
         self._entity = None
         self._entity_has_changed = False
 
-        self._filter_expression = None
-        
         self.references = []
-
+        self.new_record_id = None
+        self.filter_object = None
+        
         self._add_frames()
 
         self.references_frame = Frame(self.window)
         self.references_frame.pack(side=TOP, anchor=NW)
         
         self._add_message_bar()
+
+    def receive_message(self, message):
+        if message == CONF_SETUP_FINISHED:
+            self.show_window()
+        
+    def show_window(self):
+        
+        self.window.deiconify()
         
     def _get_icon_dir(self):
         this_module = BaseWindow.__module__
@@ -178,7 +173,7 @@ class BaseWindow(Frame):
                                  command=self.presenter.goto_previous)
         self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('New record'),
-                                 command=self.presenter.create_new)
+                                 command=self._create_new)
         self.menubar.addmenuitem(_('Records'), 'command',
                                  label=_('Delete record'),
                                  command=self.presenter.delete)
@@ -189,10 +184,10 @@ class BaseWindow(Frame):
         self.menubar.addmenu(_('Navigation'))
         self.menubar.addmenuitem(_('Navigation'), 'command', 
                                  label=_('Goto record'),
-                                 command=self.presenter.goto_record)
+                                 command=self._activate_record_dialog)
         self.menubar.addmenuitem(_('Navigation'), 'command',
                                  label=_('Filtering'),
-                                 command=self.presenter.toggle_filter)
+                                 command=self._toggle_filter)
 
         icondir = self._get_icon_dir()
 
@@ -201,7 +196,7 @@ class BaseWindow(Frame):
         self.menubar.addshortcut(imagefile=os.path.join(icondir, 'previous.gif'),
                                  command=self.presenter.goto_previous)
         self.menubar.addshortcut(imagefile=os.path.join(icondir, 'new.gif'),
-                                 command=self.presenter.create_new)
+                                 command=self._create_new)
         self.menubar.addshortcut(imagefile=os.path.join(icondir, 'next.gif'),
                                  command=self.presenter.goto_next)
         self.menubar.addshortcut(imagefile=os.path.join(icondir, 'last.gif'),
@@ -212,7 +207,7 @@ class BaseWindow(Frame):
 
     def _add_filter_warning(self, parent):
         
-        self.filter_warning = Label(parent, text = "", foreground='red')
+        self.filter_warning = AlexLabel(parent, text = "", foreground='red')
         self.filter_warning.pack(side=TOP)
 
     def add_references(self, reference_factories):
@@ -230,8 +225,6 @@ class BaseWindow(Frame):
             self.references.append(view)
             view.pack(side=side, padx=5, pady=5)
     
-        self.presenter.signal_window_ready()
-        
     def _add_message_bar(self):
         
         message_frame = Frame(self.window)
@@ -256,33 +249,33 @@ class BaseWindow(Frame):
     def _view_to_entity(self):
         raise Exception("Implement in child class!")
         
-    def _get_filter_expression(self):
-        return self._filter_expression
-    
-    def _set_filter_expression(self, filter_expression):
-        self._filter_expression = filter_expression
-        if isinstance(filter_expression, type(None)):
-            self.filter_warning.configure(text="")
-        else:
-            self.filter_warning.configure(text=_("Filter is set!"))
-            self.presenter.goto_first()
-        
-
     def _execute_dialog(self, dialog, *params, **kw):
-        return self.dialogs[dialog].activate(self.window, *params, **kw)
+        return self.dialogs[dialog].activate(*params, **kw)
     
-    def _get_new_filter(self):
-        return self._execute_dialog(self.FILTER_DIALOG)
+    def _toggle_filter(self):
+        if self.filter_object is None:
+            self.dialogs[self.FILTER_DIALOG].activate(self._activate_filter)
+        else:
+            self.filter_object = None
+            self.presenter.update_filter_expression()
+            self.filter_warning.configure(text="")
         
-    def _get_record_id_selection(self):
-        return self._execute_dialog(self.GOTO_DIALOG)
+    def _activate_filter(self, filter_object):
+        self.filter_object = filter_object
+        self.presenter.update_filter_expression()
+        self.filter_warning.configure(text=_("Filter is set!"))
+        self.presenter.goto_first()
+                
+    def _activate_record_dialog(self):
+        self.dialogs[self.GOTO_DIALOG].activate(self._goto_record)
         
+    def _goto_record(self, record_id):
+        self.new_record_id = record_id
+        self.presenter.goto_record()
         
-    record_id_selection = property(_get_record_id_selection)
-    filter_expression = property(_get_filter_expression, _set_filter_expression)
-    new_filter = property (_get_new_filter)
     # This is kind of hackish because we want to be able to overwrite the setters
-    # and getters in child classes
+    # and getters in child classes. Without lambda, it would use the methods
+    # in the parent class
     entity = property(
         lambda self: self._view_to_entity(),
         lambda self, entity: self._entity_to_view(entity)

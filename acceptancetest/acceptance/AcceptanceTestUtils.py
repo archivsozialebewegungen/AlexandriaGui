@@ -5,19 +5,11 @@ Created on 21.12.2016
 '''
 from threading import Thread
 from time import sleep
-from injector import Injector, Module, ClassProvider, singleton, provider,\
+from injector import Module, ClassProvider, singleton, provider,\
     inject
-from alexandriabase import AlexBaseModule, baseinjectorkeys
+from alexandriabase import baseinjectorkeys
 from alexandriabase.base_exceptions import NoSuchEntityException
-from alexandriabase.daos import DaoModule
 from alexandriabase.daos.basiccreatorprovider import BasicCreatorProvider
-from alexandriabase.services import ServiceModule
-from alexpresenters import PresentersModule
-from alexpresenters.messagebroker import CONF_DOCUMENT_WINDOW_READY,\
-    CONF_EVENT_WINDOW_READY
-from tkgui.mainwindows import MainWindowsModule
-from tkgui.dialogs import DialogsTkGuiModule
-from tkgui.components.references import WindowReferencesModule
 from tkgui import guiinjectorkeys
 from tkgui.main import SetupRunner, StartupTaskCheckDatabaseVersion, MainRunner,\
     StartupTaskPopulateWindows, build_injector
@@ -73,13 +65,7 @@ class AcceptanceTestModule(Module):
         #            ClassProvider(StartupTaskLogin), scope=singleton)
         binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
                     ClassProvider(StartupTaskPopulateWindows), scope=singleton)
-
-    @provider
-    @singleton
-    def provide_init_messages(self) -> guiinjectorkeys.INIT_MESSAGES_KEY:
-        return [CONF_DOCUMENT_WINDOW_READY, CONF_EVENT_WINDOW_READY]
         
-
     @provider
     @singleton
     @inject
@@ -197,7 +183,8 @@ class BaseAcceptanceTest(Thread, AcceptanceTestHelpers):
         try:
             self.test_suite()
             self.success = True
-        except:
+        except Exception as e:
+            print(e)
             pass
         
         if not self.success:
@@ -239,7 +226,8 @@ class BaseAcceptanceTest(Thread, AcceptanceTestHelpers):
         button), then waits for the gui to become idle again.
         '''
         
-        dialog.dialog.invoke(0)
+        #dialog.dialog.invoke(0)
+        dialog.presenter.ok_action()
         self.wait()
             
 class AcceptanceTestRunner:

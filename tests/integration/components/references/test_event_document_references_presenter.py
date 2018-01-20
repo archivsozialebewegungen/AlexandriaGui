@@ -95,7 +95,7 @@ class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):
         
         self.assertEqual(0, len(self.view.items))
         
-        self.view.new_documentid = 8
+        self.view.new_document_id = 8
         
         self.presenter.reference_document()
         
@@ -115,7 +115,7 @@ class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):
         self.set_current_event(1950000001)
         self.assertEqual(0, len(self.view.items))
         
-        self.view.new_documentid = None
+        self.view.new_document_id = None
         self.presenter.reference_document()
         
         self.assertEqual(0, len(self.view.items))
@@ -124,7 +124,7 @@ class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):
         self.set_current_event(1950000001)
         self.assertEqual(0, len(self.view.items))
         
-        self.view.new_documentid = 85
+        self.view.new_document_id = 85
         self.presenter.reference_document()
         
         self.assertEqual(0, len(self.view.items))
