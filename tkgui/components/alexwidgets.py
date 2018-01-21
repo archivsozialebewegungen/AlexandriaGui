@@ -21,7 +21,7 @@ from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
     Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox, Grid
 from tkinter.tix import Tk
 from tkinter.constants import END, DISABLED, ALL, Y, N, S, E, W, LEFT, NORMAL,\
-    HORIZONTAL, GROOVE
+    HORIZONTAL, GROOVE, SUNKEN
 from alexandriabase.domain import AlexDate
 from builtins import Exception
 from tkinter.ttk import Combobox, Scrollbar
@@ -359,6 +359,25 @@ class AlexListBox(Frame):
         for i in range(0, len(self.items)):
             if self.items[i] == selection:
                 self.listbox.selection_set(i)
+
+class AlexScrolledCanvasFrame(Frame):
+    
+    def __init__(self, parent, width=20, height=10):
+        
+        super().__init__(parent, bd=4, relief=SUNKEN)
+        
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        
+        self.canvas = Canvas(self, width=width, height=height)
+        self.canvas.grid(row=0, column=0, sticky=N+S+E+W)
+        scrollbar_y = AlexScrollbar(self, command=self.canvas.yview)
+        scrollbar_y.grid(row=0, column=1, sticky=N+S)
+        self.canvas.configure(yscrollcommand=scrollbar_y.set)
+        scrollbar_x = AlexScrollbar(self, command=self.canvas.xview,
+                                orient=HORIZONTAL)
+        scrollbar_x.grid(row=1, column=0, sticky=E+W)
+        self.canvas.configure(xscrollcommand=scrollbar_x.set)
         
 class AlexComboBox(Combobox):
     '''

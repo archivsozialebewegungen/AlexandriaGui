@@ -11,7 +11,6 @@ from alexandriabase.services import ServiceModule
 from alexpresenters import PresentersModule
 from tkgui import guiinjectorkeys
 from tkgui.components.references import WindowReferencesModule
-from tkgui.mainwindows import MainWindowsModule
 from alexpresenters.messagebroker import Message, \
     REQ_GOTO_FIRST_DOCUMENT, REQ_GOTO_FIRST_EVENT, CONF_SETUP_FINISHED, REQ_QUIT
 import os
@@ -19,9 +18,10 @@ import Pmw
 import logging
 import socket
 from tkgui.PluginManager import PluginManager
-from tkgui.mainwindows.fileviewers import DocumentViewersModule
 from tkgui.Dialogs import DialogsTkGuiModule
 from alexpresenters.DialogPresenters import LoginCreatorProvider
+from tkgui.MainWindows import MainWindowsModule
+from tkgui.FileViewers import DocumentViewersModule
 
 class StartupTaskCheckDatabaseVersion():
     

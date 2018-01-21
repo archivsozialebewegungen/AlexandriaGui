@@ -3,15 +3,16 @@ Created on 16.04.2016
 
 @author: michael
 '''
-import Pmw
-from tkinter import messagebox, Frame, Toplevel
-from tkinter.constants import LEFT, VERTICAL, NW, BOTH, YES, NE
+from tkinter import messagebox, Frame
+from tkinter.constants import LEFT, NW, BOTH, YES, NE, ALL, X
 from PIL.ImageTk import PhotoImage
 from PIL import Image
 import os
 from injector import Module, inject, provider, singleton, Key, ClassProvider
 from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
+from tkgui.components.alexwidgets import AlexButton, AlexScrolledCanvasFrame
+from tkinter.messagebox import showinfo
 
 DOCUMENT_DEFAULT_VIEWER_KEY = Key('document_default_viewer_key')
 DOCUMENT_GRAPHICS_VIEWER_KEY = Key('document_graphics_viewer_key')
@@ -43,16 +44,11 @@ class GraphicsViewer():
         self.display_frame.pack(anchor=NE, side=LEFT, fill=BOTH, expand = YES)
         self.button_frame = Frame(self.window)
         self.button_frame.pack(anchor=NW, side=LEFT)
-        self.buttonbox = Pmw.ButtonBox(self.button_frame,  # @UndefinedVariable
-                                       orient=VERTICAL,
-                                       pady=0,
-                                       padx=0)
-        self.buttonbox.pack(anchor=NW)
-        self.buttonbox.add('Zoom 15%', command=lambda f=self.Zoom, p=15: f(p))
-        self.buttonbox.add('Zoom -15%', command=lambda f=self.Zoom, p=-15: f(p))
-        self.buttonbox.add('Zoom 50%', command=lambda f=self.Zoom, p=50: f(p))
-        self.buttonbox.add('Zoom -50%', command=lambda f=self.Zoom, p=-50: f(p))
-        self.buttonbox.add('Quit', command=self.window.withdraw)
+        AlexButton(self.button_frame, text=_('Zoom 15%'), command=lambda f=self.Zoom, p=15: f(p)).pack(fill=X, expand=YES)
+        AlexButton(self.button_frame, text=_('Zoom -15%'), command=lambda f=self.Zoom, p=-15: f(p)).pack(fill=X, expand=YES)
+        AlexButton(self.button_frame, text=_('Zoom 50%'), command=lambda f=self.Zoom, p=50: f(p)).pack(fill=X, expand=YES)
+        AlexButton(self.button_frame, text=_('Zoom -50%'), command=lambda f=self.Zoom, p=-50: f(p)).pack(fill=X, expand=YES)
+        AlexButton(self.button_frame, text=_('Quit'), command=self.window.withdraw).pack(fill=X, expand=YES)
         self.canvas = None
         self.window.withdraw()
 
@@ -63,13 +59,11 @@ class GraphicsViewer():
         if self.canvas:
             self.canvas.destroy()
             
-        self.canvas = Pmw.ScrolledCanvas(self.display_frame, usehullsize=1,  # @UndefinedVariable
-                                     hull_width=500,
-                                     hull_height=500)
-        self.img_canvas = self.canvas.component('canvas')
-        self.img_canvas.create_image(1,1, image=self.photo_image, anchor=NW)
-        self.canvas.pack(fill=BOTH, expand=YES)
-        self.canvas.resizescrollregion()
+        self.canvas_frame = AlexScrolledCanvasFrame(self.display_frame, width=500, height=500)
+        self.canvas = self.canvas_frame.canvas
+        self.canvas.create_image(1,1, image=self.photo_image, anchor=NW)
+        self.canvas_frame.pack(fill=BOTH, expand=YES)
+        self.canvas.configure(scrollregion=self.canvas.bbox(ALL))
         self.window.deiconify()
 
     def LoadImage(self, file, resolution):
@@ -88,11 +82,11 @@ class GraphicsViewer():
         width = int(self.image.size[0] * self.factor)
         height = int(self.image.size[1] * self.factor)
         tmpimg = self.image.resize((width, height))
-        self.img_canvas.delete(self.photo_image)
+        self.canvas.delete(self.photo_image)
         self.photo_image = PhotoImage(tmpimg)
-        self.img_canvas.create_image(1,1, image=self.photo_image, anchor=NW)
-        self.canvas.resizescrollregion()
-    
+        self.canvas.create_image(1,1, image=self.photo_image, anchor=NW)
+        self.canvas.configure(scrollregion=self.canvas.bbox(ALL))
+            
     def Quit(self):
         self.window.destroy()
 
@@ -120,13 +114,7 @@ class ExternalViewer(object):
         else:
             text = _('The external viewer {} is not accessible.')\
                 .format(self.external_programm)
-            dialog = Pmw.MessageDialog(  # @UndefinedVariable
-                None,
-                title = _("Not accessible"),
-                defaultbutton = 0,
-                message_text = text
-                )
-            dialog.activate()
+            showinfo(_('OK'), text, title=_("Not accessible"))
 
 class DocumentViewersModule(Module):
 
