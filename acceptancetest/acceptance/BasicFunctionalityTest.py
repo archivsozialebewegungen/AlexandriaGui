@@ -4,11 +4,10 @@ Created on 13.12.2015
 @author: michael
 '''
 from alexandriabase.domain import AlexDate
-from tkgui.mainwindows.BaseWindow import BaseWindow
 from acceptance.AcceptanceTestUtils import BaseAcceptanceTest, AcceptanceTestRunner,\
     set_date, set_date_range
-from tkgui.mainwindows import EventWindow
 import os
+from tkgui.MainWindows import BaseWindow, EventWindow
 
 class BasicFunctionalityTest(BaseAcceptanceTest):
 

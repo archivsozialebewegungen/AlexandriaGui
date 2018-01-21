@@ -6,13 +6,12 @@ Created on 20.11.2015
 from tkinter.constants import END
 from tkinter import Entry, Label, Frame
 import os
-import Pmw
-from tkgui.mainwindows.BaseWindow import BaseWindow
 from alex_test_utils import get_testfiles_dir
 from alexandriabase.domain import Entity, Event, Document,\
     AlexDateRange, DocumentFileInfo, EventType, Tree, EventTypeIdentifier
 from alexandriabase.services.fileformatservice import FileFormatService
 from alexandriabase.config import Config
+from tkgui.MainWindows import BaseWindow
 
 
 class StringDialogStub:

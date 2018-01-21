@@ -14,7 +14,6 @@ from tkgui.components.references import WindowReferencesModule
 from alexpresenters.messagebroker import Message, \
     REQ_GOTO_FIRST_DOCUMENT, REQ_GOTO_FIRST_EVENT, CONF_SETUP_FINISHED, REQ_QUIT
 import os
-import Pmw
 import logging
 import socket
 from tkgui.PluginManager import PluginManager
