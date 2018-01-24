@@ -1,8 +1,7 @@
 from tkgui.components.alexwidgets import AlexEntry, AlexButton, AlexLabel,\
-    AlexDateEntry, AlexMessageBar, AlexComboBox, AlexListBox
-from tkinter.ttk import Button
+    AlexDateEntry, AlexMessageBar, AlexComboBox, AlexListBox, AlexTree
 from tkinter.constants import TOP, BOTH, TRUE
-from alexandriabase.domain import InvalidDateException
+from alexandriabase.domain import InvalidDateException, Tree
 from alexpresenters.messagebroker import MessageBroker, ERROR_MESSAGE, Message
 from manual.manual_tester import AbstractComponentTest, TestRunner
 
@@ -16,7 +15,7 @@ class AlexDateEntryTest(AbstractComponentTest):
         super().test_component(master, message_label)
         self.entry_widget = AlexDateEntry(self.master)
         self.entry_widget.pack(side=TOP, fill=BOTH, expand=TRUE)
-        Button(self.master,
+        AlexButton(self.master,
                text="Get entry",
                command=self._show_result).pack(side=TOP)
 
@@ -48,8 +47,8 @@ class AlexLabelTest(AbstractComponentTest):
         self.entry1.set("Enter label text")
         self.entry1.grid(row=0, column=1)
 
-        Button(master, text='Set label text', command=self._set_label_text).grid(row=1, column=0)
-        Button(master, text='Set entry from label', command=self._set_entry_from_label).grid(row=1, column=1)
+        AlexButton(master, text='Set label text', command=self._set_label_text).grid(row=1, column=0)
+        AlexButton(master, text='Set entry from label', command=self._set_entry_from_label).grid(row=1, column=1)
         
     def _set_label_text(self):
         
@@ -86,7 +85,7 @@ class AlexEntryTest(AbstractComponentTest):
         self.entry2.set("Entry 2 text")
         self.entry2.grid(row=1, column=1)
         
-        Button(master, text='Switch input', command=self._switch_input).grid(row=2, column=1)
+        AlexButton(master, text='Switch input', command=self._switch_input).grid(row=2, column=1)
         
     def _switch_input(self):
         
@@ -114,7 +113,7 @@ class AlexMessageBarTest(AbstractComponentTest):
     def add_button(self, master):
 
         message = Message(ERROR_MESSAGE, messagetype='error', message='An error has occurred')
-        button = Button(master, text='Send error message',
+        button = AlexButton(master, text='Send error message',
                                 command=lambda m=message: self.message_broker.send_message(m))
         button.pack(side=TOP)
 
@@ -139,7 +138,7 @@ class AlexComboBoxTest(AbstractComponentTest):
         self.combobox = AlexComboBox(master)
         self.combobox.pack()
         
-        self.button = Button(master, text="Add item", command=self.add_item)
+        self.button = AlexButton(master, text="Add item", command=self.add_item)
         self.button.pack()
         
     def add_item(self):
@@ -168,9 +167,9 @@ class AlexListBoxTest(AbstractComponentTest):
         self.listbox = AlexListBox(master, selectioncommand=self.callback)
         self.listbox.pack()
         
-        Button(master, text="Add item", command=self.add_item).pack()
-        Button(master, text="Show selection", command=self.show_selection).pack()
-        Button(master, text="Select third", command=self.select_third).pack()
+        AlexButton(master, text="Add item", command=self.add_item).pack()
+        AlexButton(master, text="Show selection", command=self.show_selection).pack()
+        AlexButton(master, text="Select third", command=self.select_third).pack()
         
     def callback(self, item):
         
@@ -198,6 +197,61 @@ class AlexListBoxTest(AbstractComponentTest):
         self.message_label = message_label
         self.create_view(master)
         
+class AlexTreeTest(AbstractComponentTest):
+    '''
+    Test class to test the working of the widget. The systematic_references_presenter is
+    initialized with mock implementations of the dependencies. There
+    should also be a an integration test for the presenter.
+    '''
+
+    class Entity():
+
+        def __init__(self, id, parent_id):
+            
+            self.id = id
+            self.parent_id = parent_id
+            
+        def __str__(self):
+            
+            return "entity %d" % self.id
+        
+        def __lt__(self, other):
+            return self.id < other.id
+
+            
+        def __gt__(self, other):
+            return self.id > other.id
+        
+    def __init__(self):
+        super().__init__()
+        self.name = "Tree"
+        self.entities = [AlexTreeTest.Entity(0, None),
+                         AlexTreeTest.Entity(1, 0),
+                         AlexTreeTest.Entity(2, 0),
+                         AlexTreeTest.Entity(3, 1),
+                         AlexTreeTest.Entity(4, 1),
+                         AlexTreeTest.Entity(5, 2),
+                         AlexTreeTest.Entity(6, 2)]
+            
+    def create_view(self, master):
+        
+        self.tree_widget = AlexTree(master, Tree(self.entities), "Treetest")
+        self.tree_widget.pack()
+        AlexButton(master, text="Show selected", command=self.show_selection).pack()
+        AlexButton(master, text="Select entity 3", command=self.set_selected).pack()
+    
+    def show_selection(self):
+        
+        self.message_label.set(self.tree_widget.get())
+        
+    def set_selected(self):
+        
+        self.tree_widget.set(3)    
+        
+    def test_component(self, master, message_label):
+        self.message_label = message_label
+        self.create_view(master)
+        
 
 if __name__ == '__main__':
     test_classes = []
@@ -207,5 +261,6 @@ if __name__ == '__main__':
     test_classes.append(AlexMessageBarTest)
     test_classes.append(AlexComboBoxTest)
     test_classes.append(AlexListBoxTest)
+    test_classes.append(AlexTreeTest)
     test_runner = TestRunner(test_classes)
     test_runner.run()

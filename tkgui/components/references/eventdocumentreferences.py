@@ -6,8 +6,7 @@ Created on 03.10.2015
 
 from injector import inject
 from tkgui import guiinjectorkeys
-from tkgui.components.references.basereference import ReferencesWidgetFactory,\
-    ReferenceView, Action
+from tkgui.References import ReferencesWidgetFactory, ReferenceView, Action
 
 class EventDocumentReferencesWidgetFactory(ReferencesWidgetFactory):
     '''

@@ -3,10 +3,9 @@ Created on 02.11.2015
 
 @author: michael
 '''
-from tkgui.components.references.basereference import ReferencesWidgetFactory,\
-    ReferenceView, Action
 from injector import inject
 from tkgui import guiinjectorkeys
+from tkgui.References import ReferencesWidgetFactory, ReferenceView, Action
 
 class DocumentFileReferencesWidgetFactory(ReferencesWidgetFactory):
     '''

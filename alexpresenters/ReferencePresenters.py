@@ -1,14 +1,13 @@
 '''
-Created on 23.10.2015
+Created on 22.01.2018
 
 @author: michael
 '''
 from injector import inject
 from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
-from alexpresenters.messagebroker import CONF_EVENT_CHANGED,\
-    Message, REQ_SAVE_CURRENT_EVENT
-
+from alexpresenters.messagebroker import CONF_EVENT_CHANGED, Message,\
+    REQ_SAVE_CURRENT_EVENT
 class EventTypeReferencesPresenter:
     '''
     Handles the relations from document to events

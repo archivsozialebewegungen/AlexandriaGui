@@ -7,7 +7,7 @@ from tkinter import Button, Frame
 from tkinter.constants import LEFT, TOP, BOTH, SOLID, TRUE, NW
 from alexpresenters.messagebroker import MessageBroker
 from tkgui.components.alexwidgets import AlexLabel, AlexListBox
-from tkgui.mainwindows.BaseWindow import WindowManager
+from tkgui.MainWindows import WindowManager
 
 class AbstractComponentTest:
     
@@ -33,7 +33,7 @@ class TestRunner:
         self.create_test_instances(test_classes)
         
         self.root = self.window_manager.create_new_window()
-        geometry = '800x300'
+        geometry = '800x450'
         self.root.geometry(geometry)
         
         self.test_frame = None

@@ -10,7 +10,7 @@ from tkgui.components.references.documenteventreferences import DocumentEventRef
     DocumentEventReferencesView
 from tkgui.components.references.eventdocumentreferences import EventDocumentReferencesView,\
     EventDocumentReferencesWidgetFactory
-from tkgui.components.references.event_type_references import EventTypeReferencesWidgetFactory,\
+from tkgui.References import EventTypeReferencesWidgetFactory,\
     EventTypeReferencesView
 
 class WindowReferencesModule(Module):

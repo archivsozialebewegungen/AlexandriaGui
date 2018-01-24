@@ -579,10 +579,10 @@ class AlexTree(Frame):  # @UndefinedVariable
         l.set(label)
         l.grid(row=0, column=0, sticky=E+N)
 
-        xscrollbar = Scrollbar(self, orient=HORIZONTAL)
+        xscrollbar = AlexScrollbar(self, orient=HORIZONTAL)
         xscrollbar.grid(row=2, column=0, sticky=E+W)
 
-        yscrollbar = Scrollbar(self)
+        yscrollbar = AlexScrollbar(self)
         yscrollbar.grid(row=1, column=1, sticky=N+S)
 
         canvasframe = Frame(self, bd=4, relief=GROOVE)
@@ -614,13 +614,50 @@ class AlexTree(Frame):  # @UndefinedVariable
         
     def expand_all(self):
         self.tree_root.expand_recursive()
-        
+    
     def clear_filter(self):
         self.tree.clear_filter()
         self.redraw_tree()
 
     def get(self):
         return self.selected
+
+    def set(self, entity_id):
+        '''
+        This is quite complicated. We need to
+        expand the tree recursively. This is done
+        in _get_tree_item.
+        '''
+        self.tree_root.deselectall()
+        entity = self.tree.get_by_id(entity_id)
+        item = self._get_tree_item(entity)
+        item.select()
+        
+    def _get_tree_item(self, entity):
+        '''
+        Recursively get the parent tree item,
+        then expand it (so the children become
+        searchable), search the child and
+        return it.
+        '''
+
+        if entity.parent_id is None:
+            # OK, our recursion has ended
+            return self.tree_root
+        else:
+            # Still not at root. Get the parent.
+            parent = self.tree.get_by_id(entity.parent_id)
+            parent_node = self._get_tree_item(parent)
+        
+        # Now we have the parent node, so we can expand it
+        # a) to show the children on the canvas and
+        # b) to make the children property searchable    
+        parent_node.expand()
+        
+        # Now we can search for the child node
+        for child_node in parent_node.children:
+            if child_node.item.node.id == entity.id:
+                return child_node
 
     def _get_selected(self):
         return self.tree_root.selected_item()

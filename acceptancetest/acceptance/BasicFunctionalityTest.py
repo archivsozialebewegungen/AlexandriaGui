@@ -3,7 +3,7 @@ Created on 13.12.2015
 
 @author: michael
 '''
-from alexandriabase.domain import AlexDate
+from alexandriabase.domain import AlexDate, EventTypeIdentifier
 from acceptance.AcceptanceTestUtils import BaseAcceptanceTest, AcceptanceTestRunner,\
     set_date, set_date_range
 import os
@@ -31,18 +31,25 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         # Filtering
         print("\nChecking filtering")
         print("==================")
-        self.check_filtering_events()
-        self.check_filtering_events_with_empty_selection()
-        self.check_filtering_documents()
-        self.check_filtering_documents_with_empty_selection()
+        #self.check_filtering_events()
+        #self.check_filtering_events_with_empty_selection()
+        #self.check_filtering_documents()
+        #self.check_filtering_documents_with_empty_selection()
         
         # References
         print("\nChecking event cross references")
-        print("=================================")
+        print("================================")
 
-        self.check_event_cross_reference_goto()
-        self.check_event_cross_reference_new()
-        self.check_event_cross_reference_delete()
+        #self.check_event_cross_reference_goto()
+        #self.check_event_cross_reference_new()
+        #self.check_event_cross_reference_delete()
+        
+        print("\nChecking event type references")
+        print("===============================")
+
+        self.check_event_type_reference_new()
+        self.check_event_type_reference_delete()
+
 
         # Save
         print("\nChecking saving")
@@ -310,6 +317,46 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         reference.listbox.set(self.get_event(1961050101))       
 
         reference.presenter.delete_cross_reference()
+
+        self.assertEquals(len(reference.items), 2)
+                
+        print("OK")
+
+    def check_event_type_reference_new(self):
+        print("Checking create new event type reference...", end='')
+        reference= self.event_window.references[2]
+        dialog = reference.event_type_selection_dialog
+        
+        self.event_window_presenter.goto_first()
+
+        self.assertEquals(len(reference.items), 2)        
+
+        self.start_dialog(reference._get_new_event_type)
+        dialog.presenter.set_tree()
+        dialog.tree_widget.set(EventTypeIdentifier(3,2))
+        dialog.presenter.ok_action()
+        self.wait()
+
+        self.assertEquals(len(reference.items), 3)
+                
+        print("OK")
+
+    def check_event_type_reference_delete(self):
+        
+        print("Checking deleting event type reference...", end='')
+        reference= self.event_window.references[2]
+
+        self.event_window_presenter.goto_first()
+
+        self.assertEquals(len(reference.items), 3)
+        
+        items = reference.listbox.get_items()
+        identifier = EventTypeIdentifier(3,2)
+        for item in items:
+            if item.id == identifier:
+                reference.listbox.set(item)   
+
+        reference.presenter.remove_event_type_reference()
 
         self.assertEquals(len(reference.items), 2)
                 

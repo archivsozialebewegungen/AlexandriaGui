@@ -10,7 +10,6 @@ from alexpresenters.components.references.documentfilereferencespresenter import
 from alexpresenters.components.references.eventdocumentreferencespresenter import EventDocumentReferencesPresenter
 from alexpresenters.mainwindows.PostProcessors import DocumentTypePostProcessor,\
     JournalDocTypePostProcessor
-from alexpresenters.components.references.event_type_references_presenter import EventTypeReferencesPresenter
 from alexpresenters.DialogPresenters import AbstractInputDialogPresenter,\
     EventSelectionPresenter, DateSelectionDialogPresenter,\
     EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter,\
@@ -18,6 +17,7 @@ from alexpresenters.DialogPresenters import AbstractInputDialogPresenter,\
     EventTypeSelectionPresenter, DocumentFilterDialogPresenter,\
     EventFilterDialogPresenter, LoginDialogPresenter,\
     GenericInputDialogPresenter
+from alexpresenters.ReferencePresenters import EventTypeReferencesPresenter
 
 class PresentersModule(Module):
     
