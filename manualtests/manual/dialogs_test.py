@@ -24,10 +24,10 @@ from unittest.mock import MagicMock
 from alexandriabase.services.creatorservice import CreatorService
 import os
 from alex_test_utils import get_testfiles_dir
-from tkgui.mainwindows.fileviewers import GraphicsViewer, ExternalViewer
 from manual.manual_tester import AbstractComponentTest, TestRunner
 from WindowTestHelpers import EventServiceStub
 from alexandriabase.config import Config
+from tkgui.FileViewers import GraphicsViewer, ExternalViewer
 
 class DialogTest(AbstractComponentTest):
     
@@ -294,7 +294,7 @@ class FilterDialogsTest(DialogTest):
             self.message_label.set('You canceled!')
             return
         self.message_label.set("%s - %s" % (self._create_searchterm_string(filter_object),
-                                        filter_object.location))
+                                        filter_object.signature))
         
     def _show_event_filter(self):
         self.event_filter_dialog.activate(self._event_filter_callback)

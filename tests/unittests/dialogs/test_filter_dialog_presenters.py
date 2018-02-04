@@ -45,7 +45,7 @@ class DocumentFilterDialogPresenterTest(unittest.TestCase):
         
         self.assertEqual(DocumentFilter, document_filter.__class__)
         self.assertEqual(['One', 'Two'], document_filter.searchterms) 
-        self.assertEqual("1.2.III-4", document_filter.location)
+        self.assertEqual("1.2.III-4", document_filter.signature)
         
 class EventFilterDialogPresenterTest(unittest.TestCase):
 
