@@ -1,7 +1,7 @@
 '''
 Created on 21.11.2015
 
-This module mostly wrapy tkinter widgets to get them a
+This module mostly wraps tkinter widgets to get them a
 uniform interface: get() and set(). For text widgets,
 get always returns an empty string and this also is what
 gui classes should return. Conversion and interpretation
@@ -126,21 +126,23 @@ class AlexLabel(Label):
     '''
     Wraps the tkinter.Label class.
     '''
+    def __init__(self, *params, **kw):
+        
+        super().__init__(*params, **kw)
+        self.object = None
     
-    def set(self, text):
+    def set(self, object):
         '''
-        Sets the text as given. The input does not need to be
-        a string: Other values or objects are converted to a
-        string.
+        Sets the string representation of the given object.
         '''
-        self.configure(text="%s" % text)
+        self.object = object
+        self.configure(text="%s" % object)
         
     def get(self):
         '''
-        Returns the value as string, stripped of leading and
-        trailing blanks.
+        Returns the object.
         '''
-        return self.config()['text'][-1].strip()
+        return self.object
 
 class AlexText(Text):
     '''
@@ -201,7 +203,10 @@ class AlexButton(Button):
     '''
     
     def __init__(self, *params, **kw):
+        
         self.textvar = StringVar()
+        self.object = None
+        
         super().__init__(*params, textvariable=self.textvar, **kw)
         if 'text' in kw:
             self.set(kw['text'])
@@ -210,16 +215,17 @@ class AlexButton(Button):
         '''
         Converts the value to string, strips it of leading and
         trailing whitspaces and sets it as button value.
+        The original object is preserved.
         '''
+        self.object = value
         text = "%s" % value
         self.textvar.set(text.strip())
         
     def get(self):
         '''
-        Returns the text of the button, stripped of leading and
-        trailing whitspaces.
+        Returns the initial object.
         '''
-        return self.textvar.get().strip()
+        return self.object
     
 class AlexCheckBox(Checkbutton):
     '''
