@@ -9,7 +9,7 @@ from injector import Module, ClassProvider, singleton, provider,\
     inject
 from alexandriabase import baseinjectorkeys
 from alexandriabase.base_exceptions import NoSuchEntityException
-from alexandriabase.daos.basiccreatorprovider import BasicCreatorProvider
+from alexandriabase.daos import BasicCreatorProvider
 from tkgui import guiinjectorkeys
 from tkgui.main import SetupRunner, StartupTaskCheckDatabaseVersion, MainRunner,\
     StartupTaskPopulateWindows, build_injector

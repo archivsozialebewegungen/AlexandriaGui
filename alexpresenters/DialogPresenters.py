@@ -8,6 +8,7 @@ from alexandriabase.domain import AlexDate, InvalidDateException, AlexDateRange,
     DocumentFilter, EventFilter, GenericFilter
 from injector import inject
 from alexandriabase import baseinjectorkeys
+from alexpresenters import _
 
 class AbstractInputDialogPresenter(object):
     '''

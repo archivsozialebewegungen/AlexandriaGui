@@ -9,7 +9,7 @@ from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
 from alexpresenters.messagebroker import Message, CONF_DOCUMENT_CHANGED,\
     ERROR_MESSAGE
-from alexpresenters import PresentersModule
+from alexpresenters import _, PresentersModule
 from tkgui.components.references.documentfilereference import DocumentFileReferencesView
 from alex_test_utils import TestEnvironment, MODE_FULL
 import os

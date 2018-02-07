@@ -6,6 +6,7 @@ Created on 30.01.2016
 from injector import inject
 from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
+from alexpresenters import _
 from alexpresenters.messagebroker import CONF_DOCUMENT_CHANGED, Message, \
     ERROR_MESSAGE, REQ_SAVE_CURRENT_DOCUMENT
 from alexandriabase.services import UnsupportedFileFormat,\

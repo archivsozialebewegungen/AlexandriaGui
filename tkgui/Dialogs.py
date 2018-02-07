@@ -9,7 +9,7 @@ from tkinter import Frame, filedialog
 from tkgui.components.alexwidgets import AlexLabel, AlexButton, AlexEntry,\
     AlexRadioGroup, AlexComboBox, DateEntryFrame, AlexDateEntry, AlexListBox,\
     AlexTree, AlexCheckBox
-from tkgui import guiinjectorkeys
+from tkgui import guiinjectorkeys, _
 from injector import inject, Module, ClassProvider, singleton
 from alexandriabase import baseinjectorkeys
 

@@ -18,15 +18,15 @@ the expected object can't be properly initialized.
 # pylint: disable=arguments-differ
 
 from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
-    Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox, Grid
+    Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox
 from tkinter.tix import Tk
-from tkinter.constants import END, DISABLED, ALL, Y, N, S, E, W, LEFT, NORMAL,\
+from tkinter.constants import END, DISABLED, ALL, N, S, E, W, LEFT, NORMAL,\
     HORIZONTAL, GROOVE, SUNKEN
 from alexandriabase.domain import AlexDate
 from builtins import Exception
 from tkinter.ttk import Combobox, Scrollbar
 from tkinter.tix import ComboBox
-from locale import atoi
+from tkgui import _
 try:
     # Python 3.4 and Python 3.5
     from idlelib.TreeWidget import TreeItem, TreeNode

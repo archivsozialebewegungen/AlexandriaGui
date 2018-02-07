@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-07 12:06+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: alexpresenters/mainwindows/PostProcessors.py:38
+msgid ""
+"\\s*(\\d{1,2}\\.|January|February|March|April|May|June|July|August|September|"
+"October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|May|Jun\\.|Jul\\.|Aug"
+"\\.|Sep\\.|Oct\\.|Nov\\.|Dec\\.)\\s*"
+msgstr ""
+
+#: alexpresenters/mainwindows/PostProcessors.py:41
+msgid "(from|,)\\s+"
+msgstr ""
+
+#: alexpresenters/components/references/documentfilereferencespresenter.py:71
+#, python-format
+msgid "File format '%s' is not supported!"
+msgstr ""
+
+#: alexpresenters/components/references/documentfilereferencespresenter.py:79
+#, python-brace-format
+msgid "File resolution {0:d} x {1:d} is not supported!"
+msgstr ""
+
+#: alexpresenters/components/references/documentfilereferencespresenter.py:90
+msgid "Unknown error while adding file"
+msgstr ""
+
+#: alexpresenters/components/references/documentfilereferencespresenter.py:108
+#, python-format
+msgid "Document %s not found"
+msgstr ""
+
+#: alexpresenters/DialogPresenters.py:120
+#, python-format
+msgid "'%s' is not a valid day!"
+msgstr ""
+
+#: alexpresenters/DialogPresenters.py:129
+#, python-format
+msgid "'%s' is not a valid month!"
+msgstr ""
+
+#: alexpresenters/DialogPresenters.py:136
+#, python-format
+msgid "'%s' is not a valid year!"
+msgstr ""

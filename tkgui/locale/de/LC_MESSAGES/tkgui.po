@@ -1,0 +1,379 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-07 12:07+0100\n"
+"PO-Revision-Date: 2018-02-07 12:08+0100\n"
+"Last-Translator: Michael Koltan <admin@archivsozialebewegungen.de>\n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: tkgui/References.py:98
+msgid "Hint"
+msgstr "Hinweis"
+
+#: tkgui/References.py:122
+msgid "Event types"
+msgstr "Ereignistypen"
+
+#: tkgui/References.py:133
+#: tkgui/components/references/eventcrossreferences.py:31
+#: tkgui/components/references/documenteventreferences.py:31
+#: tkgui/components/references/documentfilereference.py:33
+#: tkgui/components/references/eventdocumentreferences.py:43
+msgid "New"
+msgstr "Neu"
+
+#: tkgui/References.py:134
+#: tkgui/components/references/eventcrossreferences.py:32
+#: tkgui/components/references/documenteventreferences.py:32
+#: tkgui/components/references/documentfilereference.py:36
+#: tkgui/components/references/eventdocumentreferences.py:44
+msgid "Delete"
+msgstr "Löschen"
+
+#: tkgui/References.py:140
+msgid "Select new event type"
+msgstr "Neuen Ereignistyp auswählen"
+
+#: tkgui/Dialogs.py:105 tkgui/Dialogs.py:783 tkgui/FileViewers.py:117
+msgid "OK"
+msgstr "OK"
+
+#: tkgui/Dialogs.py:106 tkgui/Dialogs.py:161 tkgui/Dialogs.py:669
+#: tkgui/Dialogs.py:784
+msgid "Cancel"
+msgstr "Abbruch"
+
+#: tkgui/Dialogs.py:163
+msgid "Next >>"
+msgstr "Nächster >>"
+
+#: tkgui/Dialogs.py:166
+msgid "<< Prev"
+msgstr "<< Voriger"
+
+#: tkgui/Dialogs.py:169
+msgid "Finish"
+msgstr "Abschließen"
+
+#: tkgui/Dialogs.py:225
+msgid "Please edit string:"
+msgstr "Bitte Zeichenkette bearbeiten:"
+
+#: tkgui/Dialogs.py:249
+msgid "Please select:"
+msgstr "Bitte auswählen:"
+
+#: tkgui/Dialogs.py:272
+msgid "Select yes or no"
+msgstr "Wählen Sie JA oder NEIN"
+
+#: tkgui/Dialogs.py:274 tkgui/main.py:42
+msgid "Yes"
+msgstr "Ja"
+
+#: tkgui/Dialogs.py:275 tkgui/main.py:42 tkgui/main.py:45
+msgid "No"
+msgstr "Nein"
+
+#: tkgui/Dialogs.py:280
+msgid "MO"
+msgstr "MO"
+
+#: tkgui/Dialogs.py:280
+msgid "TU"
+msgstr "DI"
+
+#: tkgui/Dialogs.py:280
+msgid "WE"
+msgstr "MI"
+
+#: tkgui/Dialogs.py:280
+msgid "TH"
+msgstr "DO"
+
+#: tkgui/Dialogs.py:280
+msgid "FR"
+msgstr "FR"
+
+#: tkgui/Dialogs.py:280
+msgid "SA"
+msgstr "SA"
+
+#: tkgui/Dialogs.py:280
+msgid "SU"
+msgstr "SO"
+
+#: tkgui/Dialogs.py:304
+msgid "Please select year"
+msgstr "Bitte Jahr auswählen"
+
+#: tkgui/Dialogs.py:536
+msgid "Please enter the event date:"
+msgstr "Bitte das Ereignisdatum eingeben:"
+
+#: tkgui/Dialogs.py:545
+msgid "Please select an event:"
+msgstr "Bitte ein Ereignis auswählen:"
+
+#: tkgui/Dialogs.py:589
+msgid "Create new event"
+msgstr "Neues Ereignis anlegen"
+
+#: tkgui/Dialogs.py:591
+#, python-format
+msgid ""
+"Events exist on %s. Please select the event you want or create a new one"
+msgstr ""
+"Es existieren bereits Ereignisse am %s. Bitte wähle ein Ereignis aus oder "
+"erstelle ein neues."
+
+#: tkgui/Dialogs.py:602
+msgid "Goto event"
+msgstr "Gehe zu Ereignis"
+
+#: tkgui/Dialogs.py:616
+msgid "Select a tree node"
+msgstr "Bitte Baumknoten auswählen"
+
+#: tkgui/Dialogs.py:667
+msgid "Set filter"
+msgstr "Filter setzen"
+
+#: tkgui/Dialogs.py:668
+msgid "Clear form"
+msgstr "Formular löschen"
+
+#: tkgui/Dialogs.py:673
+#, python-format
+msgid "%d. search expression:"
+msgstr "%d. Suchausdruck"
+
+#: tkgui/Dialogs.py:702
+msgid "Signature:"
+msgstr "Signatur:"
+
+#: tkgui/Dialogs.py:723
+msgid "Earliest Date"
+msgstr "Frühestes Datum"
+
+#: tkgui/Dialogs.py:725
+msgid "Latest Date"
+msgstr "Spätestes Datum"
+
+#: tkgui/Dialogs.py:728
+msgid "Only local events"
+msgstr "Nur lokale Ereignisse"
+
+#: tkgui/Dialogs.py:733
+msgid "Only unverified events"
+msgstr "Nur unbestätigte Ereignisse"
+
+#: tkgui/components/references/eventcrossreferences.py:23
+msgid "Crossreferences"
+msgstr "Querverweise"
+
+#: tkgui/components/references/eventcrossreferences.py:30
+#: tkgui/components/references/documenteventreferences.py:30
+#: tkgui/components/references/eventdocumentreferences.py:42
+msgid "Goto"
+msgstr "Gehe zu"
+
+#: tkgui/components/references/documenteventreferences.py:23
+msgid "Related events"
+msgstr "Verknüpfte Ereignisse"
+
+#: tkgui/components/references/documentfilereference.py:26
+msgid "Document files"
+msgstr "Dokumentdateien"
+
+#: tkgui/components/references/documentfilereference.py:34
+msgid "Replace"
+msgstr "Ersetzen"
+
+#: tkgui/components/references/documentfilereference.py:35
+msgid "Show"
+msgstr "Anzeigen"
+
+#: tkgui/components/references/eventdocumentreferences.py:30
+msgid "Related documents"
+msgstr "Verknüpfte Dokumente"
+
+#: tkgui/components/alexwidgets.py:49
+msgid "Date"
+msgstr "Datum"
+
+#: tkgui/main.py:40
+msgid "Database upgrade"
+msgstr "Datenbank-Aktualisierung"
+
+#: tkgui/main.py:41
+msgid "Your database needs an upgrade. Do you want to perform it now?"
+msgstr ""
+"Die Datenbank muß aktualisiert werden. Aktualisierung jetzt durchführen?"
+
+#: tkgui/FileViewers.py:28
+#, python-format
+msgid ""
+"There is no viewer available\n"
+"for the filetype %s."
+msgstr ""
+"Für den Dateityp %s\n"
+"steht kein Betrachter zur Verfügung."
+
+#: tkgui/FileViewers.py:29
+msgid "No viewer"
+msgstr "Kein Betrachter"
+
+#: tkgui/FileViewers.py:47
+msgid "Zoom 15%"
+msgstr "Zoom 15%"
+
+#: tkgui/FileViewers.py:48
+msgid "Zoom -15%"
+msgstr "Zoom -15%"
+
+#: tkgui/FileViewers.py:49
+msgid "Zoom 50%"
+msgstr "Zoom 50%"
+
+#: tkgui/FileViewers.py:50
+msgid "Zoom -50%"
+msgstr "Zoom -50%"
+
+#: tkgui/FileViewers.py:51 tkgui/MainWindows.py:180
+msgid "Quit"
+msgstr "Beenden"
+
+#: tkgui/FileViewers.py:115
+msgid "The external viewer {} is not accessible."
+msgstr "Auf das externe Anzeigeprogramm {} kann nicht zugegriffen werden."
+
+#: tkgui/FileViewers.py:117
+msgid "Not accessible"
+msgstr "Kein Zugriff möglich"
+
+#: tkgui/MainWindows.py:160 tkgui/MainWindows.py:161 tkgui/MainWindows.py:164
+#: tkgui/MainWindows.py:167 tkgui/MainWindows.py:170 tkgui/MainWindows.py:173
+#: tkgui/MainWindows.py:176 tkgui/MainWindows.py:179
+msgid "Records"
+msgstr "Datensätze"
+
+#: tkgui/MainWindows.py:162
+msgid "First record"
+msgstr "Erster Datensatz"
+
+#: tkgui/MainWindows.py:165
+msgid "Last record"
+msgstr "Letzter Datensatz"
+
+#: tkgui/MainWindows.py:168
+msgid "Next record"
+msgstr "Nächster Datensatz"
+
+#: tkgui/MainWindows.py:171
+msgid "Previous record"
+msgstr "Voriger Datensatz"
+
+#: tkgui/MainWindows.py:174
+msgid "New record"
+msgstr "Neuer Datensatz"
+
+#: tkgui/MainWindows.py:177
+msgid "Delete record"
+msgstr "Datensatz löschen"
+
+#: tkgui/MainWindows.py:183 tkgui/MainWindows.py:184 tkgui/MainWindows.py:187
+msgid "Navigation"
+msgstr "Navigation"
+
+#: tkgui/MainWindows.py:185
+msgid "Goto record"
+msgstr "Gehe zu Datensatz"
+
+#: tkgui/MainWindows.py:188
+msgid "Filtering"
+msgstr "Filtern"
+
+#: tkgui/MainWindows.py:265
+msgid "Filter is set!"
+msgstr "Filter ist gesetzt!"
+
+#: tkgui/MainWindows.py:310 tkgui/MainWindows.py:323
+msgid "No document available"
+msgstr "Kein Dokument vorhanden"
+
+#: tkgui/MainWindows.py:328
+msgid "Description"
+msgstr "Beschreibung"
+
+#: tkgui/MainWindows.py:335
+msgid "Condition"
+msgstr "Zustand"
+
+#: tkgui/MainWindows.py:342
+msgid "Keywords"
+msgstr "Schlüsselwörter"
+
+#: tkgui/MainWindows.py:380
+msgid "New document"
+msgstr "Neues Dokument"
+
+#: tkgui/MainWindows.py:382
+msgid "Document no.{0:d} ({1!s})"
+msgstr "Dokument Nr.{0:d} ({1!s})"
+
+#: tkgui/MainWindows.py:530
+msgid "No event to display!"
+msgstr "Kein Ereignis anzuzeigen!"
+
+#: tkgui/MainWindows.py:566
+msgid "not registered"
+msgstr "nicht erfasst"
+
+#: tkgui/MainWindows.py:566
+msgid "local"
+msgstr "lokal"
+
+#: tkgui/MainWindows.py:566
+msgid "countrywide"
+msgstr "landesweit"
+
+#: tkgui/MainWindows.py:566
+msgid "national"
+msgstr "national"
+
+#: tkgui/MainWindows.py:566
+msgid "international"
+msgstr "international"
+
+#: tkgui/MainWindows.py:567
+msgid "Location"
+msgstr "Ort"
+
+#: tkgui/MainWindows.py:571
+msgid "unconfirmed"
+msgstr "unbestätigt"
+
+#: tkgui/MainWindows.py:571
+msgid "probable"
+msgstr "wahrscheinlich"
+
+#: tkgui/MainWindows.py:571
+msgid "confirmed"
+msgstr "bestätigt"
+
+#: tkgui/MainWindows.py:572
+msgid "State"
+msgstr "Zustand"

@@ -9,7 +9,7 @@ from PIL.ImageTk import PhotoImage
 from PIL import Image
 import os
 from injector import Module, inject, provider, singleton, Key, ClassProvider
-from tkgui import guiinjectorkeys
+from tkgui import _, guiinjectorkeys
 from alexandriabase import baseinjectorkeys
 from tkgui.components.alexwidgets import AlexButton, AlexScrolledCanvasFrame
 from tkinter.messagebox import showinfo

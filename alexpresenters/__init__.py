@@ -1,3 +1,12 @@
+import gettext
+import os
+import sys
+
+packagedir = os.path.abspath(os.path.dirname(__file__))
+localedir = os.path.join(packagedir, 'locale')
+translate = gettext.translation('alexpresenters', localedir, fallback=True)
+_ = translate.gettext
+
 from injector import Module, singleton, provider,\
     ClassProvider, inject
 from tkgui import guiinjectorkeys
@@ -18,6 +27,7 @@ from alexpresenters.DialogPresenters import AbstractInputDialogPresenter,\
     EventFilterDialogPresenter, LoginDialogPresenter,\
     GenericInputDialogPresenter
 from alexpresenters.ReferencePresenters import EventTypeReferencesPresenter
+
 
 class PresentersModule(Module):
     

@@ -4,7 +4,7 @@ Created on 18.09.2015
 @author: michael
 '''
 from injector import inject
-from tkgui import guiinjectorkeys
+from tkgui import _, guiinjectorkeys
 from tkgui.References import ReferencesWidgetFactory, ReferenceView, Action
 
 class EventCrossReferencesWidgetFactory(ReferencesWidgetFactory):

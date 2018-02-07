@@ -16,6 +16,7 @@ from alexpresenters.messagebroker import Message, \
 import os
 import logging
 import socket
+from tkgui import _
 from tkgui.PluginManager import PluginManager
 from tkgui.Dialogs import DialogsTkGuiModule
 from alexpresenters.DialogPresenters import LoginCreatorProvider

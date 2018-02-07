@@ -8,6 +8,7 @@ from unittest.mock import MagicMock
 from alexandriabase.domain import AlexDateRange
 from alexpresenters.DialogPresenters import DateRangeSelectionDialogPresenter
 from tkgui.Dialogs import DateRangeSelectionDialog
+from alexpresenters import _
 
 
 class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
@@ -36,7 +37,7 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.presenter.ok_action()
                 
         self.assertEqual(None, self.view.return_value)
-        self.assertEqual(_("'bla' is not a valid day!"), self.view.errormessage)
+        self.assertEqual(_("'%s' is not a valid day!") % 'bla', self.view.errormessage)
 
     def test_illegal_start_date(self):
         
@@ -58,7 +59,7 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.presenter.ok_action()
         
         self.assertEqual(None, self.view.return_value)
-        self.assertEqual(_("'bla' is not a valid day!"), self.view.errormessage)
+        self.assertEqual(_("'%s' is not a valid day!") % 'bla', self.view.errormessage)
 
     def test_illegal_end_date(self):
         
@@ -69,7 +70,7 @@ class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
         self.presenter.ok_action()
         
         self.assertEqual(None, self.view.return_value)
-        self.assertEqual(_("Illegal date: 31.11.1961!"), self.view.errormessage)
+        self.assertEqual("Illegal date: 31.11.1961!", self.view.errormessage)
 
     def test_range(self):
         

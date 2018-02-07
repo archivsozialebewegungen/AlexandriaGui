@@ -8,7 +8,7 @@ from tkinter.constants import LEFT, NW, X, RIGHT, TOP, WORD, DISABLED, NORMAL,\
     FLAT, CENTER
 from injector import singleton, inject, Module, ClassProvider, InstanceProvider,\
     provider
-from tkgui import guiinjectorkeys
+from tkgui import _, guiinjectorkeys
 
 import os
 from alexpresenters.messagebroker import Message, CONF_SETUP_FINISHED,\

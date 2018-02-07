@@ -4,7 +4,7 @@ Created on 22.01.2018
 @author: michael
 '''
 from injector import inject
-from tkgui import guiinjectorkeys
+from tkgui import _, guiinjectorkeys
 from tkgui.components.alexwidgets import AlexLabel, AlexComboBox, AlexButton
 from tkinter.ttk import Frame
 from tkinter.constants import LEFT, RIDGE, X, DISABLED, NORMAL
