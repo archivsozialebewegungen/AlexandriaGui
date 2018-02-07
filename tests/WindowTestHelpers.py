@@ -9,7 +9,7 @@ import os
 from alex_test_utils import get_testfiles_dir
 from alexandriabase.domain import Entity, Event, Document,\
     AlexDateRange, DocumentFileInfo, EventType, Tree, EventTypeIdentifier
-from alexandriabase.services.fileformatservice import FileFormatService
+from alexandriabase.services import FileFormatService
 from alexandriabase.config import Config
 from tkgui.MainWindows import BaseWindow
 

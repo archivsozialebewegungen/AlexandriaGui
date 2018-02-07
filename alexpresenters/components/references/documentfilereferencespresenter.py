@@ -8,10 +8,8 @@ from tkgui import guiinjectorkeys
 from alexandriabase import baseinjectorkeys
 from alexpresenters.messagebroker import CONF_DOCUMENT_CHANGED, Message, \
     ERROR_MESSAGE, REQ_SAVE_CURRENT_DOCUMENT
-from alexandriabase.services.fileformatservice import UnsupportedFileFormat, \
-    UnsupportedFileResolution
-
-from alexandriabase.services.documentfilemanager import DocumentFileNotFound
+from alexandriabase.services import UnsupportedFileFormat,\
+    UnsupportedFileResolution, DocumentFileNotFound
 
 class DocumentFileReferencesPresenter():
     '''

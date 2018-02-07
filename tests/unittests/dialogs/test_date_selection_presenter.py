@@ -6,12 +6,10 @@ Created on 22.10.2015
 import unittest
 from unittest.mock import MagicMock
 from alexandriabase.domain import AlexDate
-import gettext
-from alexandriabase import get_locale_dir
+from alexandriabase import _
 from alexpresenters.DialogPresenters import DateSelectionDialogPresenter
 from tkgui.Dialogs import DateSelectionDialog
 
-gettext.install('alexandriabase', get_locale_dir())
 
 class DateSelectionDialogPresenterTest(unittest.TestCase):
 

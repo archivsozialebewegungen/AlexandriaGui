@@ -4,7 +4,6 @@ Created on 24.10.2015
 @author: michael
 '''
 import unittest
-from alexandriabase.daos.metadata import ALEXANDRIA_METADATA
 from alex_test_utils import load_table_data, clear_table_data, TestEnvironment,\
     MODE_SIMPLE, setup_database_schema, drop_database_schema
 from injector import Module, Injector, ClassProvider, singleton
@@ -13,13 +12,7 @@ from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
 from tkgui import guiinjectorkeys
 from daotests import test_base
-from alexandriabase.daos.basiccreatorprovider import BasicCreatorProvider
-import os
-from alexandriabase.domain import Document, DocumentType, Event, AlexDateRange,\
-    AlexDate
-from alexpresenters.messagebroker import CONF_DOCUMENT_CHANGED, Message,\
-    CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT, REQ_SAVE_CURRENT_DOCUMENT,\
-    MessageBroker
+from alexpresenters.messagebroker import MessageBroker
 
 
 class IntegrationTestModule(Module):

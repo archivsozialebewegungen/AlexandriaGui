@@ -5,7 +5,7 @@ Created on 27.05.2016
 '''
 import unittest
 from unittest.mock import MagicMock
-from alexandriabase.services.creatorservice import CreatorService
+from alexandriabase.services import CreatorService
 from alexandriabase.domain import Creator
 from alexpresenters.DialogPresenters import LoginDialogPresenter
 

@@ -5,7 +5,7 @@ Created on 02.04.2016
 '''
 import unittest
 from alexandriabase.domain import DocumentType, Document
-from alexandriabase.services.documenttypeservice import DocumentTypeService
+from alexandriabase.services import DocumentTypeService
 from unittest.mock import MagicMock
 from alexpresenters.mainwindows.PostProcessors import DocumentTypePostProcessor,\
     JournalDocTypePostProcessor
