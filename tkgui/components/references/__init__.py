@@ -1,7 +1,6 @@
 from injector import Module, ClassProvider, singleton, provider, inject,\
     InstanceProvider
 from tkgui import guiinjectorkeys
-from alexpresenters.components.references.eventcrossreferencespresenter import EventCrossReferencesPresenter
 from tkgui.components.references.eventcrossreferences import EventCrossReferencesWidgetFactory,\
     EventCrossReferencesView
 from tkgui.components.references.documentfilereference import DocumentFileReferencesView,\

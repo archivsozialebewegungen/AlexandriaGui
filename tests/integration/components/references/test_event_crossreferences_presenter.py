@@ -8,10 +8,10 @@ from unittest.mock import MagicMock
 from tkgui import guiinjectorkeys
 from tkgui.components.references.eventcrossreferences import EventCrossReferencesView
 from alexandriabase import baseinjectorkeys
-from alexpresenters import PresentersModule
-from alexpresenters.messagebroker import Message, CONF_EVENT_CHANGED,\
+from alexpresenters.MessageBroker import Message, CONF_EVENT_CHANGED,\
     REQ_SET_EVENT
 from ddt import ddt, data, unpack
+from alexpresenters.Module import PresentersModule
 from integration.components.references.basereferenceintegrationtest \
     import BaseReferenceIntegrationTest
 

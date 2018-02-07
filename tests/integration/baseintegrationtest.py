@@ -12,7 +12,7 @@ from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
 from tkgui import guiinjectorkeys
 from daotests import test_base
-from alexpresenters.messagebroker import MessageBroker
+from alexpresenters.MessageBroker import MessageBroker
 
 
 class IntegrationTestModule(Module):

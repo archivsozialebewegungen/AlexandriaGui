@@ -10,9 +10,9 @@ from tkgui.components.references.documentfilereference import DocumentFileRefere
 from alexandriabase import baseinjectorkeys
 from alexandriabase.domain import EventTypeIdentifier, \
     Event, AlexDateRange, AlexDate
-from alexpresenters.messagebroker import Message,  CONF_EVENT_CHANGED,\
+from alexpresenters.MessageBroker import Message,  CONF_EVENT_CHANGED,\
     REQ_SAVE_CURRENT_EVENT
-from alexpresenters import PresentersModule
+from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from ddt import ddt, data, unpack
 

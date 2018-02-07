@@ -7,7 +7,7 @@ import unittest
 from alexandriabase.domain import DocumentType, Document
 from alexandriabase.services import DocumentTypeService
 from unittest.mock import MagicMock
-from alexpresenters.mainwindows.PostProcessors import DocumentTypePostProcessor,\
+from alexpresenters.MainWindowPresenters import DocumentTypePostProcessor,\
     JournalDocTypePostProcessor
 
 class DocumentTypePostProcessorTest(unittest.TestCase):
@@ -21,11 +21,11 @@ class DocumentTypePostProcessorTest(unittest.TestCase):
 
     def testFlyer(self):
         
-        descriptions = ('Flyer: Some flyer',
-                        '  Flyer: Some flyer',
-                        ' Flyer  :Some flyer',
-                        'Flyer:Some flyer',
-                        'Flyer  :\tSome flyer')
+        descriptions = ('Flyer: Irgendein Flyer',
+                        '  Flyer: Irgendein Flyer',
+                        ' Flyer  :Irgendein Flyer',
+                        'Flyer:Irgendein Flyer',
+                        'Flyer  :\tIrgendein Flyer')
         
         for description in descriptions:
             with self.subTest(description=description):
@@ -34,7 +34,7 @@ class DocumentTypePostProcessorTest(unittest.TestCase):
                 entity = self.post_processor.run(entity)
                 self.assertTrue(entity.document_type != None)
                 self.assertEqual('Flyer', entity.document_type.description)
-                self.assertEqual('Some flyer', entity.description)
+                self.assertEqual('Irgendein Flyer', entity.description)
 
         
 
@@ -50,8 +50,8 @@ class JournalPostProcessorTest(unittest.TestCase):
 
     def testJournalArticle(self):
         
-        descriptions = ('Stadtzeitung from 23.4.1975. Irgend ein Text',
-                        'Stadtzeitung from 23. April 1975. Irgend ein Text',
+        descriptions = ('Stadtzeitung vom 23.4.1975. Irgend ein Text',
+                        'Stadtzeitung vom 23. April 1975. Irgend ein Text',
                         'B.Z., 3. April 2014: Noch ein Text')
         
         for description in descriptions:
@@ -64,7 +64,7 @@ class JournalPostProcessorTest(unittest.TestCase):
         
     def testNoOverwriting(self):
         
-        description ='Stadtzeitung from 23.4.1975. Irgend ein Text'
+        description ='Stadtzeitung vom 23.4.1975. Irgend ein Text'
         flyer_doc_type = DocumentType(2)
         flyer_doc_type.description = "Flyer"
 

@@ -3,7 +3,7 @@ Created on 05.01.2018
 
 @author: michael
 '''
-from alexpresenters.messagebroker import REQ_SET_EVENT, CONF_EVENT_CHANGED,\
+from alexpresenters.MessageBroker import REQ_SET_EVENT, CONF_EVENT_CHANGED,\
     Message, REQ_SET_DOCUMENT, CONF_DOCUMENT_CHANGED, ERROR_MESSAGE,\
     MessageBroker
 from WindowTestHelpers import ReferenceServiceStub, EventServiceStub,\

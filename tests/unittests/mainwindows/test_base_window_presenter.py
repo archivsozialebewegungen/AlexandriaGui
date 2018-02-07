@@ -5,7 +5,7 @@ Created on 27.05.2016
 '''
 import unittest
 from unittest.mock import MagicMock, call, ANY
-from alexpresenters.mainwindows.BaseWindowPresenter import BaseWindowPresenter
+from alexpresenters.MainWindowPresenters import BaseWindowPresenter
 
 
 class TestBaseWindowPresenter(unittest.TestCase):

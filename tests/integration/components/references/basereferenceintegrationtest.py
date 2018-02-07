@@ -6,7 +6,7 @@ Created on 01.12.2016
 from integration.baseintegrationtest import BaseIntegrationTest
 from alexandriabase.domain import Event, AlexDateRange, AlexDate, Document,\
     DocumentType
-from alexpresenters.messagebroker import REQ_SAVE_CURRENT_EVENT,\
+from alexpresenters.MessageBroker import REQ_SAVE_CURRENT_EVENT,\
     REQ_SAVE_CURRENT_DOCUMENT, Message, CONF_DOCUMENT_CHANGED,\
     CONF_EVENT_CHANGED
 from alexandriabase import baseinjectorkeys

@@ -5,7 +5,7 @@ Created on 22.01.2016
 '''
 from tkinter import Button, Frame
 from tkinter.constants import LEFT, TOP, BOTH, SOLID, TRUE, NW
-from alexpresenters.messagebroker import MessageBroker
+from alexpresenters.MessageBroker import MessageBroker
 from tkgui.components.alexwidgets import AlexLabel, AlexListBox
 from tkgui.MainWindows import WindowManager
 

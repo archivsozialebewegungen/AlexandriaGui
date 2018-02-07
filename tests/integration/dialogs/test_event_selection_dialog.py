@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import MagicMock
 from tkgui import guiinjectorkeys
 from alexandriabase.domain import AlexDate
-from alexpresenters import PresentersModule
+from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui.Dialogs import EventSelectionWizard
 

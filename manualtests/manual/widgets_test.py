@@ -2,7 +2,7 @@ from tkgui.components.alexwidgets import AlexEntry, AlexButton, AlexLabel,\
     AlexDateEntry, AlexMessageBar, AlexComboBox, AlexListBox, AlexTree
 from tkinter.constants import TOP, BOTH, TRUE
 from alexandriabase.domain import InvalidDateException, Tree
-from alexpresenters.messagebroker import MessageBroker, ERROR_MESSAGE, Message
+from alexpresenters.MessageBroker import MessageBroker, ERROR_MESSAGE, Message
 from manual.manual_tester import AbstractComponentTest, TestRunner
 
 class AlexDateEntryTest(AbstractComponentTest):

@@ -11,7 +11,7 @@ from injector import singleton, inject, Module, ClassProvider, InstanceProvider,
 from tkgui import _, guiinjectorkeys
 
 import os
-from alexpresenters.messagebroker import Message, CONF_SETUP_FINISHED,\
+from alexpresenters.MessageBroker import Message, CONF_SETUP_FINISHED,\
     REQ_SAVE_ALL, REQ_QUIT
 import sys
 from tkgui.components.alexwidgets import AlexMessageBar, AlexMenuBar, AlexTk,\

@@ -6,15 +6,14 @@ Created on 22.11.2015
 
 import unittest
 from tkgui import guiinjectorkeys
-from alexpresenters import PresentersModule
+from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from alexandriabase import baseinjectorkeys
 from alexandriabase.domain import AlexDateRange, AlexDate, EventFilter, Event
-from alexpresenters.mainwindows.BaseWindowPresenter import REQ_QUIT
 from alexandriabase.base_exceptions import NoSuchEntityException
-from alexpresenters.messagebroker import REQ_SET_EVENT, Message,\
+from alexpresenters.MessageBroker import REQ_SET_EVENT, Message,\
     REQ_GOTO_FIRST_EVENT, REQ_SAVE_CURRENT_EVENT,\
-    CONF_EVENT_CHANGED
+    CONF_EVENT_CHANGED, REQ_QUIT
 from unittest.mock import MagicMock
 from tkgui.MainWindows import EventWindow
 
