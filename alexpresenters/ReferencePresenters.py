@@ -137,6 +137,8 @@ class DocumentFileReferencesPresenter():
             
     def add_file(self):
         file = self.view.new_file
+        if file is None:
+            return
         if self.view.current_document == None:
             return
         if self.view.current_document.id is None:

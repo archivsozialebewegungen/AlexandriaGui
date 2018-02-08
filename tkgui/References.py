@@ -3,9 +3,9 @@ Created on 22.01.2018
 
 @author: michael
 '''
-from injector import inject
+from injector import inject, InstanceProvider, ClassProvider, singleton, Module
 from tkgui import _, guiinjectorkeys
-from tkgui.components.alexwidgets import AlexLabel, AlexComboBox, AlexButton
+from tkgui.AlexWidgets import AlexLabel, AlexComboBox, AlexButton
 from tkinter.ttk import Frame
 from tkinter.constants import LEFT, RIDGE, X, DISABLED, NORMAL
 from tkinter import messagebox
@@ -100,6 +100,89 @@ class ReferenceView(Frame):  # @UndefinedVariable
     items = property(_get_items, _set_items)
     selected_item = property(_get_selected_item)
 
+class EventDocumentReferencesWidgetFactory(ReferencesWidgetFactory):
+    '''
+    Factory to generate the event document references view at runtime (because
+    we need the parent for creation)
+    '''
+    
+    @inject
+    def __init__(self,
+                 view_class: guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_VIEW_CLASS_KEY,
+                 presenter: guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_PRESENTER_KEY,
+                 documentid_selection_dialog: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_KEY):
+        super().__init__(view_class, presenter, documentid_selection_dialog)
+        
+class EventCrossReferencesWidgetFactory(ReferencesWidgetFactory):
+    
+    @inject
+    def __init__(self,
+                 view_class: guiinjectorkeys.EVENT_CROSS_REFERENCES_VIEW_CLASS_KEY,
+                 presenter: guiinjectorkeys.EVENT_CROSS_REFERENCES_PRESENTER_KEY,
+                 event_selection_dialog: guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY):
+        super().__init__(view_class, presenter, event_selection_dialog)
+        
+class EventCrossReferencesView(ReferenceView):
+    
+    def __init__(self, parent, presenter, event_selection_dialog):
+        super().__init__(parent, presenter,
+                _('Crossreferences'))
+        self.event_selection_dialog = event_selection_dialog
+        self.add_buttons()
+        self.current_event = None
+        self.new_cross_reference_event = None
+        
+    def add_buttons(self):
+        self.add_button(Action(_("Goto"), self.presenter.goto_event))
+        self.add_button(Action(_("New"), self._select_new_cross_reference))
+        self.add_button(Action(_("Delete"), self.presenter.delete_cross_reference))
+        
+    def _select_new_cross_reference(self):
+        
+        self.event_selection_dialog.activate(self._event_selection_callback)
+        
+    def _event_selection_callback(self, value):
+        if value is not None:
+            self.new_cross_reference_event = value
+            self.presenter.add_new_cross_reference()
+            self.new_cross_reference_event = None
+
+class EventDocumentReferencesView(ReferenceView):
+    '''
+    View for managing the references between an event and its documents
+    '''
+    def __init__(self, parent, presenter, documentid_selection_dialog):
+        super().__init__(parent, presenter,
+                _('Related documents'))
+        self.parent = parent
+        self.add_buttons()
+        self.current_event = None
+        self.current_document = None
+        self.new_document_id = None
+        self.documentid_selection_dialog = documentid_selection_dialog
+        
+    def add_buttons(self):
+        '''
+        Method for configuring the buttons of the references view
+        '''
+        self.add_button(Action(_("Goto"), self.presenter.change_document))
+        self.add_button(Action(_("New"), self._get_new_document_id))
+        self.add_button(Action(_("Delete"), self.presenter.remove_document_reference))
+
+    def _get_new_document_id(self):
+        '''
+        Dialog activation in the guise of a getter
+        '''
+        return self.documentid_selection_dialog.activate(self._set_new_reference, initvalue=self.current_document.id)
+
+    def _set_new_reference(self, value):
+        '''
+        Callback for the document selection dialog
+        '''
+        if value is not None:
+            self.new_document_id = value
+            self.presenter.reference_document()
+
 class EventTypeReferencesWidgetFactory(ReferencesWidgetFactory):
     '''
     Factory to generate the event document references view at runtime (because
@@ -147,6 +230,42 @@ class EventTypeReferencesView(ReferenceView):
             self.new_event_type = value
             self.presenter.add_event_type_reference()
             self.new_event_type = None
+
+class DocumentEventReferencesWidgetFactory(ReferencesWidgetFactory):
+    
+    @inject
+    def __init__(self,
+                 view_class: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_VIEW_CLASS_KEY,
+                 presenter: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_PRESENTER_KEY,
+                 event_selection_dialog: guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY):
+        super().__init__(view_class, presenter, event_selection_dialog)
+        
+class DocumentEventReferencesView(ReferenceView):
+    
+    def __init__(self, parent, presenter, event_selection_dialog):
+        super().__init__(parent, presenter,
+                _('Related events'))
+        self.add_buttons()
+        self.current_event = None
+        self.current_document = None
+        self.reference_event = None
+        self.event_selection_dialog = event_selection_dialog
+        
+    def add_buttons(self):
+        self.add_button(Action(_("Goto"), self.presenter.change_event))
+        self.add_button(Action(_("New"), self._get_reference_event))
+        self.add_button(Action(_("Delete"), self.presenter.remove_event_reference))
+
+    def _get_reference_event(self):
+        return self.event_selection_dialog.activate(self._get_reference_event_callback, default_event=self.current_event)
+
+    def _get_reference_event_callback(self, event):
+        
+        if event is None:
+            return
+        self.reference_event = event
+        self.presenter.reference_event()
+        self.reference_event = None
 
 class DocumentFileReferencesWidgetFactory(ReferencesWidgetFactory):
     '''
@@ -206,3 +325,28 @@ class DocumentFileReferencesView(ReferenceView):
         viewer.showFile(file, file_info)
 
     show_file = property(None, show_file)
+    
+class WindowReferencesModule(Module):
+    
+    def configure(self, binder):
+        
+        binder.bind(guiinjectorkeys.EVENT_CROSS_REFERENCES_FACTORY_KEY,
+                    ClassProvider(EventCrossReferencesWidgetFactory), scope=singleton)
+        binder.bind(guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_FACTORY_KEY,
+                    ClassProvider(DocumentEventReferencesWidgetFactory), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_FACTORY_KEY,
+                    ClassProvider(EventDocumentReferencesWidgetFactory), scope=singleton)
+        binder.bind(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_FACTORY_KEY,
+                    ClassProvider(DocumentFileReferencesWidgetFactory), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_TYPE_REFERENCES_FACTORY_KEY,
+                    ClassProvider(EventTypeReferencesWidgetFactory), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_CROSS_REFERENCES_VIEW_CLASS_KEY,
+                    InstanceProvider(EventCrossReferencesView), scope=singleton)
+        binder.bind(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_VIEW_CLASS_KEY,
+                    InstanceProvider(DocumentFileReferencesView), scope=singleton)
+        binder.bind(guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_VIEW_CLASS_KEY,
+                    InstanceProvider(DocumentEventReferencesView), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_VIEW_CLASS_KEY,
+                    InstanceProvider(EventDocumentReferencesView), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_TYPE_REFERENCES_VIEW_CLASS_KEY,
+                    InstanceProvider(EventTypeReferencesView), scope=singleton)

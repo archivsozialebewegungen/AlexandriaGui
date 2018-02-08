@@ -11,7 +11,7 @@ import os
 from injector import Module, inject, provider, singleton, Key, ClassProvider
 from tkgui import _, guiinjectorkeys
 from alexandriabase import baseinjectorkeys
-from tkgui.components.alexwidgets import AlexButton, AlexScrolledCanvasFrame
+from tkgui.AlexWidgets import AlexButton, AlexScrolledCanvasFrame
 from tkinter.messagebox import showinfo
 
 DOCUMENT_DEFAULT_VIEWER_KEY = Key('document_default_viewer_key')

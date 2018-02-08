@@ -1,4 +1,4 @@
-from tkgui.components.alexwidgets import AlexEntry, AlexButton, AlexLabel,\
+from tkgui.AlexWidgets import AlexEntry, AlexButton, AlexLabel,\
     AlexDateEntry, AlexMessageBar, AlexComboBox, AlexListBox, AlexTree
 from tkinter.constants import TOP, BOTH, TRUE
 from alexandriabase.domain import InvalidDateException, Tree

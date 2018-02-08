@@ -9,10 +9,10 @@ from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
 from alexpresenters.MessageBroker import Message, CONF_DOCUMENT_CHANGED,\
     CONF_EVENT_CHANGED, REQ_SET_DOCUMENT, ERROR_MESSAGE
-from tkgui.components.references.eventdocumentreferences import EventDocumentReferencesView
 from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 from ddt import ddt, unpack, data
 from alexpresenters.Module import PresentersModule
+from tkgui.References import EventDocumentReferencesView
 
 @ddt
 class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):

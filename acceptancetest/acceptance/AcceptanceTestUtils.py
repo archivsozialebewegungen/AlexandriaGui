@@ -104,7 +104,12 @@ class AcceptanceTestHelpers():
         return dao.get_by_id(entity_id)
 
     def assertEquals(self, item1, item2):
-        assert(item1 == item2)
+        
+        try:
+            assert(item1 == item2)
+        except AssertionError as e:
+            print("Error: %s is not equal to %s." % (item1, item2))
+            raise e
         
     def assertTrue(self, expression):
         assert(expression)

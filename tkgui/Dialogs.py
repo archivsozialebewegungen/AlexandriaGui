@@ -6,7 +6,7 @@ Created on 01.01.2018
 
 from tkinter.constants import TOP, LEFT, BOTH, W, X
 from tkinter import Frame, filedialog
-from tkgui.components.alexwidgets import AlexLabel, AlexButton, AlexEntry,\
+from tkgui.AlexWidgets import AlexLabel, AlexButton, AlexEntry,\
     AlexRadioGroup, AlexComboBox, DateEntryFrame, AlexDateEntry, AlexListBox,\
     AlexTree, AlexCheckBox
 from tkgui import guiinjectorkeys, _
@@ -503,9 +503,11 @@ class DocumentIdSelectionDialog(GenericInputEditDialog):
                  presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
         super().__init__(window_manager, presenter)
     
-    def activate(self, callback):
+    def activate(self, callback, initvalue=''):
         
-        super().activate(callback, label=_('Enter document id:'))
+        super().activate(callback,
+                         label=_('Enter document id:'),
+                         initvalue=initvalue)
         
 class EventSelectionWizard(Wizard):
     

@@ -6,12 +6,12 @@ Created on 24.10.2015
 import unittest
 from unittest.mock import MagicMock
 from tkgui import guiinjectorkeys
-from tkgui.components.references.eventcrossreferences import EventCrossReferencesView
 from alexandriabase import baseinjectorkeys
 from alexpresenters.MessageBroker import Message, CONF_EVENT_CHANGED,\
     REQ_SET_EVENT
 from ddt import ddt, data, unpack
 from alexpresenters.Module import PresentersModule
+from tkgui.References import EventCrossReferencesView
 from integration.components.references.basereferenceintegrationtest \
     import BaseReferenceIntegrationTest
 

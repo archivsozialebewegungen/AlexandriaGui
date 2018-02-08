@@ -26,33 +26,48 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.check_goto_next_document()
         self.check_goto_previous_event()
         self.check_goto_previous_document()
-        #self.check_goto_event()
-        #self.check_goto_document()
+        self.check_goto_event()
+        self.check_goto_document()
         
         # Filtering
         print("\nChecking filtering")
         print("==================")
-        #self.check_filtering_events()
-        #self.check_filtering_events_with_empty_selection()
-        #self.check_filtering_documents()
-        #self.check_filtering_documents_with_empty_selection()
+        self.check_filtering_events()
+        self.check_filtering_events_with_empty_selection()
+        self.check_filtering_documents()
+        self.check_filtering_documents_with_empty_selection()
         
         # References
         print("\nChecking event cross references")
         print("================================")
 
-        #self.check_event_cross_reference_goto()
-        #self.check_event_cross_reference_new()
-        #self.check_event_cross_reference_delete()
+        self.check_event_cross_reference_goto()
+        self.check_event_cross_reference_new()
+        self.check_event_cross_reference_delete()
         
+        print("\nChecking event document references")
+        print("==================================")
+
+        self.check_event_document_reference_new()
+        self.check_event_document_reference_goto()
+        self.check_event_document_reference_delete()
+
         print("\nChecking event type references")
         print("===============================")
 
-        #self.check_event_type_reference_new()
-        #self.check_event_type_reference_delete()
+        self.check_event_type_reference_new()
+        self.check_event_type_reference_delete()
 
+        print("\nChecking document event references")
+        print("==================================")
+
+        self.check_document_event_reference_new()
+        self.check_document_event_reference_goto()
+        self.check_document_event_reference_delete()
+        
         print("\nChecking document file references")
         print("==================================")
+        
         self.check_document_file_new()
         self.check_document_file_replace()
         self.check_document_file_show()
@@ -62,22 +77,22 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("\nChecking saving")
         print("===============")
 
-        #self.check_save_event()
-        #self.check_save_document()
+        self.check_save_event()
+        self.check_save_document()
         
         # Create new
         print("\nChecking creation")
         print("=================")
 
-        #self.check_create_event()
-        #self.check_create_document()
+        self.check_create_event()
+        self.check_create_document()
         
         # Deleting
         print("\nChecking deleting")
         print("=================")
 
-        #self.check_deleting_event()
-        #self.check_deleting_of_document()
+        self.check_deleting_event()
+        self.check_deleting_of_document()
         
         # Quit
         print("\nChecking quit")
@@ -329,6 +344,69 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
                 
         print("OK")
 
+    def check_event_document_reference_new(self):
+
+        print("Checking new document event reference...", end='')
+        reference = self.event_window.references[1]
+        dialog = reference.documentid_selection_dialog
+        self.document_window.presenter.goto_first()
+        self.event_window.presenter.goto_last()
+        original_references = len(reference.listbox.get_items())
+
+        self.start_dialog(reference._get_new_document_id)
+        
+        # Verify we got the correct document id from the document window
+        self.assertEquals(dialog.entry.get(), '1')
+        dialog.presenter.ok_action()
+        
+        self.assertEquals(original_references + 1,
+                          len(reference.listbox.get_items()))
+        self.document_window.presenter.goto_last()
+        self.document_window.presenter.goto_first()
+        self.assertEquals(original_references + 1,
+                          len(reference.listbox.get_items()))
+        
+        print("OK")
+
+    def check_event_document_reference_goto(self):
+
+        print("Checking goto document event reference...", end='')
+        
+        reference = self.event_window.references[1]
+        self.document_window.presenter.goto_last()
+        self.event_window.presenter.goto_last()
+        self.assertEquals(1, len(reference.listbox.get_items()))
+        self.assert_that_document_is(14)
+        # Select new reference from previous test
+        reference.listbox.set(reference.listbox.get_items()[-1])
+        # "Press" goto
+        reference.presenter.change_document()
+        
+        self.assert_that_document_is(1)
+
+        print("OK")
+        
+    def check_event_document_reference_delete(self):
+
+        print("Checking goto document event reference...", end='')
+        
+        reference = self.event_window.references[1]
+        self.event_window.presenter.goto_last()
+        original_references = len(reference.listbox.get_items())
+
+        # Select new reference from previous test
+        reference.listbox.set(reference.listbox.get_items()[-1])
+        # "Press" the delete button
+        reference.presenter.remove_document_reference()
+
+        self.assertEquals(original_references - 1,
+                          len(reference.listbox.get_items()))
+        self.event_window.presenter.goto_first()
+        self.event_window.presenter.goto_last()
+        self.assertEquals(original_references - 1,
+                          len(reference.listbox.get_items()))
+        print("OK")
+
     def check_event_type_reference_new(self):
         print("Checking create new event type reference...", end='')
         reference= self.event_window.references[2]
@@ -367,6 +445,75 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
         self.assertEquals(len(reference.items), 2)
                 
+        print("OK")
+        
+    def check_document_event_reference_new(self):
+
+        print("Checking new document event reference...", end='')
+        reference = self.document_window.references[0]
+        dialog = reference.event_selection_dialog
+        self.document_window.presenter.goto_first()
+        original_references = len(reference.listbox.get_items())
+
+        self.event_window.presenter.goto_last()
+        self.start_dialog(reference._get_reference_event)
+        
+        # Verify we got the correct event from the event window
+        self.assertEquals(dialog.date_entry.get(), AlexDate(1961, 5, 1))
+        # "go to" page 2
+        dialog.presenter.update_event_list()        
+        # Select the event and close dialog
+        event = dialog.event_list_box.get_items()[0]
+        dialog.event_list_box.set(event)
+        dialog.presenter.ok_action()
+        
+        self.assertEquals(original_references + 1,
+                          len(reference.listbox.get_items()))
+        self.document_window.presenter.goto_last()
+        self.document_window.presenter.goto_first()
+        self.assertEquals(original_references + 1,
+                          len(reference.listbox.get_items()))
+        
+        print("OK")
+
+    def check_document_event_reference_goto(self):
+
+        print("Checking goto document event reference...", end='')
+        
+        reference = self.document_window.references[0]
+        self.document_window.presenter.goto_first()
+        self.event_window.presenter.goto_first()
+        self.assertEquals(2, len(reference.listbox.get_items()))
+        self.assert_that_event_is(1940000001)
+        
+        # Select new reference from previous test
+        reference.listbox.set(reference.listbox.get_items()[-1])
+        # "Press" goto
+        reference.presenter.change_event()
+        
+        self.assert_that_event_is(1961050101)
+
+        print("OK")
+        
+    def check_document_event_reference_delete(self):
+
+        print("Checking goto document event reference...", end='')
+        
+        reference = self.document_window.references[0]
+        self.document_window.presenter.goto_first()
+        original_references = len(reference.listbox.get_items())
+
+        # Select new reference from previous test
+        reference.listbox.set(reference.listbox.get_items()[-1])
+        # "Press" the delete button
+        reference.presenter.remove_event_reference()
+
+        self.assertEquals(original_references - 1,
+                          len(reference.listbox.get_items()))
+        self.document_window.presenter.goto_last()
+        self.document_window.presenter.goto_first()
+        self.assertEquals(original_references - 1,
+                          len(reference.listbox.get_items()))
         print("OK")
 
     def check_document_file_new(self):

@@ -14,7 +14,7 @@ import os
 from alexpresenters.MessageBroker import Message, CONF_SETUP_FINISHED,\
     REQ_SAVE_ALL, REQ_QUIT
 import sys
-from tkgui.components.alexwidgets import AlexMessageBar, AlexMenuBar, AlexTk,\
+from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, AlexTk,\
     AlexLabel, AlexText, AlexRadioGroup, AlexButton
 from threading import Thread
 from tkinter.ttk import Notebook

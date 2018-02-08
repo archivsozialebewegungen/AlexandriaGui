@@ -10,7 +10,6 @@ from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
 from alexpresenters.Module import PresentersModule
 from tkgui import guiinjectorkeys
-from tkgui.components.references import WindowReferencesModule
 from alexpresenters.MessageBroker import Message, \
     REQ_GOTO_FIRST_DOCUMENT, REQ_GOTO_FIRST_EVENT, CONF_SETUP_FINISHED, REQ_QUIT
 import os
@@ -22,6 +21,7 @@ from tkgui.Dialogs import DialogsTkGuiModule
 from alexpresenters.DialogPresenters import LoginCreatorProvider
 from tkgui.MainWindows import MainWindowsModule
 from tkgui.FileViewers import DocumentViewersModule
+from tkgui.References import WindowReferencesModule
 
 class StartupTaskCheckDatabaseVersion():
     
