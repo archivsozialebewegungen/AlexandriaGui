@@ -114,7 +114,7 @@ class ExternalViewer(object):
         else:
             text = _('The external viewer {} is not accessible.')\
                 .format(self.external_programm)
-            showinfo(_('OK'), text, title=_("Not accessible"))
+            showinfo(message=text, title=_("Not accessible"))
 
 class DocumentViewersModule(Module):
 

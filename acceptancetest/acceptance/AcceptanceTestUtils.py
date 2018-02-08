@@ -16,6 +16,8 @@ from tkgui.main import SetupRunner, StartupTaskCheckDatabaseVersion, MainRunner,
 from alex_test_utils import setup_database_schema, load_table_data,\
     TestEnvironment, MODE_FULL
 from daotests.test_base import tables
+import tempfile
+import os
 
 def set_date_range(dialog, start_date, end_date):
     '''
@@ -33,6 +35,15 @@ def set_date(dialog, alex_date):
     dialog.months = [alex_date.month]
     dialog.years = [alex_date.year]
 
+def create_test_file(basename):
+    
+    tmpdir = tempfile.gettempdir()
+    filename = os.path.join(tmpdir, "%s.txt" % basename)
+    f = open(filename, "w")
+    f.write("This is just a test file with basename %s." % basename)
+    f.close()
+    return filename
+    
 class DialogStarter(Thread):
     '''
     Dialogs block the current thread, so they need to
@@ -168,7 +179,7 @@ class BaseAcceptanceTest(Thread, AcceptanceTestHelpers):
         self.event_window_presenter = self.injector.get(guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY)
         self.document_window = self.injector.get(guiinjectorkeys.DOCUMENT_WINDOW_KEY)
         self.document_window_presenter = self.injector.get(guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY)
-        
+    
     def run(self):
         '''
         The threads run class. It waits for the gui to be initalized, then runs

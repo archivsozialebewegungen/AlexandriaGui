@@ -8,22 +8,20 @@ from alexpresenters.MessageBroker import REQ_SET_EVENT, CONF_EVENT_CHANGED,\
     MessageBroker
 from WindowTestHelpers import ReferenceServiceStub, EventServiceStub,\
     DocumentServiceStub
-from alexpresenters.components.references.documenteventreferencespresenter import DocumentEventReferencesPresenter
-from alexpresenters.dialogs.eventselectionpresenter import EventSelectionPresenter
-from tkgui.dialogs.eventselectiondialog import EventSelectionWizard
 from tkgui.components.references.documenteventreferences import DocumentEventReferencesView
 from tkinter.constants import TOP
 from alexandriabase.domain import Document
 from tkinter.ttk import Button
 from alexandriabase.config import Config
 from unittest.mock import MagicMock
-from alexpresenters.components.references.documentfilereferencespresenter import DocumentFileReferencesPresenter
-from tkgui.dialogs.fileselectiondialog import FileSelectionDialog
-from tkgui.mainwindows.fileviewers import DefaultViewer
-from tkgui.components.references.documentfilereference import DocumentFileReferencesView
-from alexpresenters.components.references.eventcrossreferencespresenter import EventCrossReferencesPresenter
 from tkgui.components.references.eventcrossreferences import EventCrossReferencesView
 from manual.dialogs_test import DialogTest, DialogTestRunner
+from alexpresenters.DialogPresenters import EventSelectionPresenter
+from tkgui.Dialogs import EventSelectionWizard, FileSelectionDialog
+from alexpresenters.ReferencePresenters import DocumentEventReferencesPresenter,\
+    DocumentFileReferencesPresenter, EventCrossReferencesPresenter
+from tkgui.FileViewers import DefaultViewer
+from tkgui.References import DocumentFileReferencesView
 
 class ReferenceComponentTest(DialogTest):
     

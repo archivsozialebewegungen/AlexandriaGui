@@ -147,3 +147,62 @@ class EventTypeReferencesView(ReferenceView):
             self.new_event_type = value
             self.presenter.add_event_type_reference()
             self.new_event_type = None
+
+class DocumentFileReferencesWidgetFactory(ReferencesWidgetFactory):
+    '''
+    classdocs
+    '''
+    @inject
+    def __init__(self,
+                 presenter: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_PRESENTER_KEY,
+                 view_class: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_VIEW_CLASS_KEY,
+                 file_selection_dialog: guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
+                 viewers: guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY):
+        super().__init__(view_class, presenter, file_selection_dialog, viewers)
+        
+class DocumentFileReferencesView(ReferenceView):
+    
+    def __init__(self, parent, presenter, file_selection_dialog, viewers):
+        super().__init__(parent, presenter,
+                _('Document files'))
+        self.current_document = None
+        self.file_selection_dialog = file_selection_dialog
+        self.viewers = viewers
+        self.add_buttons()
+
+    def add_buttons(self):
+        self.add_button(Action(_("New"), self._add_file))
+        self.add_button(Action(_("Replace"), self._replace_file))
+        self.add_button(Action(_("Show"), self.presenter.show_file))
+        self.add_button(Action(_("Delete"), self.presenter.remove_file))
+    
+    def _add_file(self):
+        
+        self.file_selection_dialog.activate(self._add_file_callback)
+        
+    def _add_file_callback(self, file):
+        
+        if file is None:
+            return
+        self.new_file = file
+        self.presenter.add_file()
+        self.new_file = None
+        
+    def _replace_file(self):
+        
+        self.file_selection_dialog.activate(self._replace_file_callback)
+        
+    def _replace_file_callback(self, file):
+        
+        if file is None:
+            return
+        self.new_file = file
+        self.presenter.replace_file()
+        self.new_file = None
+
+    def show_file(self, file):
+        file_info = self.selected_item
+        viewer = self.viewers[file_info.filetype]
+        viewer.showFile(file, file_info)
+
+    show_file = property(None, show_file)

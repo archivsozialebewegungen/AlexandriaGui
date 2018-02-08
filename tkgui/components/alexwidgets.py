@@ -409,6 +409,7 @@ class AlexComboBox(Combobox):
         '''
         
         values = []
+        self._items = items
         self._item_map = {}
         for item in items:
             item_string = "%s" % item
@@ -426,10 +427,7 @@ class AlexComboBox(Combobox):
         Returns all the items in the combo box (for whatever
         reason you do want this)
         '''
-        items = []
-        for item in self._item_map.values():
-            items.append(item)
-        return items
+        return self._items
     
     def set(self, item):
         '''
@@ -451,49 +449,6 @@ class AlexComboBox(Combobox):
         else:
             return None
     
-class AlexComboBoxTix(ComboBox):
-    '''
-    A Combobox subclass that supports arbitrary objects as
-    items, as long as the __str__ method is implemented and
-    returns a unique string for each item. This string is
-    what will be displayed in the combo box.
-    '''
-    
-    def __init__(self, parent, items=[]):
-        
-        
-        self._selection = StringVar()
-        super().__init__(parent,
-                         state='readonly')
-        self._item_map = {}
-        self._item_labels = []
-        self.set_items(items)
-    
-    def set_items(self, items):
-        
-        for item in items:
-            item_label = "%s" % item
-            self._item_map[item_label] = item
-            self._item_labels.append(item_label)
-            
-        self.slistbox.listbox.delete(0, END)
-        self.slistbox.listbox.insert(0, *self._item_labels)
-            
-        if len(self._item_labels) > 0:
-            self.slistbox.listbox.selection_set(0)
-        else:
-            self.slistbox.listbox.selection_clear(0)
-        
-    def get_items(self):
-        self._item_map.values()
-        
-    def set(self, item):
-        if not item in self._item_map.values():
-            raise(Exception("Item %s is not in items for combo box" % item))
-        self._set_entry("%s" % item)
-    
-    def get(self):
-        return self._item_map(self.subwidget_list['entry'].get())
 
 class AlexMessageBar(AlexEntry):  # @UndefinedVariable
     '''

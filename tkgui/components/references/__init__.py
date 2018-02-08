@@ -3,14 +3,13 @@ from injector import Module, ClassProvider, singleton, provider, inject,\
 from tkgui import guiinjectorkeys
 from tkgui.components.references.eventcrossreferences import EventCrossReferencesWidgetFactory,\
     EventCrossReferencesView
-from tkgui.components.references.documentfilereference import DocumentFileReferencesView,\
-    DocumentFileReferencesWidgetFactory
 from tkgui.components.references.documenteventreferences import DocumentEventReferencesWidgetFactory,\
     DocumentEventReferencesView
 from tkgui.components.references.eventdocumentreferences import EventDocumentReferencesView,\
     EventDocumentReferencesWidgetFactory
 from tkgui.References import EventTypeReferencesWidgetFactory,\
-    EventTypeReferencesView
+    EventTypeReferencesView, DocumentFileReferencesWidgetFactory,\
+    DocumentFileReferencesView
 
 class WindowReferencesModule(Module):
     

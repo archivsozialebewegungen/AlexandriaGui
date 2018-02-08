@@ -6,7 +6,6 @@ Created on 24.10.2015
 import unittest
 from unittest.mock import MagicMock
 from tkgui import guiinjectorkeys
-from tkgui.components.references.documentfilereference import DocumentFileReferencesView
 from alexandriabase import baseinjectorkeys
 from alexandriabase.domain import EventTypeIdentifier, \
     Event, AlexDateRange, AlexDate
@@ -15,6 +14,7 @@ from alexpresenters.MessageBroker import Message,  CONF_EVENT_CHANGED,\
 from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from ddt import ddt, data, unpack
+from tkgui.References import DocumentFileReferencesView
 
 @ddt
 class EventTypeReferencesPresenterTest(BaseIntegrationTest):

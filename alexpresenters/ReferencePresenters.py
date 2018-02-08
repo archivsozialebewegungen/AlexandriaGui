@@ -137,14 +137,14 @@ class DocumentFileReferencesPresenter():
             
     def add_file(self):
         file = self.view.new_file
-        if file == None or self.view.current_document == None:
+        if self.view.current_document == None:
             return
         if self.view.current_document.id is None:
             self.message_broker.send_message(Message(REQ_SAVE_CURRENT_DOCUMENT))
             assert(self.view.current_document.id is not None)
         if self._execute_with_errorhandling(self.document_service.add_document_file,
-                                             self.view.current_document,
-                                             file):
+                                            self.view.current_document,
+                                            file):
             self._load_file_infos(self.view.current_document)
     
     def replace_file(self):
@@ -152,11 +152,9 @@ class DocumentFileReferencesPresenter():
         if not file_info:
             return
         file = self.view.new_file
-        if not file:
-            return
         if self._execute_with_errorhandling(self.document_service.replace_document_file,
-                                             file_info,
-                                             file):
+                                            file_info,
+                                            file):
             self._load_file_infos(self.view.current_document)
         
     def _execute_with_errorhandling(self, method, *params):     

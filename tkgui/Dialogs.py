@@ -104,7 +104,7 @@ class AbstractInputDialog:
         '''
         self.add_button(_('OK'), self.presenter.ok_action)
         self.add_button(_('Cancel'), self.presenter.cancel_action)
-        
+      
     def _get_errormessage(self):
         message = self._errormessage.get()
         if message == '':
@@ -212,13 +212,9 @@ class Wizard(AbstractInputDialog):
         self.pages[0].pack(fill='both', expand=1)
         self._wizard_buttons()
         
-
-class GenericStringEditDialog(AbstractInputDialog):
+class GenericInputEditDialog(AbstractInputDialog):
     
-    @inject
-    def __init__(self,
-                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
-                 presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
+    def __init__(self, window_manager, presenter):
         super().__init__(window_manager, presenter)
     
     def create_dialog(self, 
@@ -234,8 +230,20 @@ class GenericStringEditDialog(AbstractInputDialog):
         
     def _get_entry(self):
         return self.entry.get()
+    
+    def _set_entry(self, value):
+        self.entry.set(value)
         
-    input = property(_get_entry)
+    input = property(_get_entry, _set_entry)
+        
+class GenericStringEditDialog(GenericInputEditDialog):
+    
+    @inject
+    def __init__(self,
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
+        super().__init__(window_manager, presenter)
+    
         
 class GenericStringSelectionDialog(AbstractInputDialog):
     
@@ -487,30 +495,18 @@ class DateRangeSelectionDialog(DateSelectionDialog):
                  yearselectiondialog: guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY):
         super().__init__(window_manager, presenter, yearselectiondialog, 2)
 
-class DocumentIdSelectionDialog(AbstractInputDialog):
-    '''
-    Dialog for document id selection
-    '''
+class DocumentIdSelectionDialog(GenericInputEditDialog):
+    
     @inject
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
-                 presenter: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_PRESENTER_KEY):
+                 presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
         super().__init__(window_manager, presenter)
-        self._entry_widget = None
-
-    def create_dialog(self, default=''):
-        super().create_dialog()
-        self._entry_widget = AlexEntry(self.interior)
-        self._entry_widget.set(default)
-        self._entry_widget.pack()
-        self.set_default_buttons()
-        
-    def activate(self, callback, default=''):
-        super().activate(callback, default=default)
-        
-    input = property(lambda self: self._entry_widget.get(),
-                     lambda self, value: self._entry_widget.set(value))
     
+    def activate(self, callback):
+        
+        super().activate(callback, label=_('Enter document id:'))
+        
 class EventSelectionWizard(Wizard):
     
     @inject

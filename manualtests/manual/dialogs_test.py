@@ -21,7 +21,7 @@ from tkinter.constants import TOP
 from _functools import reduce
 from alexandriabase.domain import Creator, DocumentFileInfo, Event, AlexDate
 from unittest.mock import MagicMock
-from alexandriabase.services.creatorservice import CreatorService
+from alexandriabase.services import CreatorService
 import os
 from alex_test_utils import get_testfiles_dir
 from manual.manual_tester import AbstractComponentTest, TestRunner
@@ -218,20 +218,18 @@ class DocumentIdSelectionDialogTest(DialogTest):
 
     def test_component(self, master, message_label):
         self.message_label = message_label
-        self.master = master
-        
         self.dialog = DocumentIdSelectionDialog(self.window_manager,
-                                                DocumentIdSelectionDialogPresenter)
+                                                DocumentIdSelectionDialogPresenter())
         Button(master, text='Start dialog', command=self._start_dialog).pack()
 
     def _start_dialog(self):
         self.dialog.activate(self.callback)
-
+        
     def callback(self, value):
         if value is None:
             self.message_label.set("You canceled.")
         else:
-            self.message_label.set("Selected id: %s" % value)
+            self.message_label.set("Your input text was '%s'." % value)
 
 class FilterDialogsTest(DialogTest):
     '''

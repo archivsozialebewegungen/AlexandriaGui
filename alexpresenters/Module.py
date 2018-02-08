@@ -9,10 +9,10 @@ from tkgui import guiinjectorkeys
 from alexpresenters.DialogPresenters import AbstractInputDialogPresenter,\
     EventSelectionPresenter, DateSelectionDialogPresenter,\
     EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter,\
-    DocumentIdSelectionDialogPresenter, YearSelectionDialogPresenter,\
+    YearSelectionDialogPresenter,\
     EventTypeSelectionPresenter, DocumentFilterDialogPresenter,\
     EventFilterDialogPresenter, LoginDialogPresenter,\
-    GenericInputDialogPresenter
+    GenericInputDialogPresenter, DocumentIdSelectionDialogPresenter
 from alexpresenters.ReferencePresenters import EventTypeReferencesPresenter,\
     DocumentEventReferencesPresenter, EventDocumentReferencesPresenter,\
     EventCrossReferencesPresenter, DocumentFileReferencesPresenter

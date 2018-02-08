@@ -5,9 +5,10 @@ Created on 13.12.2015
 '''
 from alexandriabase.domain import AlexDate, EventTypeIdentifier
 from acceptance.AcceptanceTestUtils import BaseAcceptanceTest, AcceptanceTestRunner,\
-    set_date, set_date_range
+    set_date, set_date_range, create_test_file
 import os
 from tkgui.MainWindows import BaseWindow, EventWindow
+from time import sleep
 
 class BasicFunctionalityTest(BaseAcceptanceTest):
 
@@ -25,8 +26,8 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.check_goto_next_document()
         self.check_goto_previous_event()
         self.check_goto_previous_document()
-        self.check_goto_event()
-        self.check_goto_document()
+        #self.check_goto_event()
+        #self.check_goto_document()
         
         # Filtering
         print("\nChecking filtering")
@@ -47,30 +48,36 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("\nChecking event type references")
         print("===============================")
 
-        self.check_event_type_reference_new()
-        self.check_event_type_reference_delete()
+        #self.check_event_type_reference_new()
+        #self.check_event_type_reference_delete()
 
-
+        print("\nChecking document file references")
+        print("==================================")
+        self.check_document_file_new()
+        self.check_document_file_replace()
+        self.check_document_file_show()
+        self.check_document_file_delete()
+        
         # Save
         print("\nChecking saving")
         print("===============")
 
-        self.check_save_event()
-        self.check_save_document()
+        #self.check_save_event()
+        #self.check_save_document()
         
         # Create new
         print("\nChecking creation")
         print("=================")
 
-        self.check_create_event()
-        self.check_create_document()
+        #self.check_create_event()
+        #self.check_create_document()
         
         # Deleting
         print("\nChecking deleting")
         print("=================")
 
-        self.check_deleting_event()
-        self.check_deleting_of_document()
+        #self.check_deleting_event()
+        #self.check_deleting_of_document()
         
         # Quit
         print("\nChecking quit")
@@ -178,7 +185,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         dialog = self.document_window.dialogs[BaseWindow.GOTO_DIALOG]
 
         self.start_dialog(self.document_window._activate_record_dialog)
-        dialog._entry_widget.set("7")
+        dialog.input = 7
         self.close_dialog(dialog)
 
         self.assert_that_document_is(8)
@@ -360,6 +367,98 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
         self.assertEquals(len(reference.items), 2)
                 
+        print("OK")
+
+    def check_document_file_new(self):
+        
+        print("Checking adding new document file reference...", end='')
+        reference= self.document_window.references[1]
+        
+        # precheck
+        self.document_window.presenter.goto_first()
+        self.assertEquals(3, len(reference.listbox.get_items()))
+        input_file = create_test_file("testfile1")
+        target_file = os.path.join(self.env.document_txt_dir, "00000015.txt")
+        self.assertTrue(os.path.isfile(input_file))
+        self.assertFalse(os.path.isfile(target_file))
+        
+        # doit
+        reference._add_file_callback(input_file)
+        
+        # recheck
+        self.assertFalse(os.path.isfile(input_file))
+        self.assertTrue(os.path.isfile(target_file))
+        self.document_window.presenter.goto_last()
+        self.document_window.presenter.goto_first()
+        self.assertEquals(4, len(reference.listbox.get_items()))
+
+        print("OK")
+
+    def check_document_file_replace(self):
+        
+        print("Checking replacing document file reference...", end='')
+        reference= self.document_window.references[1]
+        
+        # precheck
+        self.document_window.presenter.goto_first()
+        self.assertEquals(4, len(reference.listbox.get_items()))
+        input_file = create_test_file("testfile2")
+        target_file = os.path.join(self.env.document_txt_dir, "00000015.txt")
+        self.assertTrue(os.path.isfile(input_file))
+        self.assertTrue(os.path.isfile(target_file))
+        content = open(target_file, "r").read()
+        self.assertTrue(-1 == content.find("testfile2"))
+        
+        # doit
+        reference.listbox.set(reference.listbox.get_items()[-1])
+        reference._replace_file_callback(input_file)
+        
+        # recheck
+        self.assertFalse(os.path.isfile(input_file))
+        self.assertTrue(os.path.isfile(target_file))
+        content = open(target_file, "r").read()
+        self.assertFalse(-1 == content.find("testfile2"))
+        self.document_window.presenter.goto_last()
+        self.document_window.presenter.goto_first()
+        self.assertEquals(4, len(reference.listbox.get_items()))
+
+        print("OK")
+
+    def check_document_file_show(self):
+        
+        print("Checking showing document file reference...", end='')
+        reference= self.document_window.references[1]
+        viewer = reference.viewers['tif']
+        self.document_window.presenter.goto_first()
+        
+        reference.listbox.set(reference.listbox.get_items()[0])
+        reference.presenter.show_file()
+        sleep(1) # Just to see the viewer; this timing is not necessary
+        viewer.window.withdraw()
+        
+        print("OK")
+
+    def check_document_file_delete(self):
+        
+        print("Checking deleting document file reference...", end='')
+        reference= self.document_window.references[1]
+        
+        # precheck
+        self.document_window.presenter.goto_first()
+        self.assertEquals(4, len(reference.listbox.get_items()))
+        target_file = os.path.join(self.env.document_txt_dir, "00000015.txt")
+        self.assertTrue(os.path.isfile(target_file))
+        
+        # doit
+        reference.listbox.set(reference.listbox.get_items()[-1])
+        reference.presenter.remove_file()
+        
+        # recheck
+        self.assertFalse(os.path.isfile(target_file))
+        self.document_window.presenter.goto_last()
+        self.document_window.presenter.goto_first()
+        self.assertEquals(3, len(reference.listbox.get_items()))
+
         print("OK")
 
     def check_save_event(self):

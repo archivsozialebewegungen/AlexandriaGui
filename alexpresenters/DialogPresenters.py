@@ -190,7 +190,7 @@ class DateRangeSelectionDialogPresenter(DateSelectionDialogPresenter):
         
         return AlexDateRange(start_date, end_date)
 
-class DocumentIdSelectionDialogPresenter(AbstractInputDialogPresenter):
+class DocumentIdSelectionDialogPresenter(GenericInputDialogPresenter):
     '''
     A simple presenter for an integer input
     '''

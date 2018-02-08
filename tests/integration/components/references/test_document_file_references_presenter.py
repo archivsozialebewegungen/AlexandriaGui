@@ -10,7 +10,6 @@ from unittest.mock import MagicMock
 from alexpresenters.MessageBroker import Message, CONF_DOCUMENT_CHANGED,\
     ERROR_MESSAGE
 from alexpresenters import _
-from tkgui.components.references.documentfilereference import DocumentFileReferencesView
 from alex_test_utils import TestEnvironment, MODE_FULL
 import os
 from alexandriabase.base_exceptions import NoSuchEntityException
@@ -18,6 +17,7 @@ from alexandriabase.domain import Document
 from ddt import ddt, data, unpack
 from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 from alexpresenters.Module import PresentersModule
+from tkgui.References import DocumentFileReferencesView
 
 @ddt
 class DocumentFileReferencesPresenterTest(BaseReferenceIntegrationTest):
