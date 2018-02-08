@@ -6,7 +6,7 @@ python:
 install:
 - git clone --depth 1 https://github.com/archivsozialebewegungen/AlexandriaBase.git
 - pip install -r AlexandriaBase/requirements.txt
-script: PYTHONPATH=AlexandriaBase:AlexandriaBase/tests:$PYTHONPATH nosetests tests
+script: LANG=de PYTHONPATH=AlexandriaBase:AlexandriaBase/tests:$PYTHONPATH nosetests tests
 after_success: if [ "${TRAVIS_PYTHON_VERSION}" = "3.6" ] && [ "${TRAVIS_EVENT_TYPE}"
   = "push" ]; then ./AlexandriaBase/trigger_dependent_builds.sh; fi
 env:
