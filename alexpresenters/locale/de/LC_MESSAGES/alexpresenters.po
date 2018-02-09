@@ -7,66 +7,64 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-06 16:10+0100\n"
-"PO-Revision-Date: 2018-02-07 16:52+0100\n"
+"POT-Creation-Date: 2018-02-07 12:09+0100\n"
+"PO-Revision-Date: 2018-02-09 14:20+0100\n"
+"Last-Translator: Michael Koltan <admin@archivsozialebewegungen."
+"de>\n"
 "Language-Team: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
-"Last-Translator: Michael Koltan "
-"<admin@archivsozialebewegungen.de>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de_DE\n"
 
 #: alexpresenters/mainwindows/PostProcessors.py:38
 msgid ""
-"\\s*(\\d{1,2}\\.|January|February|March|April|May|"
-"June|July|August|September|October|November|December|"
-"Jan\\.|Feb\\.|Mar\\.|Apr\\.|May|Jun\\.|Jul\\.|Aug\\.|"
-"Sep\\.|Oct\\.|Nov\\.|Dec\\.)\\s*"
+"\\s*(\\d{1,2}\\.|January|February|March|April|May|June|July|"
+"August|September|October|November|December|Jan\\.|Feb\\.|Mar"
+"\\.|Apr\\.|May|Jun\\.|Jul\\.|Aug\\.|Sep\\.|Oct\\.|Nov\\.|Dec"
+"\\.)\\s*"
 msgstr ""
-"\\s*(\\d{1,2}\\.|Januar|Februar|März|April|Mai|Juni|"
-"Juli|August|September|Oktober|November|Dezember|Jan"
-"\\.|Feb\\.|Mär\\.|Apr\\.|Mai|Jun\\.|Jul\\.|Aug\\.|Sep"
-"\\.|Okt\\.|Nov\\.|Dez\\.)\\s*"
+"\\s*(\\d{1,2}\\.|Januar|Februar|März|April|Mai|Juni|Juli|"
+"August|September|Oktober|November|Dezember|Jan\\.|Feb\\.|Mär"
+"\\.|Apr\\.|Mai|Jun\\.|Jul\\.|Aug\\.|Sep\\.|Okt\\.|Nov\\.|Dez"
+"\\.)\\s*"
 
 #: alexpresenters/mainwindows/PostProcessors.py:41
 msgid "(from|,)\\s+"
 msgstr "(vom|,)\\s+"
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:72
+#: alexpresenters/components/references/documentfilereferencespresenter.py:71
 #, python-format
 msgid "File format '%s' is not supported!"
 msgstr "Das Dateiformat '%s' wird nicht unterstützt!"
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:80
+#: alexpresenters/components/references/documentfilereferencespresenter.py:79
 #, python-brace-format
 msgid "File resolution {0:d} x {1:d} is not supported!"
-msgstr ""
-"Die Dateiauflösung {0:d} x {1:d} wird nicht "
-"unterstützt!"
+msgstr "Die Dateiauflösung {0:d} x {1:d} wird nicht unterstützt!"
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:91
+#: alexpresenters/components/references/documentfilereferencespresenter.py:90
 msgid "Unknown error while adding file"
 msgstr "Unbekannter Fehler beim Hinzufügen einer Datei"
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:109
+#: alexpresenters/components/references/documentfilereferencespresenter.py:108
 #, python-format
 msgid "Document %s not found"
 msgstr "Dokument %s nicht gefunden"
 
-#: alexpresenters/DialogPresenters.py:119
+#: alexpresenters/DialogPresenters.py:120
 #, python-format
 msgid "'%s' is not a valid day!"
 msgstr "'%s' ist kein zulässiger Tag!"
 
-#: alexpresenters/DialogPresenters.py:128
+#: alexpresenters/DialogPresenters.py:129
 #, python-format
 msgid "'%s' is not a valid month!"
 msgstr "'%s' ist kein zulässiger Monat!"
 
-#: alexpresenters/DialogPresenters.py:135
+#: alexpresenters/DialogPresenters.py:136
 #, python-format
 msgid "'%s' is not a valid year!"
 msgstr "'%s' ist kein zulässiges Jahr!"
