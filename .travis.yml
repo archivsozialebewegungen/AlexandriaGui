@@ -3,11 +3,11 @@ python:
 - '3.4'
 - '3.5'
 - '3.6'
-addons:
-  apt:
-    packages:
-      - language-pack-en
-      - language-pack-de
+addon:
+	apt:
+		packages:
+			- language-pack-de
+			- language-pack-en
 install:
 - git clone --depth 1 https://github.com/archivsozialebewegungen/AlexandriaBase.git
 - pip install -r AlexandriaBase/requirements.txt
@@ -16,5 +16,5 @@ after_success: if [ "${TRAVIS_PYTHON_VERSION}" = "3.6" ] && [ "${TRAVIS_EVENT_TY
   = "push" ]; then ./AlexandriaBase/trigger_dependent_builds.sh; fi
 env:
   global:
-	LANG=de_DE.UTF-8
+	LANG: de_DE.UTF-8
     secure: QBSFH3z7nCKgpxxhe5oNOyJBJ/RrjePvLr6oT1ETuuCYqK3cV56t+ASCEEgTv1OwhYiOTCc4WERu+/VBzLIoVNi+sUtO2YlnKi+vlLQeX/9IZvrQ+1bteIHsYcVA81xzsN4w+PcY+WTNCZ8DmYMfINwe8wB+ArptQgbRKdkEuzT5c3xGtYIfGNJnk3pimLUxEWZNHCYKKIZsF9GWbJL+h61UJVb2PINfV9mIQ+GR9To8oiWPz35Nu6i+zYW8NRy+uMiAp45tW/1fo6Nx6o2dv1cQ/PhL+i9JP4If01Vp1CPCSz/urAXoIGFKdZZxwA2/yncJ9xClNl1DTQarmWSdhWEbrMbOFC7IP6b3r/f4UaFxecKYkRY6FTpfmySCOY8yzSHvNbZnsU51K3+enz6rF74josiUHrgidWHeYTfjs9yQ16QqBUXhhNfpqHf6ZDmMByrB0D031NE4JVxhya9ZJgo8OWxpeeTuyP6Tmuw5y38Rd0gd/I0M+IG65Lyz+qGC37cGLkQ0NX+RBjNKjTIG+Ojx7bRPzy6ox/QYgcuFXkXsv8Sy5k44HifIpU297124Z83DS81fBi0ePKJtrmGv0XhU7M5G9YZkInGGugjqhEUXm3PZB5ceyDFf/8v8SOdI9uim6Pebf3suexFlfb+TIhG3KA95s3IMFKab9ryY8o0=
