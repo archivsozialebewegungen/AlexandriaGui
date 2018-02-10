@@ -18,7 +18,7 @@ the expected object can't be properly initialized.
 # pylint: disable=arguments-differ
 
 from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
-    Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox, Toplevel
+    Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox, Toplevel, TclError
 from tkinter import Tk
 from tkinter.constants import END, DISABLED, ALL, N, S, E, W, LEFT, NORMAL,\
     HORIZONTAL, GROOVE, SUNKEN, SOLID
@@ -26,7 +26,7 @@ from alexandriabase.domain import AlexDate
 from builtins import Exception
 from tkinter.ttk import Combobox, Scrollbar
 from tkgui import _
-from nltk.downloader import TclError
+
 try:
     # Python 3.4 and Python 3.5
     from idlelib.TreeWidget import TreeItem, TreeNode
