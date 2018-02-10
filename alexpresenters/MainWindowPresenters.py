@@ -195,10 +195,10 @@ class JournalDocTypePostProcessor(object):
     @inject
     def __init__(self, document_type_service: baseinjectorkeys.DOCUMENT_TYPE_SERVICE_KEY):
         self.doc_type = document_type_service.get_by_id(13)
-        month_pattern = _(r"\s*(\d{1,2}\.|January|February|March|April|May|" +
-            r"June|July|August|September|October|November|December|" +
-            r"Jan\.|Feb\.|Mar\.|Apr\.|May|Jun\.|Jul\.|Aug\.|Sep\.|Oct\.|Nov\.|Dec\.)\s*")
-        delimiter_pattern = _(r"(from|,)\s+")
+        month_pattern = r"\s*(\d{1,2}\.|Januar|Februar|März|April|Mai|" +\
+            r"Juni|Juli|August|September|Oktober|November|Dezember|" +\
+            r"Jan\.|Feb\.|Mär\.|Apr\.|Mai|Jun\.|Jul\.|Aug\.|Sep\.|Oct\.|Nov\.|Dez\.)\s*"
+        delimiter_pattern = r"(vom|,)\s+"
         self.doctype_re = re.compile(r"^(.{1,30}?" + 
                                      delimiter_pattern + 
                                      r"\d+\." + 
