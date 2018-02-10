@@ -5,7 +5,7 @@ Created on 21.01.2018
 '''
 from tkinter import Frame, Toplevel
 from tkinter.constants import LEFT, NW, X, RIGHT, TOP, WORD, DISABLED, NORMAL,\
-    FLAT, CENTER
+    FLAT, CENTER, SUNKEN, BOTH, YES, RIDGE
 from injector import singleton, inject, Module, ClassProvider, InstanceProvider,\
     provider
 from tkgui import _, guiinjectorkeys
@@ -15,7 +15,7 @@ from alexpresenters.MessageBroker import Message, CONF_SETUP_FINISHED,\
     REQ_SAVE_ALL, REQ_QUIT
 import sys
 from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, AlexTk,\
-    AlexLabel, AlexText, AlexRadioGroup, AlexButton
+    AlexLabel, AlexText, AlexRadioGroup, AlexButton, AlexShortcutBar
 from threading import Thread
 from tkinter.ttk import Notebook
 
@@ -47,11 +47,12 @@ class WindowManager():
         self.root.withdraw()
         self.root.protocol("WM_DELETE_WINDOW", self._quit)
 
-    def create_new_window(self):
+    def create_new_window(self, title='Alexandria'):
         '''
         Returns a new toplevel window.
         '''
         window = Toplevel(self.root)
+        window.title(title)
         window.protocol("WM_DELETE_WINDOW", self._quit)
         self.windows.append(window)
         return window
@@ -119,8 +120,8 @@ class BaseWindow(Frame):
         
         self._add_frames()
 
-        self.references_frame = Frame(self.window)
-        self.references_frame.pack(side=TOP, anchor=NW)
+        self.references_frame = Frame(self.window, border=2, relief=RIDGE)
+        self.references_frame.pack(side=TOP, anchor=NW, expand=YES, fill=BOTH)
         
         self._add_message_bar()
 
@@ -188,18 +189,31 @@ class BaseWindow(Frame):
                                  label=_('Filtering'),
                                  command=self._toggle_filter)
 
+        self.shortcutbar = AlexShortcutBar(parent)
+        self.shortcutbar.pack(side=LEFT)
+        
         icondir = self._get_icon_dir()
 
-        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'first.gif'),
-                                 command=self.presenter.goto_first)
-        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'previous.gif'),
-                                 command=self.presenter.goto_previous)
-        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'new.gif'),
-                                 command=self._create_new)
-        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'next.gif'),
-                                 command=self.presenter.goto_next)
-        self.menubar.addshortcut(imagefile=os.path.join(icondir, 'last.gif'),
-                                 command=self.presenter.goto_last)
+        self.shortcutbar.addshortcut(
+            imagefile=os.path.join(icondir, 'first.gif'),
+            command=self.presenter.goto_first,
+            tooltip=_('Goto first record'))
+        self.shortcutbar.addshortcut(
+            imagefile=os.path.join(icondir, 'previous.gif'),
+            command=self.presenter.goto_previous,
+            tooltip=_('Go one record back'))
+        self.shortcutbar.addshortcut(
+            imagefile=os.path.join(icondir, 'new.gif'),
+            command=self._create_new,
+            tooltip=_('Create a new record'))
+        self.shortcutbar.addshortcut(
+            imagefile=os.path.join(icondir, 'next.gif'),
+            command=self.presenter.goto_next,
+            tooltip=_('Go one record forward'))
+        self.shortcutbar.addshortcut(
+            imagefile=os.path.join(icondir, 'last.gif'),
+            command=self.presenter.goto_last,
+            tooltip=_('Goto last record'))
 
         for plugin in self.plugins:
             plugin.attach_to_window(self)
@@ -216,13 +230,13 @@ class BaseWindow(Frame):
         for factory in reference_factories:
             if side == RIGHT:
                 row = Frame(self.references_frame)
-                row.pack(side=TOP)
+                row.pack(side=TOP, expand=YES, fill=BOTH)
                 side = LEFT
             else:
                 side = RIGHT
             view = factory.get_view(row)
             self.references.append(view)
-            view.pack(side=side, padx=5, pady=5)
+            view.pack(side=side, expand=YES, fill=BOTH, padx=5, pady=5)
     
     def _add_message_bar(self):
         
@@ -297,7 +311,8 @@ class DocumentWindow(BaseWindow):
         self._condition_widget = None
         self._keywords_widget = None
         super().__init__(window_manager, message_broker, presenter, dialogs, document_menu_additions)
-
+        self.window.title(_("Alexandria documents"))
+        
     def _create_new(self):
         self.presenter.create_new()
     
@@ -321,8 +336,8 @@ class DocumentWindow(BaseWindow):
     def _populate_entity_frame(self):
         # pylint: disable=no-member
         self._document_label = AlexLabel(self.entity_frame, text=_("No document available"))
-        self._document_label.pack()
-        self.notebook = Notebook(self.entity_frame)
+        self._document_label.pack(padx=7, pady=7)
+        self.notebook = Notebook(self.entity_frame, width=600)
         self.notebook.pack(fill=X)
         description = Frame(self.notebook)
         self.notebook.add(description, text=_('Description'))
@@ -461,6 +476,7 @@ class EventWindow(BaseWindow):
                  event_menu_additions: guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY):
         super().__init__(window_manager, message_broker, presenter, dialogs, event_menu_additions)
         self.date_range_for_new_event = None
+        self.window.title(_("Alexandria events"))
 
     def _create_new(self):
         '''
@@ -496,9 +512,10 @@ class EventWindow(BaseWindow):
         if len(event_list) == 0:
             self.presenter.create_new()
         else:
-            self.dialogs[self.CONFIRM_NEW_EVENT_DIALOG].activate(self._confirm_new_event_callback,
-                                                                 event_list=event_list,
-                                                                 date=self.date_range_for_new_event.start_date)
+            self.dialogs[self.CONFIRM_NEW_EVENT_DIALOG].activate(
+                self._confirm_new_event_callback,
+                event_list=event_list,
+                date=self.date_range_for_new_event.start_date)
     
     def _confirm_new_event_callback(self, value):
         if value == None:
@@ -544,6 +561,7 @@ class EventWindow(BaseWindow):
                                   relief=FLAT,
                                   command=self._change_date_range,
                                   state=DISABLED)
+        self._daterange_widget.addToolTip('Click here to change the date')
         self._daterange_widget.pack(side=TOP, padx=5, pady=5, anchor=CENTER)
 
     def _add_description(self):
@@ -552,7 +570,7 @@ class EventWindow(BaseWindow):
                                  font="Helvetica 12 bold",
                                  wrap=WORD,
                                  height=6,
-                                 width=60,
+                                 width=66,
                                  state=DISABLED)
         self._description_widget.pack()
         
@@ -563,7 +581,11 @@ class EventWindow(BaseWindow):
         self._add_status_chooser(helper_frame)
 
     def _add_location_chooser(self, helper_frame):
-        location_texts = [_('not registered'), _('local'), _('countrywide'), _('national'), _('international')]
+        location_texts = [_('not registered'),
+                          _('local'),
+                          _('countrywide'),
+                          _('national'),
+                          _('international')]
         self._location_widget = AlexRadioGroup(helper_frame, choices=location_texts, title=_('Location'))
         self._location_widget.pack(side=LEFT, anchor=NW, padx=5, pady=5)
                         
@@ -695,7 +717,7 @@ class MainWindowsModule(Module):
         If you have plugins that define additional references,
         you have to overwrite this in your applications main module.
         '''
-        return [event_cross_references, event_document_reference, event_type_reference]
+        return [event_cross_references, event_type_reference, event_document_reference]
     
     # Dialogs
     @provider

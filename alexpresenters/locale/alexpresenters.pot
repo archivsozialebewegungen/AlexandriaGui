@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-07 12:06+0100\n"
+"POT-Creation-Date: 2018-02-10 16:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,32 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: alexpresenters/mainwindows/PostProcessors.py:38
-msgid ""
-"\\s*(\\d{1,2}\\.|January|February|March|April|May|June|July|August|September|"
-"October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|May|Jun\\.|Jul\\.|Aug"
-"\\.|Sep\\.|Oct\\.|Nov\\.|Dec\\.)\\s*"
-msgstr ""
-
-#: alexpresenters/mainwindows/PostProcessors.py:41
-msgid "(from|,)\\s+"
-msgstr ""
-
-#: alexpresenters/components/references/documentfilereferencespresenter.py:71
+#: alexpresenters/ReferencePresenters.py:169
 #, python-format
 msgid "File format '%s' is not supported!"
 msgstr ""
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:79
+#: alexpresenters/ReferencePresenters.py:177
 #, python-brace-format
 msgid "File resolution {0:d} x {1:d} is not supported!"
 msgstr ""
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:90
+#: alexpresenters/ReferencePresenters.py:188
 msgid "Unknown error while adding file"
 msgstr ""
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:108
+#: alexpresenters/ReferencePresenters.py:206
 #, python-format
 msgid "Document %s not found"
 msgstr ""

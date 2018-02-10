@@ -7,10 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-07 12:09+0100\n"
-"PO-Revision-Date: 2018-02-09 14:20+0100\n"
-"Last-Translator: Michael Koltan <admin@archivsozialebewegungen."
-"de>\n"
+"POT-Creation-Date: 2018-02-10 16:40+0100\n"
+"PO-Revision-Date: 2018-02-10 16:40+0100\n"
+"Last-Translator: Michael Koltan <admin@archivsozialebewegungen.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -19,37 +18,21 @@ msgstr ""
 "X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: alexpresenters/mainwindows/PostProcessors.py:38
-msgid ""
-"\\s*(\\d{1,2}\\.|January|February|March|April|May|June|July|"
-"August|September|October|November|December|Jan\\.|Feb\\.|Mar"
-"\\.|Apr\\.|May|Jun\\.|Jul\\.|Aug\\.|Sep\\.|Oct\\.|Nov\\.|Dec"
-"\\.)\\s*"
-msgstr ""
-"\\s*(\\d{1,2}\\.|Januar|Februar|März|April|Mai|Juni|Juli|"
-"August|September|Oktober|November|Dezember|Jan\\.|Feb\\.|Mär"
-"\\.|Apr\\.|Mai|Jun\\.|Jul\\.|Aug\\.|Sep\\.|Okt\\.|Nov\\.|Dez"
-"\\.)\\s*"
-
-#: alexpresenters/mainwindows/PostProcessors.py:41
-msgid "(from|,)\\s+"
-msgstr "(vom|,)\\s+"
-
-#: alexpresenters/components/references/documentfilereferencespresenter.py:71
+#: alexpresenters/ReferencePresenters.py:169
 #, python-format
 msgid "File format '%s' is not supported!"
 msgstr "Das Dateiformat '%s' wird nicht unterstützt!"
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:79
+#: alexpresenters/ReferencePresenters.py:177
 #, python-brace-format
 msgid "File resolution {0:d} x {1:d} is not supported!"
 msgstr "Die Dateiauflösung {0:d} x {1:d} wird nicht unterstützt!"
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:90
+#: alexpresenters/ReferencePresenters.py:188
 msgid "Unknown error while adding file"
 msgstr "Unbekannter Fehler beim Hinzufügen einer Datei"
 
-#: alexpresenters/components/references/documentfilereferencespresenter.py:108
+#: alexpresenters/ReferencePresenters.py:206
 #, python-format
 msgid "Document %s not found"
 msgstr "Dokument %s nicht gefunden"
@@ -68,3 +51,9 @@ msgstr "'%s' ist kein zulässiger Monat!"
 #, python-format
 msgid "'%s' is not a valid year!"
 msgstr "'%s' ist kein zulässiges Jahr!"
+
+#~ msgid "\\s*(\\d{1,2}\\.|January|February|March|April|May|June|July|August|September|October|November|December|Jan\\.|Feb\\.|Mar\\.|Apr\\.|May|Jun\\.|Jul\\.|Aug\\.|Sep\\.|Oct\\.|Nov\\.|Dec\\.)\\s*"
+#~ msgstr "\\s*(\\d{1,2}\\.|Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember|Jan\\.|Feb\\.|Mär\\.|Apr\\.|Mai|Jun\\.|Jul\\.|Aug\\.|Sep\\.|Okt\\.|Nov\\.|Dez\\.)\\s*"
+
+#~ msgid "(from|,)\\s+"
+#~ msgstr "(vom|,)\\s+"

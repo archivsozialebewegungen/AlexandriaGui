@@ -18,15 +18,15 @@ the expected object can't be properly initialized.
 # pylint: disable=arguments-differ
 
 from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
-    Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox
-from tkinter.tix import Tk
+    Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox, Toplevel
+from tkinter import Tk
 from tkinter.constants import END, DISABLED, ALL, N, S, E, W, LEFT, NORMAL,\
-    HORIZONTAL, GROOVE, SUNKEN
+    HORIZONTAL, GROOVE, SUNKEN, SOLID
 from alexandriabase.domain import AlexDate
 from builtins import Exception
 from tkinter.ttk import Combobox, Scrollbar
-from tkinter.tix import ComboBox
 from tkgui import _
+from nltk.downloader import TclError
 try:
     # Python 3.4 and Python 3.5
     from idlelib.TreeWidget import TreeItem, TreeNode
@@ -39,6 +39,19 @@ class AlexTk(Tk):
     Just a wrapper class to switch between
     tkinter and tkinter.tix
     '''
+
+class AlexWidget:
+    '''
+    Mixin class for adding tooltips
+    '''
+    def addToolTip(self, text):
+        toolTip = AlexToolTip(self)
+        def enter(event):
+            toolTip.showtip(text)
+        def leave(event):
+            toolTip.hidetip()
+        self.bind('<Enter>', enter)
+        self.bind('<Leave>', leave)
 
 class DateEntryFrame(Frame):
     # pylint: disable=too-many-ancestors
@@ -131,12 +144,12 @@ class AlexLabel(Label):
         super().__init__(*params, **kw)
         self.object = None
     
-    def set(self, object):
+    def set(self, display_object):
         '''
-        Sets the string representation of the given object.
+        Sets the string representation of the given display_object.
         '''
-        self.object = object
-        self.configure(text="%s" % object)
+        self.object = display_object
+        self.configure(text="%s" % display_object)
         
     def get(self):
         '''
@@ -197,7 +210,7 @@ class AlexEntry(Entry):
         '''
         return super().get().strip()
         
-class AlexButton(Button):
+class AlexButton(AlexWidget, Button):
     '''
     Wrapper around the tkinter Button class
     '''
@@ -523,8 +536,7 @@ class AlexTree(Frame):  # @UndefinedVariable
     
     def __init__(self,
                  parent,
-                 tree,
-                 label):
+                 tree):
         super().__init__(
                  parent,
                  width = 400,
@@ -536,18 +548,14 @@ class AlexTree(Frame):  # @UndefinedVariable
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        l = AlexLabel(self)
-        l.set(label)
-        l.grid(row=0, column=0, sticky=E+N)
-
         xscrollbar = AlexScrollbar(self, orient=HORIZONTAL)
-        xscrollbar.grid(row=2, column=0, sticky=E+W)
+        xscrollbar.grid(row=1, column=0, sticky=E+W)
 
         yscrollbar = AlexScrollbar(self)
-        yscrollbar.grid(row=1, column=1, sticky=N+S)
+        yscrollbar.grid(row=0, column=1, sticky=N+S)
 
         canvasframe = Frame(self, bd=4, relief=GROOVE)
-        canvasframe.grid(row=1, column=0, sticky=N+S+E+W)
+        canvasframe.grid(row=0, column=0, sticky=N+S+E+W)
         self.canvas = Canvas(canvasframe, bd=0,
                         xscrollcommand=xscrollbar.set,
                         yscrollcommand=yscrollbar.set)
@@ -644,22 +652,8 @@ class AlexMenuBar(Menu):
         menulabel = params[0]
         self.entries[menulabel] = []
         self.menus[menulabel] = Menu(self, tearoff=False)
-        #if self.shortcutindex > 0:
         self.insert(len(self.menus), 'cascade', label=menulabel, menu=self.menus[menulabel])
-        #else:
-        #    self.add_cascade(label=menulabel,
-        #                     menu=self.menus[menulabel])
-        
-    def addshortcut(self, imagefile='', command=''):
-
-        self.shortcutindex += 1
-        iconname = "icon%d" % self.shortcutindex
-        
-        image = PhotoImage(master=self, file=imagefile)
-        self.add('command', image=image, command=command, compound='right')
-        setattr(self, iconname, image)
-
-        
+                
     def addmenuitem(self, *params, before=None, **kw):
         menulabel = params[0]
         itemlabel = kw['label']
@@ -694,3 +688,56 @@ class AlexMenuBar(Menu):
             counter += 1
             
         return counter
+
+class AlexShortcutBar(Frame):
+    
+    def __init__(self, *p, **kw):
+        super().__init__(*p, **kw)
+        self.images = []
+    
+    def addshortcut(self, imagefile='', command='', tooltip=None):
+        
+
+        self.images.append(PhotoImage(master=self, file=imagefile))
+        button = AlexButton(self, image=self.images[-1], command=command)
+        if tooltip is not None:
+            button.addToolTip(tooltip)
+        button.pack(side=LEFT)    
+        
+class AlexToolTip(object):
+
+    def __init__(self, widget):
+        self.widget = widget
+        self.tipwindow = None
+        self.id = None
+        self.x = self.y = 0
+
+    def showtip(self, text):
+        "Display text in tooltip window"
+        self.text = text
+        if self.tipwindow or not self.text:
+            return
+        x, y, cx, cy = self.widget.bbox("insert")  # @UnusedVariable
+        x = x + self.widget.winfo_rootx() + 27
+        y = y + cy + self.widget.winfo_rooty() +27
+        self.tipwindow = tw = Toplevel(self.widget)
+        tw.wm_overrideredirect(1)
+        tw.wm_geometry("+%d+%d" % (x, y))
+        try:
+            # For Mac OS
+            tw.tk.call("::tk::unsupported::MacWindowStyle",
+                       "style", tw._w,
+                       "help", "noActivates")
+        except TclError:
+            pass
+        label = Label(tw, text=self.text, justify=LEFT,
+                      background="#ffffe0", relief=SOLID, borderwidth=1,
+                      font=("tahoma", "8", "normal"))
+        label.pack(ipadx=1)
+
+    def hidetip(self):
+        tw = self.tipwindow
+        self.tipwindow = None
+        if tw:
+            tw.destroy()
+

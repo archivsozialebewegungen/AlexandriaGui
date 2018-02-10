@@ -45,18 +45,18 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.check_event_cross_reference_new()
         self.check_event_cross_reference_delete()
         
+        print("\nChecking event type references")
+        print("===============================")
+
+        self.check_event_type_reference_new()
+        self.check_event_type_reference_delete()
+
         print("\nChecking event document references")
         print("==================================")
 
         self.check_event_document_reference_new()
         self.check_event_document_reference_goto()
         self.check_event_document_reference_delete()
-
-        print("\nChecking event type references")
-        print("===============================")
-
-        self.check_event_type_reference_new()
-        self.check_event_type_reference_delete()
 
         print("\nChecking document event references")
         print("==================================")
@@ -331,6 +331,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
     def check_event_cross_reference_delete(self):
         print("Checking delete event cross reference...", end='')
         reference= self.event_window.references[0]
+        dialog = reference.deletion_dialog
         
         self.event_window_presenter.goto_first()
 
@@ -338,8 +339,9 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         
         reference.listbox.set(self.get_event(1961050101))       
 
-        reference.presenter.delete_cross_reference()
-
+        self.start_dialog(reference._delete_cross_reference)
+        dialog.presenter.yes_action()
+        
         self.assertEquals(len(reference.items), 2)
                 
         print("OK")
@@ -347,7 +349,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
     def check_event_document_reference_new(self):
 
         print("Checking new document event reference...", end='')
-        reference = self.event_window.references[1]
+        reference = self.event_window.references[2]
         dialog = reference.documentid_selection_dialog
         self.document_window.presenter.goto_first()
         self.event_window.presenter.goto_last()
@@ -372,7 +374,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
         print("Checking goto document event reference...", end='')
         
-        reference = self.event_window.references[1]
+        reference = self.event_window.references[2]
         self.document_window.presenter.goto_last()
         self.event_window.presenter.goto_last()
         self.assertEquals(1, len(reference.listbox.get_items()))
@@ -390,14 +392,17 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
         print("Checking goto document event reference...", end='')
         
-        reference = self.event_window.references[1]
+        reference = self.event_window.references[2]
+        dialog = reference.deletion_dialog
+        
         self.event_window.presenter.goto_last()
         original_references = len(reference.listbox.get_items())
 
         # Select new reference from previous test
         reference.listbox.set(reference.listbox.get_items()[-1])
-        # "Press" the delete button
-        reference.presenter.remove_document_reference()
+        # "Press" the delete button and confirm in dialog
+        self.start_dialog(reference._remove_document_reference)
+        dialog.presenter.yes_action()
 
         self.assertEquals(original_references - 1,
                           len(reference.listbox.get_items()))
@@ -409,7 +414,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
     def check_event_type_reference_new(self):
         print("Checking create new event type reference...", end='')
-        reference= self.event_window.references[2]
+        reference= self.event_window.references[1]
         dialog = reference.event_type_selection_dialog
         
         self.event_window_presenter.goto_first()
@@ -429,7 +434,8 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
     def check_event_type_reference_delete(self):
         
         print("Checking deleting event type reference...", end='')
-        reference= self.event_window.references[2]
+        reference = self.event_window.references[1]
+        dialog = reference.deletion_dialog
 
         self.event_window_presenter.goto_first()
 
@@ -441,7 +447,8 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
             if item.id == identifier:
                 reference.listbox.set(item)   
 
-        reference.presenter.remove_event_type_reference()
+        self.start_dialog(reference._remove_event_type_reference)
+        dialog.presenter.yes_action()
 
         self.assertEquals(len(reference.items), 2)
                 
@@ -500,13 +507,16 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         print("Checking goto document event reference...", end='')
         
         reference = self.document_window.references[0]
+        dialog = reference.deletion_dialog
+        
         self.document_window.presenter.goto_first()
         original_references = len(reference.listbox.get_items())
 
         # Select new reference from previous test
         reference.listbox.set(reference.listbox.get_items()[-1])
         # "Press" the delete button
-        reference.presenter.remove_event_reference()
+        self.start_dialog(reference._remove_event_reference)
+        dialog.presenter.yes_action()
 
         self.assertEquals(original_references - 1,
                           len(reference.listbox.get_items()))
@@ -589,6 +599,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         
         print("Checking deleting document file reference...", end='')
         reference= self.document_window.references[1]
+        dialog = reference.deletion_dialog
         
         # precheck
         self.document_window.presenter.goto_first()
@@ -598,7 +609,8 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         
         # doit
         reference.listbox.set(reference.listbox.get_items()[-1])
-        reference.presenter.remove_file()
+        self.start_dialog(reference._remove_file)
+        dialog.presenter.yes_action()
         
         # recheck
         self.assertFalse(os.path.isfile(target_file))

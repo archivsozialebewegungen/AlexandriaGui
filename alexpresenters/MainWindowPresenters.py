@@ -5,7 +5,6 @@ Created on 07.02.2018
 '''
 from injector import inject
 from alexandriabase import baseinjectorkeys
-from alexpresenters import _
 from alexpresenters.MessageBroker import Message, REQ_QUIT,\
     CONF_DOCUMENT_CHANGED, REQ_SAVE_CURRENT_DOCUMENT, REQ_SET_DOCUMENT,\
     REQ_GOTO_FIRST_DOCUMENT, CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT,\

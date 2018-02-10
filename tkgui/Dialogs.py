@@ -4,7 +4,7 @@ Created on 01.01.2018
 @author: michael
 '''
 
-from tkinter.constants import TOP, LEFT, BOTH, W, X
+from tkinter.constants import TOP, LEFT, BOTH, W, X, YES
 from tkinter import Frame, filedialog
 from tkgui.AlexWidgets import AlexLabel, AlexButton, AlexEntry,\
     AlexRadioGroup, AlexComboBox, DateEntryFrame, AlexDateEntry, AlexListBox,\
@@ -94,7 +94,7 @@ class AbstractInputDialog:
         
         button = AlexButton(self.buttons_frame, command=callback)
         button.set(label)
-        button.pack(side=LEFT)
+        button.pack(side=LEFT, padx=5, pady=5)
         return button
         
     def set_default_buttons(self):
@@ -271,6 +271,7 @@ class GenericStringSelectionDialog(AbstractInputDialog):
         
 class GenericBooleanSelectionDialog(AbstractInputDialog):
 
+    @inject
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
                  presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
@@ -283,7 +284,7 @@ class GenericBooleanSelectionDialog(AbstractInputDialog):
         self.add_button(_('No'), self.presenter.no_action)
         label = AlexLabel(self.interior)
         label.set(question)
-        label.pack()
+        label.pack(padx=20, pady=20)
         
 weekdays = (_('MO'), _('TU'), _('WE'), _('TH'), _('FR'), _('SA'), _('SU'))
 
@@ -500,7 +501,7 @@ class DocumentIdSelectionDialog(GenericInputEditDialog):
     @inject
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
-                 presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
+                 presenter: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
     
     def activate(self, callback, initvalue=''):
@@ -613,13 +614,22 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         
     def create_dialog(self, label=_('Select a tree node')):
 
+        if self.window is not None:
+            self.label.set(label)
+            return
+
         super().create_dialog()
         
-        self.label = label
-
-        self.filter_entry = AlexEntry(self.interior)
+        self.label = AlexLabel(self.interior)
+        self.label.set(label)
+        self.label.pack(side=TOP, padx=5, pady=5)
+    
+        filter_frame = Frame(self.interior)
+        AlexLabel(filter_frame, text=_('Search tree:')).pack(side=LEFT, pady=5)
+        self.filter_entry = AlexEntry(filter_frame)
         self.filter_entry.bind("<KeyRelease>", lambda event: self._apply_filter(event))
-        self.filter_entry.pack(fill=X, expand=1)
+        self.filter_entry.pack(side=LEFT, fill=X, expand=YES)
+        filter_frame.pack(side=TOP, expand=YES, fill=X)
         
         self.set_default_buttons()
 
@@ -639,13 +649,13 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         if self.tree_widget is not None:
             self.tree_widget.destroy()
         self.tree_widget = AlexTree(self.interior,
-                                    tree,
-                                    self.label)
+                                    tree)
         self.tree_widget.pack()
     
     def activate(self, callback, label):
-        self.label = label
-        super().activate(callback)
+        if self.window is not None:
+            self.label.set(label)
+        super().activate(callback, label=label)
                 
     input = property(lambda self: self.tree_widget.get())
     tree = property(None, set_tree)
@@ -772,11 +782,15 @@ class LoginDialog(Frame):
         super().__init__(self.window)
         self.pack()
         
+        label = AlexLabel(self)
+        label.set(_("Please select user:"))
+        label.pack(padx=5, pady=5)
+        
         self.combobox = AlexComboBox(self)
-        self.combobox.pack()
+        self.combobox.pack(padx=5, pady=5)
         
         buttonframe = Frame(self)
-        buttonframe.pack()
+        buttonframe.pack(padx=5, pady=5)
         
         AlexButton(buttonframe, text=_('OK'), command=self.presenter.ok_action).pack(side=LEFT)
         AlexButton(buttonframe, text=_('Cancel'), command=self.presenter.cancel_action).pack(side=LEFT)
@@ -834,6 +848,8 @@ class DialogsTkGuiModule(Module):
                     ClassProvider(GenericStringEditDialog))
         binder.bind(guiinjectorkeys.GENERIC_STRING_SELECTION_DIALOG_KEY,
                     ClassProvider(GenericStringSelectionDialog))
+        binder.bind(guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY,
+                    ClassProvider(GenericBooleanSelectionDialog))
         binder.bind(guiinjectorkeys.DATE_SELECTION_DIALOG_KEY,
                     ClassProvider(SimpleDateSelectionDialog))
         binder.bind(guiinjectorkeys.EVENT_ID_SELECTION_DIALOG_KEY,
