@@ -678,7 +678,7 @@ class GenericFilterDialog(AbstractInputDialog):
         self.search_term_entries = []
         for i in range(1, 4):
             AlexLabel(self.interior,
-                      text=_("%d. search expression:" % i)).grid(row=i - 1, column=0, sticky=W)
+                      text=_("%d. search expression:") % i).grid(row=i - 1, column=0, sticky=W)
             entry = AlexEntry(self.interior)
             entry.grid(row=i - 1, column=1, sticky=W, pady=5)
             self.search_term_entries.append(entry)
@@ -697,7 +697,56 @@ class GenericFilterDialog(AbstractInputDialog):
     
     searchterms = property(_get_searchterms)
 
-class DocumentFilterDialog(GenericFilterDialog):  # @UndefinedVariable
+class BasicDocumentFilterDialog(GenericFilterDialog):  # @UndefinedVariable
+
+    def create_dialog(self):
+        super().create_dialog()
+        
+        self.create_signature_entry()
+        
+        AlexLabel(self.interior, text=_("No event link:")).grid(row=4, column=0, sticky=W)
+        self.missing_event_checkbox = AlexCheckBox(self.interior)
+        self.missing_event_checkbox.grid(row=4, column=1, sticky=W, pady=5)
+        
+    def create_signature_entry(self):
+
+        AlexLabel(self.interior, text=_("Signature:")).grid(row=3, column=0, sticky=W)
+        self.signature_widget = AlexEntry(self.interior)
+        self.signature_widget.grid(row=3, column=1, sticky=W, pady=5)
+        
+    def _clear_filter_form(self):
+        super()._clear_filter_form()
+        self._set_signature(None)
+        self.missing_event_checkbox.set(False)
+        
+    def _get_signature(self):
+        
+        if self.signature_widget.get() == '':
+            return None
+        else:
+            return self.signature_widget.get()
+    
+    def _set_signature(self, value):
+        
+        if value == None:
+            self.signature_widget.set('')
+        else:
+            self.signature_widget.set(value)
+    
+    def _get_missing_event_link(self):
+        
+        return self.missing_event_checkbox.get()
+    
+    def _set_missing_event_link(self, value):
+        
+        return self.missing_event_checkbox.set(value)
+    
+    signature = property(lambda self: self._get_signature(),
+                         lambda self, value: self._set_signature())
+    missing_event_link = property(_get_missing_event_link,
+                                  _set_missing_event_link)
+    
+class DocumentFilterDialog(BasicDocumentFilterDialog):  # @UndefinedVariable
 
     @inject
     def __init__(self,
@@ -705,17 +754,6 @@ class DocumentFilterDialog(GenericFilterDialog):  # @UndefinedVariable
                  presenter: guiinjectorkeys.DOCUMENT_FILTER_DIALOG_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
 
-    def create_dialog(self):
-        super().create_dialog()
-        AlexLabel(self.interior, text=_("Signature:")).grid(row=3, column=0, sticky=W)
-        self.signature_entry = AlexEntry(self.interior)
-        self.signature_entry.grid(row=3, column=1, sticky=W, pady=5)
-                   
-    def _clear_filter_form(self):
-        super()._clear_filter_form()
-        self.signature_entry.set('')
-    
-    signature = property(lambda self: self.signature_entry.get())
     
 class EventFilterDialog(GenericFilterDialog):
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-10 16:34+0100\n"
-"PO-Revision-Date: 2018-02-10 16:39+0100\n"
+"POT-Creation-Date: 2018-02-11 13:28+0100\n"
+"PO-Revision-Date: 2018-02-11 13:29+0100\n"
 "Last-Translator: Michael Koltan <admin@archivsozialebewegungen.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -112,12 +112,12 @@ msgstr ""
 "Willst Du wirklich die Datei aus\n"
 "dem Dokument löschen?"
 
-#: tkgui/Dialogs.py:105 tkgui/Dialogs.py:795
+#: tkgui/Dialogs.py:105 tkgui/Dialogs.py:833
 msgid "OK"
 msgstr "OK"
 
 #: tkgui/Dialogs.py:106 tkgui/Dialogs.py:161 tkgui/Dialogs.py:677
-#: tkgui/Dialogs.py:796
+#: tkgui/Dialogs.py:834
 msgid "Cancel"
 msgstr "Abbruch"
 
@@ -234,27 +234,31 @@ msgstr "Formular löschen"
 msgid "%d. search expression:"
 msgstr "%d. Suchausdruck"
 
-#: tkgui/Dialogs.py:710
+#: tkgui/Dialogs.py:707
+msgid "No event link:"
+msgstr "Nicht mit Ereignis verknüpft:"
+
+#: tkgui/Dialogs.py:713
 msgid "Signature:"
 msgstr "Signatur:"
 
-#: tkgui/Dialogs.py:731
+#: tkgui/Dialogs.py:769
 msgid "Earliest Date"
 msgstr "Frühestes Datum"
 
-#: tkgui/Dialogs.py:733
+#: tkgui/Dialogs.py:771
 msgid "Latest Date"
 msgstr "Spätestes Datum"
 
-#: tkgui/Dialogs.py:736
+#: tkgui/Dialogs.py:774
 msgid "Only local events"
 msgstr "Nur lokale Ereignisse"
 
-#: tkgui/Dialogs.py:741
+#: tkgui/Dialogs.py:779
 msgid "Only unverified events"
 msgstr "Nur unbestätigte Ereignisse"
 
-#: tkgui/Dialogs.py:786
+#: tkgui/Dialogs.py:824
 msgid "Please select user:"
 msgstr "Bitte Benutzer auswählen:"
 

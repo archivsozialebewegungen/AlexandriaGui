@@ -281,6 +281,7 @@ class DocumentFilterDialogPresenter(GenericFilterDialogPresenter):
     def _build_filter_object(self):
         filter_object = super()._build_filter_object()
         filter_object.signature = self._view.signature
+        filter_object.missing_event_link = self._view.missing_event_link
         return filter_object
         
     def _new_filter_object(self):
