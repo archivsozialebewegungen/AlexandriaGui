@@ -520,7 +520,7 @@ class EventWindow(BaseWindow):
     def _confirm_new_event_callback(self, value):
         if value == None:
             # None of the existing events has been selected
-            self.presenter.create_new_event()
+            self.presenter.create_new()
         else:
             self._goto_record(value.id)
         
