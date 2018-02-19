@@ -49,15 +49,15 @@ class GraphicsViewer():
         AlexButton(self.button_frame, text=_('Zoom 50%'), command=lambda f=self.Zoom, p=50: f(p)).pack(fill=X, expand=YES)
         AlexButton(self.button_frame, text=_('Zoom -50%'), command=lambda f=self.Zoom, p=-50: f(p)).pack(fill=X, expand=YES)
         AlexButton(self.button_frame, text=_('Quit'), command=self.window.withdraw).pack(fill=X, expand=YES)
-        self.canvas = None
+        self.canvas_frame = None
         self.window.withdraw()
 
     def showFile(self, file, file_info):
 
         self.LoadImage(file, file_info.resolution)
 
-        if self.canvas:
-            self.canvas.destroy()
+        if self.canvas_frame:
+            self.canvas_frame.destroy()
             
         self.canvas_frame = AlexScrolledCanvasFrame(self.display_frame, width=500, height=500)
         self.canvas = self.canvas_frame.canvas
