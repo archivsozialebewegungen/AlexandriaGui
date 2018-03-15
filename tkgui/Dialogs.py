@@ -123,6 +123,8 @@ class AbstractInputDialog:
         '''
         if self.window is None:
             self.create_dialog(**kw)
+        else:
+            self.config_dialog(**kw)
         
         if self.window is None:
             callback(None)
@@ -132,6 +134,10 @@ class AbstractInputDialog:
         self.presenter.view = self
         self.window.deiconify()
         self.window.grab_set()
+        
+    def config_dialog(self, **kw):
+        
+        pass
 
     def _set_return_value(self, value):
         self.window.grab_release()
@@ -223,10 +229,18 @@ class GenericInputEditDialog(AbstractInputDialog):
         super().create_dialog()
         self.set_default_buttons()
         
-        AlexLabel(self.interior, text=label).pack()
+        self.label = AlexLabel(self.interior)
+        self.label.pack()
+        
         self.entry = AlexEntry(self.interior)
-        self.entry.set(initvalue)
         self.entry.pack()
+        
+        self.config_dialog(label=label, initvalue=initvalue)
+        
+    def config_dialog(self, label=_('Please edit string:'), initvalue = ''):
+        
+        self.label.set(label)
+        self.entry.set(initvalue)
         
     def _get_entry(self):
         return self.entry.get()
