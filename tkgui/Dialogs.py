@@ -296,9 +296,13 @@ class GenericBooleanSelectionDialog(AbstractInputDialog):
         super().create_dialog()
         self.add_button(_('Yes'), self.presenter.yes_action)
         self.add_button(_('No'), self.presenter.no_action)
-        label = AlexLabel(self.interior)
-        label.set(question)
-        label.pack(padx=20, pady=20)
+        self.label = AlexLabel(self.interior)
+        self.label.pack(padx=20, pady=20)
+        self.config_dialog(question=question)
+        
+    def config_dialog(self, question=('Select yes or no')):
+        
+        self.label.set(question)
         
 weekdays = (_('MO'), _('TU'), _('WE'), _('TH'), _('FR'), _('SA'), _('SU'))
 
@@ -635,7 +639,6 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         super().create_dialog()
         
         self.label = AlexLabel(self.interior)
-        self.label.set(label)
         self.label.pack(side=TOP, padx=5, pady=5)
     
         filter_frame = Frame(self.interior)
@@ -646,6 +649,11 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         filter_frame.pack(side=TOP, expand=YES, fill=X)
         
         self.set_default_buttons()
+
+        self.config_dialog(label=label)
+        
+    def config_dialog(self, label=_('Select a tree node')):
+        self.label.set(label)
 
     def _apply_filter(self, event):
         filter_string = self.filter_entry.get()
