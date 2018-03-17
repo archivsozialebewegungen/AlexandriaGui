@@ -28,6 +28,7 @@ from manual.manual_tester import AbstractComponentTest, TestRunner
 from WindowTestHelpers import EventServiceStub
 from alexandriabase.config import Config
 from tkgui.FileViewers import GraphicsViewer, ExternalViewer
+from tkgui.AlexWidgets import AlexDateEntry
 
 class DialogTest(AbstractComponentTest):
     
@@ -439,14 +440,22 @@ class EventConfirmationDialogTest(DialogTest):
         
     def start_dialog(self):
         
-        event_list = (Event(1974010501), Event(1974010502))
-        event_list[0].description = "Event 1"
-        event_list[1].description = "Event 2"
+        try:
+            date = self.date_entry.get()
+        except:
+            return
+        
+        if date is None:
+            return
+        
+        event_list = (Event(date.as_key(1)), Event(date.as_key(2)))
+        event_list[0].description = "%s: Event 1" % date
+        event_list[1].description = "%s: Event 2" % date
         presenter = AbstractInputDialogPresenter()
         dialog = EventConfirmationDialog(self.window_manager, presenter)
         dialog.activate(self.callback,
                         event_list=event_list,
-                        date=AlexDate(1974, 5, 1))    
+                        date=date)    
         
     def callback(self, value):
         
@@ -454,6 +463,8 @@ class EventConfirmationDialogTest(DialogTest):
         
     def test_component(self, master, message_label):
         self.message_label = message_label
+        self.date_entry = AlexDateEntry(master)
+        self.date_entry.pack()
         Button(master, text="Start dialog", command=self.start_dialog).pack()
 
 class EventTypeSelectionDialogTest(DialogTest):

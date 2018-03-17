@@ -122,9 +122,9 @@ class AbstractInputDialog:
         '''
         '''
         if self.window is None:
-            self.create_dialog(**kw)
-        else:
-            self.config_dialog(**kw)
+            self.create_dialog()
+
+        self.config_dialog(**kw)
         
         if self.window is None:
             callback(None)
@@ -223,9 +223,7 @@ class GenericInputEditDialog(AbstractInputDialog):
     def __init__(self, window_manager, presenter):
         super().__init__(window_manager, presenter)
     
-    def create_dialog(self, 
-                     label=_('Please edit string:'),
-                     initvalue = ''):
+    def create_dialog(self):
         super().create_dialog()
         self.set_default_buttons()
         
@@ -234,8 +232,6 @@ class GenericInputEditDialog(AbstractInputDialog):
         
         self.entry = AlexEntry(self.interior)
         self.entry.pack()
-        
-        self.config_dialog(label=label, initvalue=initvalue)
         
     def config_dialog(self, label=_('Please edit string:'), initvalue = ''):
         
@@ -291,14 +287,12 @@ class GenericBooleanSelectionDialog(AbstractInputDialog):
                  presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
         super().__init__(window_manager, presenter)
 
-    def create_dialog(self, 
-                      question=_('Select yes or no')):
+    def create_dialog(self):
         super().create_dialog()
         self.add_button(_('Yes'), self.presenter.yes_action)
         self.add_button(_('No'), self.presenter.no_action)
         self.label = AlexLabel(self.interior)
         self.label.pack(padx=20, pady=20)
-        self.config_dialog(question=question)
         
     def config_dialog(self, question=('Select yes or no')):
         
@@ -599,24 +593,36 @@ class EventConfirmationDialog(AbstractInputDialog):
                  presenter: guiinjectorkeys.EVENT_CONFIRMATION_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
         
-    def create_dialog(self, event_list=[], date=None):
+    def create_dialog(self):
 
         super().create_dialog()
 
         self.add_button(_('Create new event'), self.presenter.cancel_action)        
-        AlexLabel(self.interior,
-                  text=_("Events exist on %s. Please select the event you want or create a new one") % date,
-                  wraplength=550,
-                  font=("Helvetica", 14, "bold")).pack() 
-        event_frame = Frame(self.interior)
-        event_frame.pack()
+        self.label = AlexLabel(
+            self.interior,
+            wraplength=550,
+            font=("Helvetica", 14, "bold"))
+        self.label.pack()
+        self.event_frame = None
+         
+
+    def config_dialog(self, event_list=[], date=None):
+    
+        self.label.set(_("Events exist on %s. Please select the event you want or create a new one")
+                        % date)
+
+        if self.event_frame is not None:
+            self.event_frame.destroy()
+        
+        self.event_frame = Frame(self.interior)
+        self.event_frame.pack()
         row_counter = 0
         for event in event_list:
-            description = AlexLabel(event_frame, wraplength=500, justify=LEFT, text=event.description)
+            description = AlexLabel(self.event_frame, wraplength=500, justify=LEFT, text=event.description)
             description.grid(row=row_counter, column=0, sticky=W)
             def closure(event):
                 return lambda: self._set_return_value(event)
-            button = AlexButton(event_frame, text=_("Goto event"),
+            button = AlexButton(self.event_frame, text=_("Goto event"),
                             command=closure(event))
             button.grid(row=row_counter, column=1)
             row_counter += 1
@@ -630,11 +636,7 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         self.tree_widget = None
         self.filter_is_set = False
         
-    def create_dialog(self, label=_('Select a tree node')):
-
-        if self.window is not None:
-            self.label.set(label)
-            return
+    def create_dialog(self):
 
         super().create_dialog()
         
@@ -650,8 +652,6 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         
         self.set_default_buttons()
 
-        self.config_dialog(label=label)
-        
     def config_dialog(self, label=_('Select a tree node')):
         self.label.set(label)
 
