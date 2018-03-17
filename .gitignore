@@ -87,3 +87,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# pywikibot stuff
+tkgui/throttle.ctrl
+tkgui/apicache-py3/
