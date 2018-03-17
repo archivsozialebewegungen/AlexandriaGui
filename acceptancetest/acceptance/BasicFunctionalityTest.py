@@ -181,7 +181,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         self.assert_that_document_description_is("Siebtes Dokument")  
         self.document_window_presenter.goto_previous()
         self.assert_that_document_is(13)
-        self.assert_that_document_description_is("Sechstes Dokument")  
+        self.assert_that_document_description_is("Sechstes Dokument: äöüß")  
         print("OK")
 
     def check_goto_event(self):

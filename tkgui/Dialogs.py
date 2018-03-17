@@ -123,6 +123,8 @@ class AbstractInputDialog:
         '''
         if self.window is None:
             self.create_dialog(**kw)
+        else:
+            self.config_dialog(**kw)
         
         if self.window is None:
             callback(None)
@@ -132,6 +134,10 @@ class AbstractInputDialog:
         self.presenter.view = self
         self.window.deiconify()
         self.window.grab_set()
+        
+    def config_dialog(self, **kw):
+        
+        pass
 
     def _set_return_value(self, value):
         self.window.grab_release()
@@ -223,10 +229,18 @@ class GenericInputEditDialog(AbstractInputDialog):
         super().create_dialog()
         self.set_default_buttons()
         
-        AlexLabel(self.interior, text=label).pack()
+        self.label = AlexLabel(self.interior)
+        self.label.pack()
+        
         self.entry = AlexEntry(self.interior)
-        self.entry.set(initvalue)
         self.entry.pack()
+        
+        self.config_dialog(label=label, initvalue=initvalue)
+        
+    def config_dialog(self, label=_('Please edit string:'), initvalue = ''):
+        
+        self.label.set(label)
+        self.entry.set(initvalue)
         
     def _get_entry(self):
         return self.entry.get()
@@ -282,9 +296,13 @@ class GenericBooleanSelectionDialog(AbstractInputDialog):
         super().create_dialog()
         self.add_button(_('Yes'), self.presenter.yes_action)
         self.add_button(_('No'), self.presenter.no_action)
-        label = AlexLabel(self.interior)
-        label.set(question)
-        label.pack(padx=20, pady=20)
+        self.label = AlexLabel(self.interior)
+        self.label.pack(padx=20, pady=20)
+        self.config_dialog(question=question)
+        
+    def config_dialog(self, question=('Select yes or no')):
+        
+        self.label.set(question)
         
 weekdays = (_('MO'), _('TU'), _('WE'), _('TH'), _('FR'), _('SA'), _('SU'))
 
@@ -621,7 +639,6 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         super().create_dialog()
         
         self.label = AlexLabel(self.interior)
-        self.label.set(label)
         self.label.pack(side=TOP, padx=5, pady=5)
     
         filter_frame = Frame(self.interior)
@@ -632,6 +649,11 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
         filter_frame.pack(side=TOP, expand=YES, fill=X)
         
         self.set_default_buttons()
+
+        self.config_dialog(label=label)
+        
+    def config_dialog(self, label=_('Select a tree node')):
+        self.label.set(label)
 
     def _apply_filter(self, event):
         filter_string = self.filter_entry.get()
