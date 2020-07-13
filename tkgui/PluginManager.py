@@ -112,14 +112,14 @@ class PluginManager(object):
         
         # Imports
         
-        module_code = 'from injector import Key, ClassProvider, singleton, provider, inject\n\n'
+        module_code = 'from injector import BoundKey, ClassProvider, singleton, provider, inject\n\n'
         for plugin in self.plugin_names:
             module_code += 'from %s import *\n' % plugin
             
         # Keys
         for extension_type, additions in self.additions.items():
             for i in range(1, len(additions)+1):
-                module_code += '%s%d_KEY = Key("%s%d")\n' % (extension_type.extension_name,
+                module_code += '%s%d_KEY = BoundKey("%s%d")\n' % (extension_type.extension_name,
                                                              i,
                                                              extension_type.extension_name.lower(),
                                                              i)

@@ -47,11 +47,11 @@ class Test(unittest.TestCase):
         self.plugin_manager.additions = {self.plugin_manager.extension_types[0]: (DummyMenuAddition, DummyMenuAddition2)}
         module_code = self.plugin_manager._create_module_code()
         #print(module_code)
-        self.assertEqual("""from injector import Key, ClassProvider, singleton, provider, inject
+        self.assertEqual("""from injector import BoundKey, ClassProvider, singleton, provider, inject
 
 from PluginManagerTest import *
-DOCUMENT_MENU_ADDITION1_KEY = Key("document_menu_addition1")
-DOCUMENT_MENU_ADDITION2_KEY = Key("document_menu_addition2")
+DOCUMENT_MENU_ADDITION1_KEY = BoundKey("document_menu_addition1")
+DOCUMENT_MENU_ADDITION2_KEY = BoundKey("document_menu_addition2")
 
 class DynamicModule(Module):
 
