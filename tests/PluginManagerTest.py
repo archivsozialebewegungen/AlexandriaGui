@@ -4,8 +4,10 @@ Created on 24.11.2016
 @author: michael
 '''
 import unittest
-from tkgui.PluginManager import PluginManager, DocumentMenuAddition
+
 from injector import Module
+from tkgui.PluginManager import PluginManager, DocumentMenuAddition
+
 
 class DummyModule(Module):
     

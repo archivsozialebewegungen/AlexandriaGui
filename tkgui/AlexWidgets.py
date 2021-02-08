@@ -17,15 +17,17 @@ the expected object can't be properly initialized.
 # pylint: disable=too-many-ancestors
 # pylint: disable=arguments-differ
 
-from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton,\
+from builtins import Exception
+from tkinter import Text, Button, StringVar, Frame, IntVar, Label, Radiobutton, \
     Entry, Checkbutton, Menu, PhotoImage, Canvas, Listbox, Toplevel, TclError
 from tkinter import Tk
-from tkinter.constants import END, DISABLED, ALL, N, S, E, W, LEFT, NORMAL,\
+from tkinter.constants import END, DISABLED, ALL, N, S, E, W, LEFT, NORMAL, \
     HORIZONTAL, GROOVE, SUNKEN, SOLID
-from alexandriabase.domain import AlexDate
-from builtins import Exception
 from tkinter.ttk import Combobox, Scrollbar
+
+from alexandriabase.domain import AlexDate
 from tkgui import _
+
 
 try:
     # Python 3.4 and Python 3.5

@@ -5,10 +5,11 @@ Created on 22.10.2015
 '''
 import unittest
 from unittest.mock import MagicMock
-from tkgui import guiinjectorkeys
+
 from alexandriabase.domain import Tree
 from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
+from tkgui import guiinjectorkeys
 from tkgui.Dialogs import EventTypeSelectionDialog
 
 

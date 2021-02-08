@@ -5,11 +5,12 @@ Created on 22.10.2015
 '''
 import unittest
 from unittest.mock import MagicMock
-from alexandriabase.domain import AlexDate, GenericFilter, DocumentFilter,\
+
+from alexandriabase.domain import AlexDate, GenericFilter, DocumentFilter, \
     EventFilter
-from alexpresenters.DialogPresenters import GenericFilterDialogPresenter,\
+from alexpresenters.DialogPresenters import GenericFilterDialogPresenter, \
     DocumentFilterDialogPresenter, EventFilterDialogPresenter
-from tkgui.Dialogs import GenericFilterDialog, DocumentFilterDialog,\
+from tkgui.Dialogs import GenericFilterDialog, DocumentFilterDialog, \
     EventFilterDialog
 
 

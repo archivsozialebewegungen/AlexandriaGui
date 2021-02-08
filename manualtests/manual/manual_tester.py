@@ -5,9 +5,11 @@ Created on 22.01.2016
 '''
 from tkinter import Button, Frame
 from tkinter.constants import LEFT, TOP, BOTH, SOLID, TRUE, NW
+
 from alexpresenters.MessageBroker import MessageBroker
 from tkgui.AlexWidgets import AlexLabel, AlexListBox
 from tkgui.MainWindows import WindowManager
+
 
 class AbstractComponentTest:
     

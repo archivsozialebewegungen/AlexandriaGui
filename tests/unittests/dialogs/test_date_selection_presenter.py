@@ -5,8 +5,9 @@ Created on 22.10.2015
 '''
 import unittest
 from unittest.mock import MagicMock
-from alexpresenters import _
+
 from alexandriabase.domain import AlexDate
+from alexpresenters import _
 from alexpresenters.DialogPresenters import DateSelectionDialogPresenter
 from tkgui.Dialogs import DateSelectionDialog
 

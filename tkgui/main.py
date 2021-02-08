@@ -3,25 +3,27 @@ Created on 07.02.2015
 
 @author: michael
 '''
-from injector import inject, Injector, Module, ClassProvider, singleton,\
-    provider
+import logging
+import os
+import socket
+
 from alexandriabase import AlexBaseModule, baseinjectorkeys
 from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
-from alexpresenters.Module import PresentersModule
-from tkgui import guiinjectorkeys
+from alexpresenters.DialogPresenters import LoginCreatorProvider
 from alexpresenters.MessageBroker import Message, \
     REQ_GOTO_FIRST_DOCUMENT, REQ_GOTO_FIRST_EVENT, CONF_SETUP_FINISHED, REQ_QUIT
-import os
-import logging
-import socket
+from alexpresenters.Module import PresentersModule
+from injector import inject, Injector, Module, ClassProvider, singleton, \
+    provider
 from tkgui import _
-from tkgui.PluginManager import PluginManager
+from tkgui import guiinjectorkeys
 from tkgui.Dialogs import DialogsTkGuiModule
-from alexpresenters.DialogPresenters import LoginCreatorProvider
-from tkgui.MainWindows import MainWindowsModule
 from tkgui.FileViewers import DocumentViewersModule
+from tkgui.MainWindows import MainWindowsModule
+from tkgui.PluginManager import PluginManager
 from tkgui.References import WindowReferencesModule
+
 
 class StartupTaskCheckDatabaseVersion():
     

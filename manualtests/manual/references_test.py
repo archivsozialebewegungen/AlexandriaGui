@@ -3,24 +3,26 @@ Created on 05.01.2018
 
 @author: michael
 '''
-from alexpresenters.MessageBroker import REQ_SET_EVENT, CONF_EVENT_CHANGED,\
-    Message, REQ_SET_DOCUMENT, CONF_DOCUMENT_CHANGED, ERROR_MESSAGE,\
-    MessageBroker
-from WindowTestHelpers import ReferenceServiceStub, EventServiceStub,\
-    DocumentServiceStub
 from tkinter.constants import TOP
-from alexandriabase.domain import Document
 from tkinter.ttk import Button
-from alexandriabase.config import Config
 from unittest.mock import MagicMock
-from manual.dialogs_test import DialogTest, DialogTestRunner
+
+from WindowTestHelpers import ReferenceServiceStub, EventServiceStub, \
+    DocumentServiceStub
+from alexandriabase.config import Config
+from alexandriabase.domain import Document
 from alexpresenters.DialogPresenters import EventSelectionPresenter
-from tkgui.Dialogs import EventSelectionWizard, FileSelectionDialog
-from alexpresenters.ReferencePresenters import DocumentEventReferencesPresenter,\
+from alexpresenters.MessageBroker import REQ_SET_EVENT, CONF_EVENT_CHANGED, \
+    Message, REQ_SET_DOCUMENT, CONF_DOCUMENT_CHANGED, ERROR_MESSAGE, \
+    MessageBroker
+from alexpresenters.ReferencePresenters import DocumentEventReferencesPresenter, \
     DocumentFileReferencesPresenter, EventCrossReferencesPresenter
+from manual.dialogs_test import DialogTest, DialogTestRunner
+from tkgui.Dialogs import EventSelectionWizard, FileSelectionDialog
 from tkgui.FileViewers import DefaultViewer
-from tkgui.References import DocumentFileReferencesView,\
+from tkgui.References import DocumentFileReferencesView, \
     DocumentEventReferencesView, EventCrossReferencesView
+
 
 class ReferenceComponentTest(DialogTest):
     

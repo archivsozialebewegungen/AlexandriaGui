@@ -3,6 +3,7 @@ Constants for dependency injection
 '''
 from injector import BoundKey as Key
 
+
 MAIN_RUNNER_KEY = Key('main_runner')
 MAIN_WINDOWS_KEY = Key('main_windows')
 

@@ -3,22 +3,22 @@ Created on 07.02.2018
 
 @author: michael
 '''
-from injector import Module, singleton, provider,\
-    ClassProvider, inject
-from tkgui import guiinjectorkeys
-from alexpresenters.DialogPresenters import AbstractInputDialogPresenter,\
-    EventSelectionPresenter, DateSelectionDialogPresenter,\
-    EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter,\
-    YearSelectionDialogPresenter,\
-    EventTypeSelectionPresenter, DocumentFilterDialogPresenter,\
-    EventFilterDialogPresenter, LoginDialogPresenter,\
+from alexpresenters.DialogPresenters import AbstractInputDialogPresenter, \
+    EventSelectionPresenter, DateSelectionDialogPresenter, \
+    EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter, \
+    YearSelectionDialogPresenter, \
+    EventTypeSelectionPresenter, DocumentFilterDialogPresenter, \
+    EventFilterDialogPresenter, LoginDialogPresenter, \
     GenericInputDialogPresenter, DocumentIdSelectionDialogPresenter
-from alexpresenters.ReferencePresenters import EventTypeReferencesPresenter,\
-    DocumentEventReferencesPresenter, EventDocumentReferencesPresenter,\
-    EventCrossReferencesPresenter, DocumentFileReferencesPresenter
-from alexpresenters.MainWindowPresenters import DocumentTypePostProcessor,\
+from alexpresenters.MainWindowPresenters import DocumentTypePostProcessor, \
     JournalDocTypePostProcessor, EventWindowPresenter, DocumentWindowPresenter
 from alexpresenters.MessageBroker import MessageBroker
+from alexpresenters.ReferencePresenters import EventTypeReferencesPresenter, \
+    DocumentEventReferencesPresenter, EventDocumentReferencesPresenter, \
+    EventCrossReferencesPresenter, DocumentFileReferencesPresenter
+from injector import Module, singleton, provider, \
+    ClassProvider, inject
+from tkgui import guiinjectorkeys
 
 
 class PresentersModule(Module):

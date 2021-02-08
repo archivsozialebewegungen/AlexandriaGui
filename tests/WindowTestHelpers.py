@@ -3,14 +3,15 @@ Created on 20.11.2015
 
 @author: michael
 '''
-from tkinter.constants import END
-from tkinter import Entry, Label, Frame
 import os
+from tkinter import Entry, Label, Frame
+from tkinter.constants import END
+
 from alex_test_utils import get_testfiles_dir
-from alexandriabase.domain import Entity, Event, Document,\
+from alexandriabase.config import Config
+from alexandriabase.domain import Entity, Event, Document, \
     AlexDateRange, DocumentFileInfo, EventType, Tree, EventTypeIdentifier
 from alexandriabase.services import FileFormatService
-from alexandriabase.config import Config
 from tkgui.MainWindows import BaseWindow
 
 

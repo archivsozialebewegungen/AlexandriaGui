@@ -4,15 +4,16 @@ Created on 24.10.2015
 @author: michael
 '''
 import unittest
-from alex_test_utils import load_table_data, clear_table_data, TestEnvironment,\
+
+from alex_test_utils import load_table_data, clear_table_data, TestEnvironment, \
     MODE_SIMPLE, setup_database_schema, drop_database_schema
-from injector import Module, Injector, ClassProvider, singleton
 from alexandriabase import baseinjectorkeys, AlexBaseModule
 from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
-from tkgui import guiinjectorkeys
-from daotests import test_base
 from alexpresenters.MessageBroker import MessageBroker
+from daotests import test_base
+from injector import Module, Injector, ClassProvider, singleton
+from tkgui import guiinjectorkeys
 
 
 class IntegrationTestModule(Module):

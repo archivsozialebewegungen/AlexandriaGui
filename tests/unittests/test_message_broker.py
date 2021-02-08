@@ -4,7 +4,9 @@ Created on 03.05.2015
 @author: michael
 '''
 import unittest
+
 from alexpresenters.MessageBroker import MessageBroker, Message, ERROR_MESSAGE
+
 
 class MessageTest(unittest.TestCase):
     

@@ -3,14 +3,15 @@ Created on 01.12.2016
 
 @author: michael
 '''
-from integration.baseintegrationtest import BaseIntegrationTest
-from alexandriabase.domain import Event, AlexDateRange, AlexDate, Document,\
-    DocumentType
-from alexpresenters.MessageBroker import REQ_SAVE_CURRENT_EVENT,\
-    REQ_SAVE_CURRENT_DOCUMENT, Message, CONF_DOCUMENT_CHANGED,\
-    CONF_EVENT_CHANGED
-from alexandriabase import baseinjectorkeys
 from alex_test_utils import MODE_SIMPLE
+from alexandriabase import baseinjectorkeys
+from alexandriabase.domain import Event, AlexDateRange, AlexDate, Document, \
+    DocumentType
+from alexpresenters.MessageBroker import REQ_SAVE_CURRENT_EVENT, \
+    REQ_SAVE_CURRENT_DOCUMENT, Message, CONF_DOCUMENT_CHANGED, \
+    CONF_EVENT_CHANGED
+from integration.baseintegrationtest import BaseIntegrationTest
+
 
 class BaseReferenceIntegrationTest(BaseIntegrationTest):
     '''

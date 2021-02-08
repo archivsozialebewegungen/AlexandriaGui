@@ -5,9 +5,10 @@ Created on 24.11.2016
 '''
 import importlib
 import inspect
-from injector import Module
 
+from injector import Module
 from tkgui import guiinjectorkeys  # @UnusedImport
+
 
 class DocumentMenuAddition:
     '''

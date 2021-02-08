@@ -4,11 +4,13 @@ Created on 02.04.2016
 @author: michael
 '''
 import unittest
+from unittest.mock import MagicMock
+
 from alexandriabase.domain import DocumentType, Document
 from alexandriabase.services import DocumentTypeService
-from unittest.mock import MagicMock
-from alexpresenters.MainWindowPresenters import DocumentTypePostProcessor,\
+from alexpresenters.MainWindowPresenters import DocumentTypePostProcessor, \
     JournalDocTypePostProcessor
+
 
 class DocumentTypePostProcessorTest(unittest.TestCase):
     
@@ -28,7 +30,7 @@ class DocumentTypePostProcessorTest(unittest.TestCase):
                         'Flyer  :\tIrgendein Flyer')
         
         for description in descriptions:
-            with self.subTest(description=description):
+            with self.subTest(description):
                 entity = Document(4711)
                 entity.description = description
                 entity = self.post_processor.run(entity)

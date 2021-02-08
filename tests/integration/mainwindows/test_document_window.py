@@ -4,17 +4,19 @@ Created on 22.11.2015
 @author: michael
 '''
 
+import os
 import unittest
-from tkgui import guiinjectorkeys
-from alexpresenters.Module import PresentersModule
-from integration.baseintegrationtest import BaseIntegrationTest
+
+from alex_test_utils import TestEnvironment, MODE_FULL
 from alexandriabase import baseinjectorkeys
 from alexandriabase.domain import Document, DocumentFilter
-import os
-from alex_test_utils import TestEnvironment, MODE_FULL
-from alexpresenters.MessageBroker import REQ_SET_DOCUMENT, Message,\
+from alexpresenters.MessageBroker import REQ_SET_DOCUMENT, Message, \
     REQ_GOTO_FIRST_DOCUMENT, \
     REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED, REQ_QUIT
+from alexpresenters.Module import PresentersModule
+from integration.baseintegrationtest import BaseIntegrationTest
+from tkgui import guiinjectorkeys
+
 
 class ViewStub():
     

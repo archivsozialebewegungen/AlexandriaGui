@@ -3,21 +3,22 @@ Created on 21.01.2018
 
 @author: michael
 '''
+import os
+import sys
+from threading import Thread
 from tkinter import Frame, Toplevel
-from tkinter.constants import LEFT, NW, X, RIGHT, TOP, WORD, DISABLED, NORMAL,\
+from tkinter.constants import LEFT, NW, X, RIGHT, TOP, WORD, DISABLED, NORMAL, \
     FLAT, CENTER, SUNKEN, BOTH, YES, RIDGE
-from injector import singleton, inject, Module, ClassProvider, InstanceProvider,\
+from tkinter.ttk import Notebook
+
+from alexpresenters.MessageBroker import Message, CONF_SETUP_FINISHED, \
+    REQ_SAVE_ALL, REQ_QUIT
+from injector import singleton, inject, Module, ClassProvider, InstanceProvider, \
     provider
 from tkgui import _, guiinjectorkeys
-
-import os
-from alexpresenters.MessageBroker import Message, CONF_SETUP_FINISHED,\
-    REQ_SAVE_ALL, REQ_QUIT
-import sys
-from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, AlexTk,\
+from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, AlexTk, \
     AlexLabel, AlexText, AlexRadioGroup, AlexButton, AlexShortcutBar
-from threading import Thread
-from tkinter.ttk import Notebook
+
 
 class WindowManager():
     '''

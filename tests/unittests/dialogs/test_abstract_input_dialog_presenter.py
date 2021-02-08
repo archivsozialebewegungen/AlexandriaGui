@@ -4,7 +4,9 @@ Created on 22.10.2015
 @author: michael
 '''
 import unittest
+
 from alexpresenters.DialogPresenters import AbstractInputDialogPresenter
+
 
 class YearSelectionDialogPresenterTest(unittest.TestCase):
 

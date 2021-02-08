@@ -3,12 +3,14 @@ Created on 22.01.2018
 
 @author: michael
 '''
+from tkinter import messagebox
+from tkinter.constants import LEFT, RIDGE, X, DISABLED, NORMAL
+from tkinter.ttk import Frame
+
 from injector import inject, InstanceProvider, ClassProvider, singleton, Module
 from tkgui import _, guiinjectorkeys
 from tkgui.AlexWidgets import AlexLabel, AlexComboBox, AlexButton
-from tkinter.ttk import Frame
-from tkinter.constants import LEFT, RIDGE, X, DISABLED, NORMAL
-from tkinter import messagebox
+
 
 class ReferencesWidgetFactory:
     '''

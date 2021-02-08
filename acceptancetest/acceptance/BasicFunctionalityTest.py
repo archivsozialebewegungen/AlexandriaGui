@@ -3,12 +3,14 @@ Created on 13.12.2015
 
 @author: michael
 '''
-from alexandriabase.domain import AlexDate, EventTypeIdentifier
-from acceptance.AcceptanceTestUtils import BaseAcceptanceTest, AcceptanceTestRunner,\
-    set_date, set_date_range, create_test_file
 import os
-from tkgui.MainWindows import BaseWindow, EventWindow
 from time import sleep
+
+from acceptance.AcceptanceTestUtils import BaseAcceptanceTest, AcceptanceTestRunner, \
+    set_date, set_date_range, create_test_file
+from alexandriabase.domain import AlexDate, EventTypeIdentifier
+from tkgui.MainWindows import BaseWindow, EventWindow
+
 
 class BasicFunctionalityTest(BaseAcceptanceTest):
 

@@ -3,16 +3,17 @@ Created on 16.04.2016
 
 @author: michael
 '''
-from tkinter import messagebox, Frame
-from tkinter.constants import LEFT, NW, BOTH, YES, NE, ALL, X
-from PIL.ImageTk import PhotoImage
 from PIL import Image
 import os
+from tkinter import messagebox, Frame, PhotoImage
+from tkinter.constants import LEFT, NW, BOTH, YES, NE, ALL, X
+from tkinter.messagebox import showinfo
+
+from alexandriabase import baseinjectorkeys
 from injector import Module, inject, provider, singleton, BoundKey, ClassProvider
 from tkgui import _, guiinjectorkeys
-from alexandriabase import baseinjectorkeys
 from tkgui.AlexWidgets import AlexButton, AlexScrolledCanvasFrame
-from tkinter.messagebox import showinfo
+
 
 DOCUMENT_DEFAULT_VIEWER_KEY = BoundKey('document_default_viewer_key')
 DOCUMENT_GRAPHICS_VIEWER_KEY = BoundKey('document_graphics_viewer_key')

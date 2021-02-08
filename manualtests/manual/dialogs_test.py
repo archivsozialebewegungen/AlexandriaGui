@@ -3,32 +3,34 @@ Created on 22.01.2016
 
 @author: michael
 '''
-from tkgui.Dialogs import GenericBooleanSelectionDialog,\
-    GenericStringSelectionDialog, GenericStringEditDialog, YearSelectionDialog,\
-    SimpleDateSelectionDialog, EventIdSelectionDialog, DateRangeSelectionDialog,\
-    DocumentIdSelectionDialog, EventSelectionWizard, EventConfirmationDialog,\
-    EventTypeSelectionDialog, GenericFilterDialog, DocumentFilterDialog,\
-    EventFilterDialog, LoginDialog, FileSelectionDialog
-from alexpresenters.DialogPresenters import GenericInputDialogPresenter,\
-    YearSelectionDialogPresenter, DateSelectionDialogPresenter,\
-    EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter,\
-    DocumentIdSelectionDialogPresenter, EventSelectionPresenter,\
-    AbstractInputDialogPresenter, EventTypeSelectionPresenter,\
-    GenericFilterDialogPresenter, DocumentFilterDialogPresenter,\
-    EventFilterDialogPresenter, LoginDialogPresenter
-from tkinter.ttk import Button
-from tkinter.constants import TOP
 from _functools import reduce
-from alexandriabase.domain import Creator, DocumentFileInfo, Event, AlexDate
-from unittest.mock import MagicMock
-from alexandriabase.services import CreatorService
 import os
-from alex_test_utils import get_testfiles_dir
-from manual.manual_tester import AbstractComponentTest, TestRunner
+from tkinter.constants import TOP
+from tkinter.ttk import Button
+from unittest.mock import MagicMock
+
 from WindowTestHelpers import EventServiceStub
+from alex_test_utils import get_testfiles_dir
 from alexandriabase.config import Config
-from tkgui.FileViewers import GraphicsViewer, ExternalViewer
+from alexandriabase.domain import Creator, DocumentFileInfo, Event, AlexDate
+from alexandriabase.services import CreatorService
+from alexpresenters.DialogPresenters import GenericInputDialogPresenter, \
+    YearSelectionDialogPresenter, DateSelectionDialogPresenter, \
+    EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter, \
+    DocumentIdSelectionDialogPresenter, EventSelectionPresenter, \
+    AbstractInputDialogPresenter, EventTypeSelectionPresenter, \
+    GenericFilterDialogPresenter, DocumentFilterDialogPresenter, \
+    EventFilterDialogPresenter, LoginDialogPresenter
+from manual.manual_tester import AbstractComponentTest, TestRunner
 from tkgui.AlexWidgets import AlexDateEntry
+from tkgui.Dialogs import GenericBooleanSelectionDialog, \
+    GenericStringSelectionDialog, GenericStringEditDialog, YearSelectionDialog, \
+    SimpleDateSelectionDialog, EventIdSelectionDialog, DateRangeSelectionDialog, \
+    DocumentIdSelectionDialog, EventSelectionWizard, EventConfirmationDialog, \
+    EventTypeSelectionDialog, GenericFilterDialog, DocumentFilterDialog, \
+    EventFilterDialog, LoginDialog, FileSelectionDialog
+from tkgui.FileViewers import GraphicsViewer, ExternalViewer
+
 
 class DialogTest(AbstractComponentTest):
     

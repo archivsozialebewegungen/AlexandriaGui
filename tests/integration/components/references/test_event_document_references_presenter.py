@@ -4,15 +4,17 @@ Created on 24.10.2015
 @author: michael
 '''
 import unittest
-from tkgui import guiinjectorkeys
-from alexandriabase import baseinjectorkeys
 from unittest.mock import MagicMock
-from alexpresenters.MessageBroker import Message, CONF_DOCUMENT_CHANGED,\
+
+from alexandriabase import baseinjectorkeys
+from alexpresenters.MessageBroker import Message, CONF_DOCUMENT_CHANGED, \
     CONF_EVENT_CHANGED, REQ_SET_DOCUMENT, ERROR_MESSAGE
-from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
-from ddt import ddt, unpack, data
 from alexpresenters.Module import PresentersModule
+from ddt import ddt, unpack, data
+from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
+from tkgui import guiinjectorkeys
 from tkgui.References import EventDocumentReferencesView
+
 
 @ddt
 class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):

@@ -5,6 +5,7 @@ Created on 03.05.2015
 '''
 from injector import singleton
 
+
 REQ_SET_EVENT = "set event"
 REQ_SET_DOCUMENT = "set document"
 REQ_SAVE_CURRENT_DOCUMENT = "save current document"

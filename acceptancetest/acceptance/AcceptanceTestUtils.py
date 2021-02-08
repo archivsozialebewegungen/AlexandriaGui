@@ -3,21 +3,23 @@ Created on 21.12.2016
 
 @author: michael
 '''
+import os
+import tempfile
 from threading import Thread
 from time import sleep
-from injector import Module, ClassProvider, singleton, provider,\
-    inject
+
+from alex_test_utils import setup_database_schema, load_table_data, \
+    TestEnvironment, MODE_FULL
 from alexandriabase import baseinjectorkeys
 from alexandriabase.base_exceptions import NoSuchEntityException
 from alexandriabase.daos import BasicCreatorProvider
-from tkgui import guiinjectorkeys
-from tkgui.main import SetupRunner, StartupTaskCheckDatabaseVersion, MainRunner,\
-    StartupTaskPopulateWindows, build_injector
-from alex_test_utils import setup_database_schema, load_table_data,\
-    TestEnvironment, MODE_FULL
 from daotests.test_base import tables
-import tempfile
-import os
+from injector import Module, ClassProvider, singleton, provider, \
+    inject
+from tkgui import guiinjectorkeys
+from tkgui.main import SetupRunner, StartupTaskCheckDatabaseVersion, MainRunner, \
+    StartupTaskPopulateWindows, build_injector
+
 
 def set_date_range(dialog, start_date, end_date):
     '''

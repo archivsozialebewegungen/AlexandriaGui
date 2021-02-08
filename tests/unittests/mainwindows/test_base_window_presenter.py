@@ -5,6 +5,7 @@ Created on 27.05.2016
 '''
 import unittest
 from unittest.mock import MagicMock, call, ANY
+
 from alexpresenters.MainWindowPresenters import BaseWindowPresenter
 
 

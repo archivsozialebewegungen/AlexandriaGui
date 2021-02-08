@@ -3,16 +3,17 @@ Created on 22.01.2018
 
 @author: michael
 '''
+from alexandriabase import baseinjectorkeys
+from alexandriabase.base_exceptions import NoSuchEntityException
+from alexandriabase.services import DocumentFileNotFound, UnsupportedFileFormat, \
+    UnsupportedFileResolution
+from alexpresenters import _
+from alexpresenters.MessageBroker import CONF_EVENT_CHANGED, Message, \
+    REQ_SAVE_CURRENT_EVENT, REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED, \
+    REQ_SET_EVENT, ERROR_MESSAGE, REQ_SET_DOCUMENT
 from injector import inject
 from tkgui import guiinjectorkeys
-from alexandriabase import baseinjectorkeys
-from alexpresenters import _
-from alexpresenters.MessageBroker import CONF_EVENT_CHANGED, Message,\
-    REQ_SAVE_CURRENT_EVENT, REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED,\
-    REQ_SET_EVENT, ERROR_MESSAGE, REQ_SET_DOCUMENT
-from alexandriabase.services import DocumentFileNotFound, UnsupportedFileFormat,\
-    UnsupportedFileResolution
-from alexandriabase.base_exceptions import NoSuchEntityException
+
 
 class EventTypeReferencesPresenter:
     '''

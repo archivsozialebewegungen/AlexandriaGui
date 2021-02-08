@@ -4,14 +4,16 @@ Created on 01.01.2018
 @author: michael
 '''
 
-from tkinter.constants import TOP, LEFT, BOTH, W, X, YES
 from tkinter import Frame, filedialog
-from tkgui.AlexWidgets import AlexLabel, AlexButton, AlexEntry,\
-    AlexRadioGroup, AlexComboBox, DateEntryFrame, AlexDateEntry, AlexListBox,\
-    AlexTree, AlexCheckBox
-from tkgui import guiinjectorkeys, _
-from injector import inject, Module, ClassProvider, singleton
+from tkinter.constants import TOP, LEFT, BOTH, W, X, YES
+
 from alexandriabase import baseinjectorkeys
+from injector import inject, Module, ClassProvider, singleton
+from tkgui import guiinjectorkeys, _
+from tkgui.AlexWidgets import AlexLabel, AlexButton, AlexEntry, \
+    AlexRadioGroup, AlexComboBox, DateEntryFrame, AlexDateEntry, AlexListBox, \
+    AlexTree, AlexCheckBox
+
 
 class AbstractInputDialog:
     '''

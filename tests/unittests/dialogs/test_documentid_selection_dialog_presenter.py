@@ -5,8 +5,9 @@ Created on 09.01.2016
 '''
 import unittest
 from unittest.mock import MagicMock
-from tkgui.Dialogs import DocumentIdSelectionDialog
+
 from alexpresenters.DialogPresenters import DocumentIdSelectionDialogPresenter
+from tkgui.Dialogs import DocumentIdSelectionDialog
 
 
 class TestDocumentIdSelection(unittest.TestCase):

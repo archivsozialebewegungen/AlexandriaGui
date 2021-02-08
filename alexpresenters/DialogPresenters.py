@@ -4,11 +4,13 @@ Created on 01.01.2018
 @author: michael
 '''
 from datetime import date
-from alexandriabase.domain import AlexDate, InvalidDateException, AlexDateRange,\
-    DocumentFilter, EventFilter, GenericFilter
-from injector import inject
+
 from alexandriabase import baseinjectorkeys
+from alexandriabase.domain import AlexDate, InvalidDateException, AlexDateRange, \
+    DocumentFilter, EventFilter, GenericFilter
 from alexpresenters import _
+from injector import inject
+
 
 class AbstractInputDialogPresenter(object):
     '''

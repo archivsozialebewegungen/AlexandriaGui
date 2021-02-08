@@ -5,7 +5,9 @@ Created on 30.11.2016
 '''
 import unittest
 from unittest.mock import MagicMock
+
 from alexpresenters.DialogPresenters import GenericTreeSelectionPresenter
+
 
 def doNothing():
     

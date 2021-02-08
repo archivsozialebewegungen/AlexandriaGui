@@ -5,8 +5,10 @@ Created on 22.10.2015
 '''
 import unittest
 from unittest.mock import MagicMock
+
 from alexpresenters.DialogPresenters import YearSelectionDialogPresenter
 from tkgui.Dialogs import YearSelectionDialog
+
 
 class YearSelectionDialogPresenterTest(unittest.TestCase):
 

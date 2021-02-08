@@ -3,14 +3,16 @@ Created on 07.02.2018
 
 @author: michael
 '''
-from injector import inject
-from alexandriabase import baseinjectorkeys
-from alexpresenters.MessageBroker import Message, REQ_QUIT,\
-    CONF_DOCUMENT_CHANGED, REQ_SAVE_CURRENT_DOCUMENT, REQ_SET_DOCUMENT,\
-    REQ_GOTO_FIRST_DOCUMENT, CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT,\
-    REQ_SET_EVENT, REQ_GOTO_FIRST_EVENT
-from tkgui import guiinjectorkeys
 import re
+
+from alexandriabase import baseinjectorkeys
+from alexpresenters.MessageBroker import Message, REQ_QUIT, \
+    CONF_DOCUMENT_CHANGED, REQ_SAVE_CURRENT_DOCUMENT, REQ_SET_DOCUMENT, \
+    REQ_GOTO_FIRST_DOCUMENT, CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT, \
+    REQ_SET_EVENT, REQ_GOTO_FIRST_EVENT
+from injector import inject
+from tkgui import guiinjectorkeys
+
 
 class BaseWindowPresenter:
     
@@ -170,6 +172,7 @@ class EventWindowPresenter(BaseWindowPresenter):
             self._change_entity(message.event)
         if message == REQ_GOTO_FIRST_EVENT:
             self.goto_first()
+            
 class DocumentTypePostProcessor(object):
 
     @inject

@@ -5,10 +5,11 @@ Created on 22.10.2015
 '''
 import unittest
 from unittest.mock import MagicMock
+
 from alexandriabase.domain import AlexDateRange
+from alexpresenters import _
 from alexpresenters.DialogPresenters import DateRangeSelectionDialogPresenter
 from tkgui.Dialogs import DateRangeSelectionDialog
-from alexpresenters import _
 
 
 class DateRangeSelectionDialogPresenterTest(unittest.TestCase):
