@@ -33,8 +33,6 @@ class AbstractInputDialog:
       your buttons to the button_frame (there are methods
       to help you for this)
     - Make a subclass of the AbstractInputDialogPresenter
-    - Overwrite the init_dialog method if you need to
-      put some data in the dialog
     - Create action methods in the presenter that
       are bound to the buttons in the dialog window
     - The actions that are considered to close the
@@ -263,21 +261,33 @@ class GenericStringSelectionDialog(AbstractInputDialog):
     def __init__(self,
                  window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
                  presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
+        
         super().__init__(window_manager, presenter)
 
-    def create_dialog(self, 
-                     label=_('Please select:'),
-                     choices = []):
+    def create_dialog(self):
+        
         super().create_dialog()
         self.set_default_buttons()
-        self.choices = choices
-        self.entry = AlexRadioGroup(self.interior, 
-                                    choices=self.choices, 
-                                    title=label)
-        self.entry.pack()
+        self.entry = None
 
     def _get_selected_value(self):
+
         return self.entry.get()
+
+    def config_dialog(self, choices, label, **kw):
+        
+        if self.entry is not None:
+            self.entry.destroy()
+            self.entry = None
+            
+        self.entry = AlexRadioGroup(self.interior, 
+                                    choices=choices, 
+                                    title=label)
+        self.entry.pack()
+    
+    def activate(self, callback, **kw):
+        
+        return AbstractInputDialog.activate(self, callback, **kw)
 
     input = property(_get_selected_value)
         
