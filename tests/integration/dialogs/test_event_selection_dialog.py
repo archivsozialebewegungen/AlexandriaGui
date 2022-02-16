@@ -11,6 +11,7 @@ from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui import guiinjectorkeys
 from tkgui.Dialogs import EventSelectionWizard
+from alexpresenters.DialogPresenters import EventSelectionPresenter
 
 
 class EventSelectionDialogPresenterTest(BaseIntegrationTest):
@@ -18,7 +19,7 @@ class EventSelectionDialogPresenterTest(BaseIntegrationTest):
     def setUp(self):
         super().setUp()
         injector = self.get_injector(PresentersModule())
-        self.presenter = injector.get(guiinjectorkeys.EVENT_SELECTION_DIALOG_PRESENTER_KEY)
+        self.presenter = injector.get(EventSelectionPresenter)
         self.presenter.view = MagicMock(spec=EventSelectionWizard)
 
     def testGetEventsForDate(self):

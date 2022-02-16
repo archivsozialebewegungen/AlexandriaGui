@@ -10,6 +10,14 @@ from tkinter.ttk import Frame
 from injector import inject, InstanceProvider, ClassProvider, singleton, Module
 from tkgui import _, guiinjectorkeys
 from tkgui.AlexWidgets import AlexLabel, AlexComboBox, AlexButton
+from alexpresenters.ReferencePresenters import EventCrossReferencesPresenter,\
+    EventDocumentReferencesPresenter, EventTypeReferencesPresenter,\
+    DocumentEventReferencesPresenter, DocumentFileReferencesPresenter
+from alexpresenters.DialogPresenters import EventSelectionPresenter,\
+    DocumentIdSelectionDialogPresenter
+from tkgui.Dialogs import GenericBooleanSelectionDialog,\
+    DocumentIdSelectionDialog, EventTypeSelectionDialog, EventSelectionWizard,\
+    FileSelectionDialog
 
 
 class ReferencesWidgetFactory:
@@ -107,12 +115,13 @@ class EventCrossReferencesWidgetFactory(ReferencesWidgetFactory):
     @inject
     def __init__(self,
                  view_class: guiinjectorkeys.EVENT_CROSS_REFERENCES_VIEW_CLASS_KEY,
-                 presenter: guiinjectorkeys.EVENT_CROSS_REFERENCES_PRESENTER_KEY,
-                 event_selection_dialog: guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY,
-                 deletion_dialog: guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY):
+                 presenter: EventCrossReferencesPresenter,
+                 event_selection_dialog: EventSelectionPresenter,
+                 deletion_dialog: GenericBooleanSelectionDialog):
         
         super().__init__(view_class, presenter, event_selection_dialog,
                          deletion_dialog)
+
         
 class EventCrossReferencesView(ReferenceView):
     
@@ -161,9 +170,9 @@ class EventDocumentReferencesWidgetFactory(ReferencesWidgetFactory):
     @inject
     def __init__(self,
                  view_class: guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_VIEW_CLASS_KEY,
-                 presenter: guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_PRESENTER_KEY,
-                 documentid_selection_dialog: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_KEY,
-                 deletion_dialog: guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY):
+                 presenter: EventDocumentReferencesPresenter,
+                 documentid_selection_dialog: DocumentIdSelectionDialog,
+                 deletion_dialog: GenericBooleanSelectionDialog):
         super().__init__(view_class, presenter, documentid_selection_dialog, deletion_dialog)
         
 class EventDocumentReferencesView(ReferenceView):
@@ -223,9 +232,9 @@ class EventTypeReferencesWidgetFactory(ReferencesWidgetFactory):
     @inject
     def __init__(self,
                  view_class: guiinjectorkeys.EVENT_TYPE_REFERENCES_VIEW_CLASS_KEY,
-                 presenter:guiinjectorkeys.EVENT_TYPE_REFERENCES_PRESENTER_KEY,
-                 event_type_selection_dialog: guiinjectorkeys.EVENT_TYPE_SELECTION_DIALOG_KEY,
-                 deletion_dialog: guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY):
+                 presenter:EventTypeReferencesPresenter,
+                 event_type_selection_dialog: EventTypeSelectionDialog,
+                 deletion_dialog: GenericBooleanSelectionDialog):
         super().__init__(view_class, presenter, event_type_selection_dialog, deletion_dialog)
         
 class EventTypeReferencesView(ReferenceView):
@@ -280,9 +289,9 @@ class DocumentEventReferencesWidgetFactory(ReferencesWidgetFactory):
     @inject
     def __init__(self,
                  view_class: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_VIEW_CLASS_KEY,
-                 presenter: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_PRESENTER_KEY,
-                 event_selection_dialog: guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY,
-                 deletion_dialog: guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY):
+                 presenter: DocumentEventReferencesPresenter,
+                 event_selection_dialog: EventSelectionWizard,
+                 deletion_dialog: GenericBooleanSelectionDialog):
         super().__init__(view_class, presenter, event_selection_dialog, deletion_dialog)
         
 class DocumentEventReferencesView(ReferenceView):
@@ -329,10 +338,10 @@ class DocumentFileReferencesWidgetFactory(ReferencesWidgetFactory):
     '''
     @inject
     def __init__(self,
-                 presenter: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_PRESENTER_KEY,
+                 presenter: DocumentFileReferencesPresenter,
                  view_class: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_VIEW_CLASS_KEY,
-                 file_selection_dialog: guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
-                 deletion_dialog: guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY,
+                 file_selection_dialog: FileSelectionDialog,
+                 deletion_dialog: GenericBooleanSelectionDialog,
                  viewers: guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY):
         super().__init__(view_class, presenter, file_selection_dialog, deletion_dialog, viewers)
         
@@ -398,16 +407,16 @@ class WindowReferencesModule(Module):
     
     def configure(self, binder):
         
-        binder.bind(guiinjectorkeys.EVENT_CROSS_REFERENCES_FACTORY_KEY,
-                    ClassProvider(EventCrossReferencesWidgetFactory), scope=singleton)
-        binder.bind(guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_FACTORY_KEY,
-                    ClassProvider(DocumentEventReferencesWidgetFactory), scope=singleton)
-        binder.bind(guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_FACTORY_KEY,
-                    ClassProvider(EventDocumentReferencesWidgetFactory), scope=singleton)
-        binder.bind(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_FACTORY_KEY,
-                    ClassProvider(DocumentFileReferencesWidgetFactory), scope=singleton)
-        binder.bind(guiinjectorkeys.EVENT_TYPE_REFERENCES_FACTORY_KEY,
-                    ClassProvider(EventTypeReferencesWidgetFactory), scope=singleton)
+        #binder.bind(guiinjectorkeys.EVENT_CROSS_REFERENCES_FACTORY_KEY,
+        #            ClassProvider(EventCrossReferencesWidgetFactory), scope=singleton)
+        #binder.bind(guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_FACTORY_KEY,
+        #            ClassProvider(DocumentEventReferencesWidgetFactory), scope=singleton)
+        #binder.bind(guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_FACTORY_KEY,
+        #            ClassProvider(EventDocumentReferencesWidgetFactory), scope=singleton)
+        #binder.bind(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_FACTORY_KEY,
+        #            ClassProvider(DocumentFileReferencesWidgetFactory), scope=singleton)
+        #binder.bind(guiinjectorkeys.EVENT_TYPE_REFERENCES_FACTORY_KEY,
+        #            ClassProvider(EventTypeReferencesWidgetFactory), scope=singleton)
         binder.bind(guiinjectorkeys.EVENT_CROSS_REFERENCES_VIEW_CLASS_KEY,
                     InstanceProvider(EventCrossReferencesView), scope=singleton)
         binder.bind(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_VIEW_CLASS_KEY,

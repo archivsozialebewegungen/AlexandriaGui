@@ -6,15 +6,16 @@ Created on 22.01.2018
 from alexandriabase import baseinjectorkeys
 from alexandriabase.base_exceptions import NoSuchEntityException
 from alexandriabase.services import DocumentFileNotFound, UnsupportedFileFormat, \
-    UnsupportedFileResolution
+    UnsupportedFileResolution, EventService, ReferenceService, DocumentService
 from alexpresenters import _
 from alexpresenters.MessageBroker import CONF_EVENT_CHANGED, Message, \
     REQ_SAVE_CURRENT_EVENT, REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED, \
-    REQ_SET_EVENT, ERROR_MESSAGE, REQ_SET_DOCUMENT
-from injector import inject
+    REQ_SET_EVENT, ERROR_MESSAGE, REQ_SET_DOCUMENT, MessageBroker
+from injector import inject, singleton
 from tkgui import guiinjectorkeys
 
 
+@singleton
 class EventTypeReferencesPresenter:
     '''
     Handles the relations from document to events
@@ -22,8 +23,8 @@ class EventTypeReferencesPresenter:
     
     @inject
     def __init__(self,
-                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
-                 event_service: baseinjectorkeys.EVENT_SERVICE_KEY):
+                 message_broker: MessageBroker,
+                 event_service: EventService):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.event_service = event_service
@@ -57,6 +58,7 @@ class EventTypeReferencesPresenter:
         self.event_service.remove_event_type(self.view.current_event, selected_event_type)
         self._load_event_types(self.view.current_event)
 
+@singleton
 class DocumentEventReferencesPresenter:
     '''
     Handles the relations from document to events
@@ -64,8 +66,8 @@ class DocumentEventReferencesPresenter:
     
     @inject
     def __init__(self,
-                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
-                 reference_service: baseinjectorkeys.REFERENCE_SERVICE_KEY):
+                 message_broker: MessageBroker,
+                 reference_service: ReferenceService):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.reference_service = reference_service
@@ -111,6 +113,7 @@ class DocumentEventReferencesPresenter:
         self.reference_service.delete_document_event_relation(self.view.current_document, selected_event)
         self._load_document_event_references(self.view.current_document)
 
+@singleton
 class DocumentFileReferencesPresenter():
     '''
     Handles the relations from document to document files
@@ -118,8 +121,8 @@ class DocumentFileReferencesPresenter():
     
     @inject
     def __init__(self,
-                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
-                 document_service: baseinjectorkeys.DOCUMENT_SERVICE_KEY):
+                 message_broker: MessageBroker,
+                 document_service: DocumentService):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.document_service = document_service
@@ -215,12 +218,13 @@ class DocumentFileReferencesPresenter():
         self._load_file_infos(self.view.current_document)
             
     
+@singleton
 class EventCrossReferencesPresenter:
 
     @inject
     def __init__(self,
-                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
-                 event_service: baseinjectorkeys.EVENT_SERVICE_KEY):
+                 message_broker: MessageBroker,
+                 event_service: EventService):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.event_service = event_service
@@ -260,6 +264,7 @@ class EventCrossReferencesPresenter:
         self.event_service.remove_cross_reference(self.view.current_event, selected_event)
         self._update_crossreferences()
         
+@singleton
 class EventDocumentReferencesPresenter:
     '''
     Handles the relations from document to events
@@ -267,9 +272,9 @@ class EventDocumentReferencesPresenter:
     
     @inject
     def __init__(self,
-                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
-                 document_service: baseinjectorkeys.DOCUMENT_SERVICE_KEY,
-                 reference_service: baseinjectorkeys.REFERENCE_SERVICE_KEY):
+                 message_broker: MessageBroker,
+                 document_service: DocumentService,
+                 reference_service: ReferenceService):
         self.message_broker = message_broker
         self.message_broker.subscribe(self)
         self.document_service = document_service

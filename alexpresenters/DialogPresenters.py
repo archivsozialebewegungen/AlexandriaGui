@@ -5,11 +5,11 @@ Created on 01.01.2018
 '''
 from datetime import date
 
-from alexandriabase import baseinjectorkeys
 from alexandriabase.domain import AlexDate, InvalidDateException, AlexDateRange, \
     DocumentFilter, EventFilter, GenericFilter
 from alexpresenters import _
-from injector import inject
+from injector import inject, singleton
+from alexandriabase.services import EventService, CreatorService
 
 
 class AbstractInputDialogPresenter(object):
@@ -50,6 +50,7 @@ class AbstractInputDialogPresenter(object):
     # The lambda allows overwriting in sub classes
     view = property(_get_view, lambda self, v: self._set_view(v))    
 
+@singleton
 class GenericInputDialogPresenter(AbstractInputDialogPresenter):
     '''
     classdocs
@@ -67,6 +68,7 @@ class GenericInputDialogPresenter(AbstractInputDialogPresenter):
         
         self._view.return_value = False
         
+@singleton
 class YearSelectionDialogPresenter(AbstractInputDialogPresenter):
     '''
     Does the stuff for selecting a year for an incomplete
@@ -90,6 +92,7 @@ class YearSelectionDialogPresenter(AbstractInputDialogPresenter):
 
         self.view.return_value = self.view.selected_year
 
+@singleton
 class DateSelectionDialogPresenter(AbstractInputDialogPresenter):
 
     def ok_action(self):
@@ -138,6 +141,7 @@ class DateSelectionDialogPresenter(AbstractInputDialogPresenter):
             self._view.errormessage = _("'%s' is not a valid year!") % year
             raise Exception
 
+@singleton
 class EventIdSelectionDialogPresenter(DateSelectionDialogPresenter):
 
     def ok_action(self):
@@ -155,6 +159,7 @@ class EventIdSelectionDialogPresenter(DateSelectionDialogPresenter):
 
         self._view.return_value = date.as_key(1)
 
+@singleton
 class DateRangeSelectionDialogPresenter(DateSelectionDialogPresenter):
     '''
     classdocs
@@ -192,6 +197,7 @@ class DateRangeSelectionDialogPresenter(DateSelectionDialogPresenter):
         
         return AlexDateRange(start_date, end_date)
 
+@singleton
 class DocumentIdSelectionDialogPresenter(GenericInputDialogPresenter):
     '''
     A simple presenter for an integer input
@@ -203,13 +209,14 @@ class DocumentIdSelectionDialogPresenter(GenericInputDialogPresenter):
             self._view.return_value = int(id_as_string)
         except ValueError:
             self._view.return_value = None
-            
+
+@singleton
 class EventSelectionPresenter(AbstractInputDialogPresenter):
     '''
     Presenter for the event selection wizard
     '''    
     @inject
-    def __init__(self, event_service: baseinjectorkeys.EVENT_SERVICE_KEY):
+    def __init__(self, event_service: EventService):
         self.event_service = event_service
         self.exclude_list = []
     
@@ -255,10 +262,11 @@ class GenericTreeSelectionPresenter(AbstractInputDialogPresenter):
             return
         self._view.return_value = self._view.input.entity
 
+@singleton
 class EventTypeSelectionPresenter(GenericTreeSelectionPresenter):
     
     @inject
-    def __init__(self, event_service: baseinjectorkeys.EVENT_SERVICE_KEY):
+    def __init__(self, event_service: EventService):
         super().__init__()
         self.event_service = event_service
         
@@ -277,7 +285,8 @@ class GenericFilterDialogPresenter(AbstractInputDialogPresenter):
     
     def _new_filter_object(self):
         return GenericFilter()
-    
+
+@singleton    
 class DocumentFilterDialogPresenter(GenericFilterDialogPresenter):
     
     def _build_filter_object(self):
@@ -289,6 +298,7 @@ class DocumentFilterDialogPresenter(GenericFilterDialogPresenter):
     def _new_filter_object(self):
         return DocumentFilter()
 
+@singleton    
 class EventFilterDialogPresenter(GenericFilterDialogPresenter):
     
     def _build_filter_object(self):
@@ -302,11 +312,13 @@ class EventFilterDialogPresenter(GenericFilterDialogPresenter):
     def _new_filter_object(self):
         return EventFilter()
     
+@singleton    
 class LoginCreatorProvider(object):
     
     def __init__(self, creator=None):
         self.creator = creator
 
+@singleton    
 class LoginDialogPresenter(object):
     '''
     classdocs
@@ -314,7 +326,7 @@ class LoginDialogPresenter(object):
 
     @inject
     def __init__(self,
-                 creator_service: baseinjectorkeys.CREATOR_SERVICE_KEY):
+                 creator_service: CreatorService):
         '''
         Constructor
         '''

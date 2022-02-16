@@ -8,14 +8,14 @@ import os
 import unittest
 
 from alex_test_utils import TestEnvironment, MODE_FULL
-from alexandriabase import baseinjectorkeys
 from alexandriabase.domain import Document, DocumentFilter
 from alexpresenters.MessageBroker import REQ_SET_DOCUMENT, Message, \
     REQ_GOTO_FIRST_DOCUMENT, \
-    REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED, REQ_QUIT
+    REQ_SAVE_CURRENT_DOCUMENT, CONF_DOCUMENT_CHANGED, REQ_QUIT, MessageBroker
 from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
-from tkgui import guiinjectorkeys
+from alexandriabase.services import DocumentService
+from alexpresenters.MainWindowPresenters import DocumentWindowPresenter
 
 
 class ViewStub():
@@ -34,9 +34,9 @@ class DocumentWindowsTests(BaseIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.document_window_presenter = self.injector.get(guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY)
-        self.document_service = self.injector.get(baseinjectorkeys.DOCUMENT_SERVICE_KEY)
-        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
+        self.document_window_presenter = self.injector.get(DocumentWindowPresenter)
+        self.document_service = self.injector.get(DocumentService)
+        self.message_broker = self.injector.get(MessageBroker)
         self.view = ViewStub()
         self.document_window_presenter.view = self.view;
 

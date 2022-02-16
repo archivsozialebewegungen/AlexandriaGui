@@ -11,6 +11,7 @@ from alexpresenters.MessageBroker import REQ_SAVE_CURRENT_EVENT, \
     REQ_SAVE_CURRENT_DOCUMENT, Message, CONF_DOCUMENT_CHANGED, \
     CONF_EVENT_CHANGED
 from integration.baseintegrationtest import BaseIntegrationTest
+from alexandriabase.daos import EventDao, DocumentDao
 
 
 class BaseReferenceIntegrationTest(BaseIntegrationTest):
@@ -22,9 +23,9 @@ class BaseReferenceIntegrationTest(BaseIntegrationTest):
     def receive_message(self, message):
         BaseIntegrationTest.receive_message(self, message)
         if message == REQ_SAVE_CURRENT_EVENT:
-            self.injector.get(baseinjectorkeys.EVENT_DAO_KEY).save(self.presenter.view.current_event)
+            self.injector.get(EventDao).save(self.presenter.view.current_event)
         if message == REQ_SAVE_CURRENT_DOCUMENT:
-            self.injector.get(baseinjectorkeys.DOCUMENT_DAO_KEY).save(self.presenter.view.current_document)
+            self.injector.get(DocumentDao).save(self.presenter.view.current_document)
 
     def set_current_document(self, document_id):
 

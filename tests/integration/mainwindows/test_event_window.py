@@ -7,7 +7,6 @@ Created on 22.11.2015
 import unittest
 from unittest.mock import MagicMock
 
-from alexandriabase import baseinjectorkeys
 from alexandriabase.base_exceptions import NoSuchEntityException
 from alexandriabase.domain import AlexDateRange, AlexDate, EventFilter, Event
 from alexpresenters.MessageBroker import REQ_SET_EVENT, Message, \
@@ -15,8 +14,9 @@ from alexpresenters.MessageBroker import REQ_SET_EVENT, Message, \
     CONF_EVENT_CHANGED, REQ_QUIT
 from alexpresenters.Module import PresentersModule
 from integration.baseintegrationtest import BaseIntegrationTest
-from tkgui import guiinjectorkeys
 from tkgui.MainWindows import EventWindow
+from alexandriabase.services import EventService
+from alexpresenters.MainWindowPresenters import EventWindowPresenter
 
 
 class ViewStub():
@@ -35,15 +35,14 @@ class EventWindowsTests(BaseIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.event_window_presenter = self.injector.get(guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY)
-        self.event_service = self.injector.get(baseinjectorkeys.EVENT_SERVICE_KEY)
-        #self.view = ViewStub()
+        self.event_window_presenter = self.injector.get(EventWindowPresenter)
+        self.event_service = self.injector.get(EventService)
         self.view = MagicMock(spec=EventWindow)
         self.view.entity = None
         self.view.filter_object = None
         self.view.entity_has_changed.return_value = False
         
-        self.event_window_presenter.view = self.view;
+        self.event_window_presenter.view = self.view
 
 
     def tearDown(self):

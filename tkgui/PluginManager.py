@@ -138,11 +138,17 @@ class PluginManager(object):
                     extension_type.extension_name,
                     i,
                     additions[i-1].__name__)
+                module_code += '        print("binder.bind(%s%d_KEY, ClassProvider(%s), scope=singleton)")\n' % (
+                    extension_type.extension_name,
+                    i,
+                    additions[i-1].__name__)
         if bindings == 0:
             module_code += '        pass\n'
         
         for extension_type, additions in self.additions.items():
             module_code += self._create_additions_provider(extension_type, additions)
+        
+        print(module_code)
             
         return module_code
     

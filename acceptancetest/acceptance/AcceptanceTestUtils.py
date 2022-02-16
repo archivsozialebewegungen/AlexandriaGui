@@ -12,13 +12,18 @@ from alex_test_utils import setup_database_schema, load_table_data, \
     TestEnvironment, MODE_FULL
 from alexandriabase import baseinjectorkeys
 from alexandriabase.base_exceptions import NoSuchEntityException
-from alexandriabase.daos import BasicCreatorProvider
+from alexandriabase.daos import BasicCreatorProvider, EventDao, DocumentDao,\
+    DocumentFileInfoDao
 from daotests.test_base import tables
 from injector import Module, ClassProvider, singleton, provider, \
     inject
 from tkgui import guiinjectorkeys
 from tkgui.main import SetupRunner, StartupTaskCheckDatabaseVersion, MainRunner, \
     StartupTaskPopulateWindows, build_injector
+from sqlalchemy.engine.base import Engine
+from tkgui.MainWindows import EventWindow, DocumentWindow
+from alexpresenters.MainWindowPresenters import EventWindowPresenter,\
+    DocumentWindowPresenter
 
 
 def set_date_range(dialog, start_date, end_date):
@@ -64,25 +69,25 @@ class AcceptanceTestModule(Module):
     '''
     
     
-    def configure(self, binder):
+    #def configure(self, binder):
         
-        binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
-                    ClassProvider(MainRunner), scope=singleton)
-        binder.bind(baseinjectorkeys.CREATOR_PROVIDER_KEY,
-                    ClassProvider(BasicCreatorProvider), scope=singleton)
-        binder.bind(guiinjectorkeys.SETUP_RUNNER_KEY,
-                    ClassProvider(SetupRunner), scope=singleton)
-        binder.bind(guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
-                    ClassProvider(StartupTaskCheckDatabaseVersion), scope=singleton)
+        #binder.bind(guiinjectorkeys.MAIN_RUNNER_KEY,
+        #            ClassProvider(MainRunner), scope=singleton)
+        #binder.bind(baseinjectorkeys.CREATOR_PROVIDER_KEY,
+        #            ClassProvider(BasicCreatorProvider), scope=singleton)
+        #binder.bind(guiinjectorkeys.SETUP_RUNNER_KEY,
+        #            ClassProvider(SetupRunner), scope=singleton)
+        #binder.bind(guiinjectorkeys.CHECK_DATABASE_VERSION_KEY,
+        #            ClassProvider(StartupTaskCheckDatabaseVersion), scope=singleton)
         #binder.bind(guiinjectorkeys.LOGIN_KEY,
         #            ClassProvider(StartupTaskLogin), scope=singleton)
-        binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
-                    ClassProvider(StartupTaskPopulateWindows), scope=singleton)
+        #binder.bind(guiinjectorkeys.POPULATE_WINDOWS_KEY,
+        #            ClassProvider(StartupTaskPopulateWindows), scope=singleton)
         
     @provider
     @singleton
     @inject
-    def provide_startup_tasks(self, populate_windows: guiinjectorkeys.POPULATE_WINDOWS_KEY) -> guiinjectorkeys.SETUP_TASKS_KEY:
+    def provide_startup_tasks(self, populate_windows: StartupTaskPopulateWindows) -> guiinjectorkeys.SETUP_TASKS_KEY:
         return (populate_windows,)
 
     @provider
@@ -96,10 +101,10 @@ class AcceptanceTestHelpers():
     the acceptance test thread class.
     '''
     def get_event(self, entity_id):
-        return self.get_entity(entity_id, baseinjectorkeys.EVENT_DAO_KEY)
+        return self.get_entity(entity_id, EventDao)
 
     def get_document(self, document_id):
-        return self.get_entity(document_id, baseinjectorkeys.DOCUMENT_DAO_KEY)
+        return self.get_entity(document_id, DocumentDao)
 
     def get_entity(self, entity_id, dao_key):
         dao = self.injector.get(dao_key)
@@ -140,13 +145,13 @@ class AcceptanceTestHelpers():
         self.assertEquals(document_id, self.document_window.entity.id)
 
     def assert_no_such_event(self, event_id):
-        self.assert_no_such_entity(event_id, baseinjectorkeys.EVENT_DAO_KEY)
+        self.assert_no_such_entity(event_id, EventDao)
 
     def assert_no_such_document(self, document_id):
-        self.assert_no_such_entity(document_id, baseinjectorkeys.DOCUMENT_DAO_KEY)
+        self.assert_no_such_entity(document_id, DocumentDao)
 
     def assert_no_such_document_file_info(self, document_file_info_id):
-        self.assert_no_such_entity(document_file_info_id, baseinjectorkeys.DOCUMENT_FILE_INFO_DAO_KEY)
+        self.assert_no_such_entity(document_file_info_id, DocumentFileInfoDao)
         
     def assert_no_such_entity(self, entity_id, dao_key):
         expected_exception_thrown = False
@@ -175,17 +180,17 @@ class BaseAcceptanceTest(Thread, AcceptanceTestHelpers):
         self.injector = build_injector()
         
         # Set up database
-        engine = self.injector.get(baseinjectorkeys.DB_ENGINE_KEY)
+        engine = self.injector.get(Engine)
         setup_database_schema(engine)
         load_table_data(tables, engine)
         
         # Get basic gui element
         self.success = False
-        self.main_runner = self.injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
-        self.event_window = self.injector.get(guiinjectorkeys.EVENT_WINDOW_KEY)
-        self.event_window_presenter = self.injector.get(guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY)
-        self.document_window = self.injector.get(guiinjectorkeys.DOCUMENT_WINDOW_KEY)
-        self.document_window_presenter = self.injector.get(guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY)
+        self.main_runner = self.injector.get(MainRunner)
+        self.event_window = self.injector.get(EventWindow)
+        self.event_window_presenter = self.injector.get(EventWindowPresenter)
+        self.document_window = self.injector.get(DocumentWindow)
+        self.document_window_presenter = self.injector.get(DocumentWindowPresenter)
     
     def run(self):
         '''

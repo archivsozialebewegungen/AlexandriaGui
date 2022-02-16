@@ -8,12 +8,14 @@ from unittest.mock import MagicMock
 
 from alexandriabase import baseinjectorkeys
 from alexpresenters.MessageBroker import Message, CONF_DOCUMENT_CHANGED, \
-    CONF_EVENT_CHANGED, REQ_SET_DOCUMENT, ERROR_MESSAGE
+    CONF_EVENT_CHANGED, REQ_SET_DOCUMENT, ERROR_MESSAGE, MessageBroker
 from alexpresenters.Module import PresentersModule
 from ddt import ddt, unpack, data
 from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 from tkgui import guiinjectorkeys
 from tkgui.References import EventDocumentReferencesView
+from alexandriabase.daos import DocumentDao, EventDao
+from alexpresenters.ReferencePresenters import EventDocumentReferencesPresenter
 
 
 @ddt
@@ -23,9 +25,9 @@ class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.document_dao = self.injector.get(baseinjectorkeys.DOCUMENT_DAO_KEY)
-        self.event_dao = self.injector.get(baseinjectorkeys.EVENT_DAO_KEY)
-        self.presenter = self.injector.get(guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_PRESENTER_KEY)
+        self.document_dao = self.injector.get(DocumentDao)
+        self.event_dao = self.injector.get(EventDao)
+        self.presenter = self.injector.get(EventDocumentReferencesPresenter)
         self.view = MagicMock(spec=EventDocumentReferencesView)
         self.view.current_document = None
         self.presenter.view = self.view
@@ -36,7 +38,7 @@ class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):
         event = self.event_dao.get_by_id(1940000001)
         message = Message(CONF_EVENT_CHANGED, event=event)
         
-        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
+        self.message_broker = self.injector.get(MessageBroker)
         self.message_broker.send_message(message)
         
         self.assertEqual(self.view.current_event.id, event.id)
@@ -50,14 +52,14 @@ class EventDocumentReferencesPresenterTest(BaseReferenceIntegrationTest):
         
         message = Message(CONF_EVENT_CHANGED, event=None)
         
-        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
+        self.message_broker = self.injector.get(MessageBroker)
         self.message_broker.send_message(message)
         
         self.assertEqual(0, len(self.view.items))
 
     def test_receive_message_IV(self):
         
-        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
+        self.message_broker = self.injector.get(MessageBroker)
 
         message = Message(CONF_DOCUMENT_CHANGED, document=self.document_dao.get_by_id(1))
         self.message_broker.send_message(message)
