@@ -19,9 +19,6 @@ from ddt import ddt, data, unpack
 from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 from tkgui import guiinjectorkeys
 from tkgui.References import DocumentFileReferencesView
-from alexandriabase.daos import DocumentDao, DocumentFileInfoDao
-from alexandriabase.services import DocumentFileManager
-from alexpresenters.ReferencePresenters import DocumentFileReferencesPresenter
 
 
 @ddt
@@ -30,10 +27,10 @@ class DocumentFileReferencesPresenterTest(BaseReferenceIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.document_dao = self.injector.get(DocumentDao)
-        self.document_file_info_dao = self.injector.get(DocumentFileInfoDao)
-        self.document_file_manager = self.injector.get(DocumentFileManager)
-        self.presenter = self.injector.get(DocumentFileReferencesPresenter)
+        self.document_dao = self.injector.get(baseinjectorkeys.DOCUMENT_DAO_KEY)
+        self.document_file_info_dao = self.injector.get(baseinjectorkeys.DOCUMENT_FILE_INFO_DAO_KEY)
+        self.document_file_manager = self.injector.get(baseinjectorkeys.DOCUMENT_FILE_MANAGER_KEY)
+        self.presenter = self.injector.get(guiinjectorkeys.DOCUMENT_FILE_REFERENCES_PRESENTER_KEY)
         self.view = MagicMock(spec=DocumentFileReferencesView)
         self.presenter.view = self.view
         

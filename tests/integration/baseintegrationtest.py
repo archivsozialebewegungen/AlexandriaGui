@@ -7,22 +7,21 @@ import unittest
 
 from alex_test_utils import load_table_data, clear_table_data, TestEnvironment, \
     MODE_SIMPLE, setup_database_schema, drop_database_schema
+from alexandriabase import baseinjectorkeys, AlexBaseModule
 from alexandriabase.daos import DaoModule
 from alexandriabase.services import ServiceModule
 from alexpresenters.MessageBroker import MessageBroker
 from daotests import test_base
 from injector import Module, Injector, ClassProvider, singleton
 from tkgui import guiinjectorkeys
-from sqlalchemy.engine.base import Engine
 
 
 class IntegrationTestModule(Module):
             
     def configure(self, binder):
 
-        pass
-        #binder.bind(guiinjectorkeys.MESSAGE_BROKER_KEY,
-        #            ClassProvider(MessageBroker), scope=singleton)
+        binder.bind(guiinjectorkeys.MESSAGE_BROKER_KEY,
+                    ClassProvider(MessageBroker), scope=singleton)
         
 class BaseIntegrationTest(unittest.TestCase):
 
@@ -61,14 +60,14 @@ class BaseIntegrationTest(unittest.TestCase):
  
     def get_injector(self, *test_modules):
 
-        essential_modules = (DaoModule(), ServiceModule(), IntegrationTestModule())
+        essential_modules = (AlexBaseModule(), DaoModule(), ServiceModule(), IntegrationTestModule())
         injector = Injector(essential_modules + test_modules)
 
-        self.engine = injector.get(Engine)
+        self.engine = injector.get(baseinjectorkeys.DB_ENGINE_KEY)
         setup_database_schema(self.engine)
         load_table_data(test_base.tables, self.engine)
 
-        self.message_broker = injector.get(MessageBroker)
+        self.message_broker = injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
         self.message_broker.subscribe(self)
 
         return injector

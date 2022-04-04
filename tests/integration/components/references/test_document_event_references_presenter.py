@@ -8,14 +8,12 @@ from unittest.mock import MagicMock
 
 from alexandriabase import baseinjectorkeys
 from alexpresenters.MessageBroker import Message, CONF_DOCUMENT_CHANGED, \
-    CONF_EVENT_CHANGED, REQ_SET_EVENT, MessageBroker
+    CONF_EVENT_CHANGED, REQ_SET_EVENT
 from alexpresenters.Module import PresentersModule
 from ddt import ddt, data, unpack
 from integration.components.references.basereferenceintegrationtest import BaseReferenceIntegrationTest
 from tkgui import guiinjectorkeys
 from tkgui.References import DocumentEventReferencesView
-from alexandriabase.daos import EventDao, DocumentDao
-from alexpresenters.ReferencePresenters import DocumentEventReferencesPresenter
 
 
 @ddt
@@ -24,9 +22,9 @@ class DocumentEventReferencesPresenterTest(BaseReferenceIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.document_dao = self.injector.get(DocumentDao)
-        self.event_dao = self.injector.get(EventDao)
-        self.presenter = self.injector.get(DocumentEventReferencesPresenter)
+        self.document_dao = self.injector.get(baseinjectorkeys.DOCUMENT_DAO_KEY)
+        self.event_dao = self.injector.get(baseinjectorkeys.EVENT_DAO_KEY)
+        self.presenter = self.injector.get(guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_PRESENTER_KEY)
         self.view = MagicMock(spec=DocumentEventReferencesView)
         self.view.current_event = None
         self.presenter.view = self.view
@@ -36,7 +34,7 @@ class DocumentEventReferencesPresenterTest(BaseReferenceIntegrationTest):
         event = self.event_dao.get_by_id(1940000001)
         message = Message(CONF_EVENT_CHANGED, event=event)
         
-        self.message_broker = self.injector.get(MessageBroker)
+        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
         self.message_broker.send_message(message)
         
         self.assertEqual(self.view.current_event.id, event.id)
@@ -50,7 +48,7 @@ class DocumentEventReferencesPresenterTest(BaseReferenceIntegrationTest):
         
         message = Message(CONF_DOCUMENT_CHANGED, document=None)
         
-        self.message_broker = self.injector.get(MessageBroker)
+        self.message_broker = self.injector.get(guiinjectorkeys.MESSAGE_BROKER_KEY)
         self.message_broker.send_message(message)
         
         self.assertEqual(0, len(self.view.items))

@@ -16,9 +16,6 @@ from ddt import ddt, data, unpack
 from integration.baseintegrationtest import BaseIntegrationTest
 from tkgui import guiinjectorkeys
 from tkgui.References import DocumentFileReferencesView
-from alexandriabase.services import EventService
-from alexandriabase.daos import EventTypeDao
-from alexpresenters.ReferencePresenters import EventTypeReferencesPresenter
 
 
 @ddt
@@ -31,9 +28,9 @@ class EventTypeReferencesPresenterTest(BaseIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.event_service = self.injector.get(EventService)
-        self.event_type_dao = self.injector.get(EventTypeDao)
-        self.presenter = self.injector.get(EventTypeReferencesPresenter)
+        self.event_service = self.injector.get(baseinjectorkeys.EVENT_SERVICE_KEY)
+        self.event_type_dao = self.injector.get(baseinjectorkeys.EVENT_TYPE_DAO_KEY)
+        self.presenter = self.injector.get(guiinjectorkeys.EVENT_TYPE_REFERENCES_PRESENTER_KEY)
         self.view = MagicMock(spec=DocumentFileReferencesView)
         self.presenter.view = self.view
     

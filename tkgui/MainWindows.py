@@ -5,26 +5,86 @@ Created on 21.01.2018
 '''
 import os
 import sys
-from tkinter import Frame
+from threading import Thread
+from tkinter import Frame, Toplevel
 from tkinter.constants import LEFT, NW, X, RIGHT, TOP, WORD, DISABLED, NORMAL, \
-    FLAT, CENTER, BOTH, YES, RIDGE
+    FLAT, CENTER, SUNKEN, BOTH, YES, RIDGE
 from tkinter.ttk import Notebook
 
-from alexpresenters.MessageBroker import MessageBroker, CONF_SETUP_FINISHED
-from injector import singleton, inject, Module, InstanceProvider, \
+from alexpresenters.MessageBroker import Message, CONF_SETUP_FINISHED, \
+    REQ_SAVE_ALL, REQ_QUIT
+from injector import singleton, inject, Module, ClassProvider, InstanceProvider, \
     provider
 from tkgui import _, guiinjectorkeys
-from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, \
+from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, AlexTk, \
     AlexLabel, AlexText, AlexRadioGroup, AlexButton, AlexShortcutBar
-from alexpresenters.MainWindowPresenters import DocumentWindowPresenter,\
-    EventWindowPresenter
-from tkgui.References import DocumentEventReferencesWidgetFactory,\
-    DocumentFileReferencesWidgetFactory, EventCrossReferencesWidgetFactory,\
-    EventDocumentReferencesWidgetFactory, EventTypeReferencesWidgetFactory
-from tkgui.WindowManager import WindowManager, GOTO_DIALOG, FILTER_DIALOG,\
-    DATE_RANGE_DIALOG, CONFIRM_NEW_EVENT_DIALOG
 
 
+class WindowManager():
+    '''
+    This is the class that handles all different windows. It
+    is itself a child of Tk and creates new windows on request.
+
+    The window classes of the applicaton are just children of Frame,
+    the request a Toplevel window to attach to from this WindowManager.
+    The WindowManager will be injected into the window classes, these
+    request a new Toplevel window from the window manager and
+    attach themselves to this window.
+    '''
+
+    @inject
+    @singleton
+    def __init__(self,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY):
+        
+        self.message_broker = message_broker
+        self.message_broker.subscribe(self)
+
+        self.windows = []
+        self.threads = []
+        self.root = AlexTk()
+        # Won't be using the root window - this leads to
+        # trouble
+        self.root.withdraw()
+        self.root.protocol("WM_DELETE_WINDOW", self._quit)
+
+    def create_new_window(self, title='Alexandria'):
+        '''
+        Returns a new toplevel window.
+        '''
+        window = Toplevel(self.root)
+        window.title(title)
+        window.protocol("WM_DELETE_WINDOW", self._quit)
+        self.windows.append(window)
+        return window
+
+    def remove_window(self, window):
+        self.windows.remove(window)
+        window.destroy()
+
+    def receive_message(self, message):
+        '''
+        Interface method for the message broker
+        '''
+        if message.key == REQ_QUIT:
+            self._quit()
+            
+    def run_in_thread(self, target, args=()):
+        thread = Thread(target=target, args=args)
+        self.threads.append(thread)
+        thread.start()
+
+    def _quit(self):
+        
+        self.message_broker.send_message(Message(REQ_SAVE_ALL))
+        for thread in self.threads:
+            thread.join()
+        self.root.quit()
+
+    def run(self, setup_runner):
+        self.root.after_idle(lambda: setup_runner.run(self.root))
+        self.root.mainloop()
+        
 class BaseWindow(Frame):
     """
         This class handles a lot of the functionality of the
@@ -33,6 +93,9 @@ class BaseWindow(Frame):
         grid etc.
     
     """
+    GOTO_DIALOG = 'goto_dialog'
+    FILTER_DIALOG = 'filter_dialog'
+    
     def __init__(self, window_manager, message_broker, presenter, dialogs, plugins):
         
         self.window_manager = window_manager
@@ -205,7 +268,7 @@ class BaseWindow(Frame):
     
     def _toggle_filter(self):
         if self.filter_object is None:
-            self.dialogs[FILTER_DIALOG].activate(self._activate_filter)
+            self.dialogs[self.FILTER_DIALOG].activate(self._activate_filter)
         else:
             self.filter_object = None
             self.presenter.update_filter_expression()
@@ -218,7 +281,7 @@ class BaseWindow(Frame):
         self.presenter.goto_first()
                 
     def _activate_record_dialog(self):
-        self.dialogs[GOTO_DIALOG].activate(self._goto_record)
+        self.dialogs[self.GOTO_DIALOG].activate(self._goto_record)
         
     def _goto_record(self, record_id):
         self.new_record_id = record_id
@@ -232,16 +295,16 @@ class BaseWindow(Frame):
         lambda self, entity: self._entity_to_view(entity)
     )
 
-@singleton
 class DocumentWindow(BaseWindow):
     '''
     The window for manipulating documents.
     '''
     @inject
+    @singleton
     def __init__(self,
-                 window_manager: WindowManager,
-                 message_broker: MessageBroker,
-                 presenter: DocumentWindowPresenter,
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 presenter: guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
                  document_menu_additions: guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY):
         self.notebook = None
@@ -398,15 +461,18 @@ class EventProxy:
     description = property(_get_description, _set_description)
     status_id = property(_get_status_id, _set_status_id)
     location_id = property(_get_location_id, _set_location_id)
-
-@singleton    
+    
 class EventWindow(BaseWindow):
     
+    DATE_RANGE_DIALOG = 'new_date_range_dialog'
+    CONFIRM_NEW_EVENT_DIALOG = 'confirm_new_event_dialog'
+
     @inject
+    @singleton
     def __init__(self,
-                 window_manager: WindowManager,
-                 message_broker: MessageBroker,
-                 presenter: EventWindowPresenter,
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 presenter: guiinjectorkeys.EVENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY,
                  event_menu_additions: guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY):
         super().__init__(window_manager, message_broker, presenter, dialogs, event_menu_additions)
@@ -423,7 +489,7 @@ class EventWindow(BaseWindow):
         one of the already existing events or if she really wants
         to create a new event for the given date range.
         '''
-        self.dialogs[DATE_RANGE_DIALOG].activate(self._activate_create_new)
+        self.dialogs[self.DATE_RANGE_DIALOG].activate(self._activate_create_new)
         
     def _activate_create_new(self, value):
         '''
@@ -447,7 +513,7 @@ class EventWindow(BaseWindow):
         if len(event_list) == 0:
             self.presenter.create_new()
         else:
-            self.dialogs[CONFIRM_NEW_EVENT_DIALOG].activate(
+            self.dialogs[self.CONFIRM_NEW_EVENT_DIALOG].activate(
                 self._confirm_new_event_callback,
                 event_list=event_list,
                 date=self.date_range_for_new_event.start_date)
@@ -579,6 +645,14 @@ class MainWindowsModule(Module):
     
     def configure(self, binder):
       
+        binder.bind(guiinjectorkeys.WINDOW_MANAGER_KEY,
+                    ClassProvider(WindowManager), scope=singleton)
+        
+        binder.bind(guiinjectorkeys.EVENT_WINDOW_KEY,
+                    ClassProvider(EventWindow), scope=singleton)
+        binder.bind(guiinjectorkeys.DOCUMENT_WINDOW_KEY,
+                    ClassProvider(DocumentWindow), scope=singleton)
+
         binder.bind(guiinjectorkeys.EVENT_MENU_ADDITIONS_KEY,
                     InstanceProvider([]))
         binder.bind(guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY,
@@ -594,8 +668,8 @@ class MainWindowsModule(Module):
     @singleton
     @inject
     def create_main_windows(self,
-                            event_window: EventWindow,
-                            document_window: DocumentWindow,
+                            event_window: guiinjectorkeys.EVENT_WINDOW_KEY,
+                            document_window: guiinjectorkeys.DOCUMENT_WINDOW_KEY,
                             document_base_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY,
                             document_additional_reference_factories: guiinjectorkeys.DOCUMENT_WINDOW_ADDITIONAL_REFERENCES_KEY,
                             event_base_reference_factories: guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY,
@@ -617,8 +691,8 @@ class MainWindowsModule(Module):
     @inject
     def get_document_base_references(
             self,
-            document_event_reference: DocumentEventReferencesWidgetFactory,
-            document_file_reference: DocumentFileReferencesWidgetFactory) -> guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY:
+            document_event_reference: guiinjectorkeys.DOCUMENT_EVENT_REFERENCES_FACTORY_KEY,
+            document_file_reference: guiinjectorkeys.DOCUMENT_FILE_REFERENCES_FACTORY_KEY) -> guiinjectorkeys.DOCUMENT_WINDOW_BASE_REFERENCES_KEY:
         '''
         Returns an array of all reference widgets for documents.
         If you have plugins that define additional references,
@@ -636,13 +710,44 @@ class MainWindowsModule(Module):
     @provider
     @inject
     def create_event_base_references(self,
-                                event_cross_references: EventCrossReferencesWidgetFactory,
-                                event_document_reference: EventDocumentReferencesWidgetFactory,
-                                event_type_reference: EventTypeReferencesWidgetFactory) -> guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY:
+                                event_cross_references: guiinjectorkeys.EVENT_CROSS_REFERENCES_FACTORY_KEY,
+                                event_document_reference: guiinjectorkeys.EVENT_DOCUMENT_REFERENCES_FACTORY_KEY,
+                                event_type_reference: guiinjectorkeys.EVENT_TYPE_REFERENCES_FACTORY_KEY) -> guiinjectorkeys.EVENT_WINDOW_BASE_REFERENCES_KEY:
         '''
         Returns an array of all reference widgets for events.
         If you have plugins that define additional references,
         you have to overwrite this in your applications main module.
         '''
         return [event_cross_references, event_type_reference, event_document_reference]
+    
+    # Dialogs
+    @provider
+    @inject
+    def create_document_dialogs(self,
+                                documentid_selection_dialog: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_KEY,
+                                document_filter_dialog: guiinjectorkeys.DOCUMENT_FILTER_DIALOG_KEY) -> guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY:
+        '''
+        Returns a dictionary of dialogs for the document window.
+        '''
+        return {
+            BaseWindow.GOTO_DIALOG: documentid_selection_dialog,
+            BaseWindow.FILTER_DIALOG: document_filter_dialog
+            }
+    
+    @provider
+    @inject
+    def create_event_dialogs(self,
+                             date_range_dialog: guiinjectorkeys.DATERANGE_SELECTION_DIALOG_KEY,
+                             event_id_dialog: guiinjectorkeys.EVENT_ID_SELECTION_DIALOG_KEY,
+                             event_filter_dialog: guiinjectorkeys.EVENT_FILTER_DIALOG_KEY,
+                             confirm_new_event_dialog: guiinjectorkeys.EVENT_CONFIRMATION_DIALOG_KEY) -> guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY:
+        '''
+        Returns a dictionary of dialogs for the event window.
+        '''
+        return {
+            EventWindow.DATE_RANGE_DIALOG: date_range_dialog,
+            EventWindow.CONFIRM_NEW_EVENT_DIALOG: confirm_new_event_dialog,
+            BaseWindow.GOTO_DIALOG: event_id_dialog,
+            BaseWindow.FILTER_DIALOG: event_filter_dialog
+            }
     

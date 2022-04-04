@@ -7,21 +7,12 @@ Created on 01.01.2018
 from tkinter import Frame, filedialog
 from tkinter.constants import TOP, LEFT, BOTH, W, X, YES
 
-from injector import inject, Module, singleton, provider
+from alexandriabase import baseinjectorkeys
+from injector import inject, Module, ClassProvider, singleton
 from tkgui import guiinjectorkeys, _
 from tkgui.AlexWidgets import AlexLabel, AlexButton, AlexEntry, \
     AlexRadioGroup, AlexComboBox, DateEntryFrame, AlexDateEntry, AlexListBox, \
     AlexTree, AlexCheckBox
-from alexpresenters.DialogPresenters import GenericInputDialogPresenter,\
-    YearSelectionDialogPresenter, DateSelectionDialogPresenter,\
-    EventIdSelectionDialogPresenter, DateRangeSelectionDialogPresenter,\
-    DocumentIdSelectionDialogPresenter, AbstractInputDialogPresenter,\
-    EventSelectionPresenter, EventTypeSelectionPresenter,\
-    DocumentFilterDialogPresenter, EventFilterDialogPresenter,\
-    LoginDialogPresenter
-from alexandriabase.config import Config
-from tkgui.WindowManager import WindowManager, DATE_RANGE_DIALOG,\
-    CONFIRM_NEW_EVENT_DIALOG, GOTO_DIALOG, FILTER_DIALOG
 
 
 class AbstractInputDialog:
@@ -255,23 +246,21 @@ class GenericInputEditDialog(AbstractInputDialog):
         
     input = property(_get_entry, _set_entry)
         
-@singleton
 class GenericStringEditDialog(GenericInputEditDialog):
     
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: GenericInputDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
         super().__init__(window_manager, presenter)
     
         
-@singleton
 class GenericStringSelectionDialog(AbstractInputDialog):
     
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: GenericInputDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
         
         super().__init__(window_manager, presenter)
 
@@ -302,13 +291,12 @@ class GenericStringSelectionDialog(AbstractInputDialog):
 
     input = property(_get_selected_value)
         
-@singleton
 class GenericBooleanSelectionDialog(AbstractInputDialog):
 
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: GenericInputDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.GENERIC_INPUT_DIALOG_PRESENTER):
         super().__init__(window_manager, presenter)
 
     def create_dialog(self):
@@ -324,13 +312,12 @@ class GenericBooleanSelectionDialog(AbstractInputDialog):
         
 weekdays = (_('MO'), _('TU'), _('WE'), _('TH'), _('FR'), _('SA'), _('SU'))
 
-@singleton
 class YearSelectionDialog(AbstractInputDialog):
     
     @inject
     def __init__(self,
-                 window_manager: WindowManager, 
-                 presenter: YearSelectionDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY, 
+                 presenter: guiinjectorkeys.YEAR_SELECTION_DIALOG_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
         self.day = None
         self.month = None
@@ -497,7 +484,6 @@ class DateSelectionDialog(AbstractInputDialog):
     months = property(_get_months, _set_months)
     years = property(_get_years, _set_years)
 
-@singleton
 class SimpleDateSelectionDialog(DateSelectionDialog):
     '''
     Selects a date.
@@ -505,12 +491,11 @@ class SimpleDateSelectionDialog(DateSelectionDialog):
 
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: DateSelectionDialogPresenter,
-                 yearselectiondialog: YearSelectionDialog):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.DATE_SELECTION_DIALOG_PRESENTER_KEY,
+                 yearselectiondialog: guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY):
         super().__init__(window_manager, presenter, yearselectiondialog, 1)
 
-@singleton
 class EventIdSelectionDialog(DateSelectionDialog):
     '''
     Selects a date.
@@ -518,12 +503,11 @@ class EventIdSelectionDialog(DateSelectionDialog):
 
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: EventIdSelectionDialogPresenter,
-                 yearselectiondialog: YearSelectionDialog):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.EVENT_ID_SELECTION_DIALOG_PRESENTER_KEY,
+                 yearselectiondialog: guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY):
         super().__init__(window_manager, presenter, yearselectiondialog, 1)
 
-@singleton
 class DateRangeSelectionDialog(DateSelectionDialog):
     '''
     Selects a date range.
@@ -531,18 +515,17 @@ class DateRangeSelectionDialog(DateSelectionDialog):
 
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: DateRangeSelectionDialogPresenter,
-                 yearselectiondialog: YearSelectionDialog):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.DATERANGE_SELECTION_DIALOG_PRESENTER_KEY,
+                 yearselectiondialog: guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY):
         super().__init__(window_manager, presenter, yearselectiondialog, 2)
 
-@singleton
 class DocumentIdSelectionDialog(GenericInputEditDialog):
     
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: DocumentIdSelectionDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
     
     def activate(self, callback, initvalue=''):
@@ -551,13 +534,12 @@ class DocumentIdSelectionDialog(GenericInputEditDialog):
                          label=_('Enter document id:'),
                          initvalue=initvalue)
         
-@singleton
 class EventSelectionWizard(Wizard):
     
     @inject
     def __init__(self, 
-                 window_manager: WindowManager, 
-                 presenter: EventSelectionPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY, 
+                 presenter: guiinjectorkeys.EVENT_SELECTION_DIALOG_PRESENTER_KEY):
         
         self.selected_event = None
         self.date_entry = None
@@ -615,13 +597,12 @@ class EventSelectionWizard(Wizard):
     event_list = property(_get_event_list, _set_event_list)
     input = property(_get_selected_event)
     
-@singleton
 class EventConfirmationDialog(AbstractInputDialog):
     
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: AbstractInputDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.EVENT_CONFIRMATION_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
         
     def create_dialog(self):
@@ -713,13 +694,12 @@ class GenericTreeSelectionDialog(AbstractInputDialog):
     input = property(lambda self: self.tree_widget.get())
     tree = property(None, set_tree)
 
-@singleton
 class EventTypeSelectionDialog(GenericTreeSelectionDialog):
     
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: EventTypeSelectionPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.EVENT_TYPE_SELECTION_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
 
 class GenericFilterDialog(AbstractInputDialog):
@@ -800,23 +780,21 @@ class BasicDocumentFilterDialog(GenericFilterDialog):  # @UndefinedVariable
     missing_event_link = property(_get_missing_event_link,
                                   _set_missing_event_link)
     
-@singleton
 class DocumentFilterDialog(BasicDocumentFilterDialog):  # @UndefinedVariable
 
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: DocumentFilterDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.DOCUMENT_FILTER_DIALOG_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
 
     
-@singleton
 class EventFilterDialog(GenericFilterDialog):
 
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: EventFilterDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.EVENT_FILTER_DIALOG_PRESENTER_KEY):
         super().__init__(window_manager, presenter)
 
     def create_dialog(self):
@@ -853,7 +831,6 @@ class EventFilterDialog(GenericFilterDialog):
     unverified_only = property(lambda self: self.unverified_only_checkbox.get(),
                              lambda self, value: self.unverified_only_checkbox.set(value))
 
-@singleton
 class LoginDialog(Frame):
     '''
     Login dialog used during setup
@@ -861,8 +838,8 @@ class LoginDialog(Frame):
 
     @inject
     def __init__(self,
-                 window_manager: WindowManager,
-                 presenter: LoginDialogPresenter):
+                 window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY,
+                 presenter: guiinjectorkeys.LOGIN_DIALOG_PRESENTER_KEY):
         
         self.window_manager = window_manager
         self.window = None
@@ -913,7 +890,6 @@ class LoginDialog(Frame):
     creators = property(None, _set_creators)
     selected_creator = property(_get_selected_creator)
     
-@singleton
 class FileSelectionDialog:
     '''
     Dialog for document file selection. Just
@@ -922,7 +898,7 @@ class FileSelectionDialog:
     '''
     
     @inject
-    def __init__(self, config: Config):
+    def __init__(self, config: baseinjectorkeys.CONFIG_KEY):
         self.filetypes = config.filetypes + list(config.filetypealiases.keys())
         
     
@@ -934,68 +910,37 @@ class FileSelectionDialog:
         callback(result)
 
 class DialogsTkGuiModule(Module):
-    #'''
-    #Binds all existing dialogs.
-    #'''
-    #def configure(self, binder):
-    #    binder.bind(guiinjectorkeys.EVENT_CONFIRMATION_DIALOG_KEY,
-    #                ClassProvider(EventConfirmationDialog))
-    #    binder.bind(guiinjectorkeys.GENERIC_STRING_EDIT_DIALOG_KEY,
-    #                ClassProvider(GenericStringEditDialog))
-    #    binder.bind(guiinjectorkeys.GENERIC_STRING_SELECTION_DIALOG_KEY,
-    #                ClassProvider(GenericStringSelectionDialog))
-    #    binder.bind(guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY,
-    #                ClassProvider(GenericBooleanSelectionDialog))
-    #    binder.bind(guiinjectorkeys.DATE_SELECTION_DIALOG_KEY,
-    #                ClassProvider(SimpleDateSelectionDialog))
-    #    binder.bind(guiinjectorkeys.EVENT_ID_SELECTION_DIALOG_KEY,
-    #                ClassProvider(EventIdSelectionDialog))
-    #    binder.bind(guiinjectorkeys.DATERANGE_SELECTION_DIALOG_KEY,
-    #                ClassProvider(DateRangeSelectionDialog))
-    #    binder.bind(guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY,
-    #                ClassProvider(YearSelectionDialog))
-    #    binder.bind(guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY,
-    #                ClassProvider(EventSelectionWizard))
-    #    binder.bind(guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_KEY,
-    #                ClassProvider(DocumentIdSelectionDialog))
-    #    binder.bind(guiinjectorkeys.DOCUMENT_FILTER_DIALOG_KEY,
-    #                ClassProvider(DocumentFilterDialog), scope=singleton)
-    #    binder.bind(guiinjectorkeys.EVENT_FILTER_DIALOG_KEY,
-    #                ClassProvider(EventFilterDialog), scope=singleton)
-    #    binder.bind(guiinjectorkeys.LOGIN_DIALOG_KEY,
-    #                ClassProvider(LoginDialog), scope=singleton)
-    #    binder.bind(guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
-    #                ClassProvider(FileSelectionDialog), scope=singleton)
-    #    binder.bind(guiinjectorkeys.EVENT_TYPE_SELECTION_DIALOG_KEY,
-    #                ClassProvider(EventTypeSelectionDialog), scope=singleton)
-
-    # Dialogs
-    @provider
-    @inject
-    def create_document_dialogs(self,
-                                documentid_selection_dialog: DocumentIdSelectionDialog,
-                                document_filter_dialog: DocumentFilterDialog) -> guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY:
-        '''
-        Returns a dictionary of dialogs for the document window.
-        '''
-        return {
-            GOTO_DIALOG: documentid_selection_dialog,
-            FILTER_DIALOG: document_filter_dialog
-            }
-    
-    @provider
-    @inject
-    def create_event_dialogs(self,
-                             date_range_dialog: DateRangeSelectionDialog,
-                             event_id_dialog: EventIdSelectionDialog,
-                             event_filter_dialog: EventFilterDialog,
-                             confirm_new_event_dialog: EventConfirmationDialog) -> guiinjectorkeys.EVENT_WINDOW_DIALOGS_KEY:
-        '''
-        Returns a dictionary of dialogs for the event window.
-        '''
-        return {
-            DATE_RANGE_DIALOG: date_range_dialog,
-            CONFIRM_NEW_EVENT_DIALOG: confirm_new_event_dialog,
-            GOTO_DIALOG: event_id_dialog,
-            FILTER_DIALOG: event_filter_dialog
-            }
+    '''
+    Binds all existing dialogs.
+    '''
+    def configure(self, binder):
+        binder.bind(guiinjectorkeys.EVENT_CONFIRMATION_DIALOG_KEY,
+                    ClassProvider(EventConfirmationDialog))
+        binder.bind(guiinjectorkeys.GENERIC_STRING_EDIT_DIALOG_KEY,
+                    ClassProvider(GenericStringEditDialog))
+        binder.bind(guiinjectorkeys.GENERIC_STRING_SELECTION_DIALOG_KEY,
+                    ClassProvider(GenericStringSelectionDialog))
+        binder.bind(guiinjectorkeys.GENERIC_BOOLEAN_SELECTION_DIALOG_KEY,
+                    ClassProvider(GenericBooleanSelectionDialog))
+        binder.bind(guiinjectorkeys.DATE_SELECTION_DIALOG_KEY,
+                    ClassProvider(SimpleDateSelectionDialog))
+        binder.bind(guiinjectorkeys.EVENT_ID_SELECTION_DIALOG_KEY,
+                    ClassProvider(EventIdSelectionDialog))
+        binder.bind(guiinjectorkeys.DATERANGE_SELECTION_DIALOG_KEY,
+                    ClassProvider(DateRangeSelectionDialog))
+        binder.bind(guiinjectorkeys.YEAR_SELECTION_DIALOG_KEY,
+                    ClassProvider(YearSelectionDialog))
+        binder.bind(guiinjectorkeys.EVENT_SELECTION_DIALOG_KEY,
+                    ClassProvider(EventSelectionWizard))
+        binder.bind(guiinjectorkeys.DOCUMENTID_SELECTION_DIALOG_KEY,
+                    ClassProvider(DocumentIdSelectionDialog))
+        binder.bind(guiinjectorkeys.DOCUMENT_FILTER_DIALOG_KEY,
+                    ClassProvider(DocumentFilterDialog), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_FILTER_DIALOG_KEY,
+                    ClassProvider(EventFilterDialog), scope=singleton)
+        binder.bind(guiinjectorkeys.LOGIN_DIALOG_KEY,
+                    ClassProvider(LoginDialog), scope=singleton)
+        binder.bind(guiinjectorkeys.FILE_SELECTION_DIALOG_KEY,
+                    ClassProvider(FileSelectionDialog), scope=singleton)
+        binder.bind(guiinjectorkeys.EVENT_TYPE_SELECTION_DIALOG_KEY,
+                    ClassProvider(EventTypeSelectionDialog), scope=singleton)

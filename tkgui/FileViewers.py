@@ -9,11 +9,15 @@ from tkinter import messagebox, Frame, PhotoImage
 from tkinter.constants import LEFT, NW, BOTH, YES, NE, ALL, X
 from tkinter.messagebox import showinfo
 
-from injector import Module, inject, provider, singleton
+from alexandriabase import baseinjectorkeys
+from injector import Module, inject, provider, singleton, BoundKey, ClassProvider
 from tkgui import _, guiinjectorkeys
 from tkgui.AlexWidgets import AlexButton, AlexScrolledCanvasFrame
-from alexandriabase.config import Config
-from tkgui.WindowManager import WindowManager
+
+
+DOCUMENT_DEFAULT_VIEWER_KEY = BoundKey('document_default_viewer_key')
+DOCUMENT_GRAPHICS_VIEWER_KEY = BoundKey('document_graphics_viewer_key')
+DOCUMENT_EXTERNAL_VIEWER_FACTORY_KEY = BoundKey('document_external_viewer_factory_key')
 
 class DefaultViewer(object):
     '''
@@ -30,7 +34,7 @@ class GraphicsViewer():
     Viewer for graphic files
     '''
     @inject    
-    def __init__(self, window_manager: WindowManager):
+    def __init__(self, window_manager: guiinjectorkeys.WINDOW_MANAGER_KEY):
         self.factor = 0.0
         self.photo_image = None
         
@@ -114,15 +118,24 @@ class ExternalViewer(object):
             showinfo(message=text, title=_("Not accessible"))
 
 class DocumentViewersModule(Module):
+
+    def configure(self, binder):
+      
+        binder.bind(DOCUMENT_DEFAULT_VIEWER_KEY,
+                    ClassProvider(DefaultViewer), scope=singleton)
+        binder.bind(DOCUMENT_GRAPHICS_VIEWER_KEY,
+                    ClassProvider(GraphicsViewer), scope=singleton)
+        binder.bind(DOCUMENT_EXTERNAL_VIEWER_FACTORY_KEY,
+                    ClassProvider(ExternalViewerFactory), scope=singleton)
     
     @inject
     @provider
     @singleton
     def get_viewers(self,
-                    config: Config,
-                    default_viewer: DefaultViewer,
-                    graphics_viewer: GraphicsViewer,
-                    external_viewer_factory: ExternalViewerFactory) -> guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY:
+                    config: baseinjectorkeys.CONFIG_KEY,
+                    default_viewer: DOCUMENT_DEFAULT_VIEWER_KEY,
+                    graphics_viewer: DOCUMENT_GRAPHICS_VIEWER_KEY,
+                    external_viewer_factory: DOCUMENT_EXTERNAL_VIEWER_FACTORY_KEY) -> guiinjectorkeys.DOCUMENT_FILE_VIEWERS_KEY:
         
         viewers = {}
         defined_viewers = config.filetypeviewers

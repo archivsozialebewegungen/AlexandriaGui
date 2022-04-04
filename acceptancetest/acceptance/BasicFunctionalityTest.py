@@ -10,7 +10,6 @@ from acceptance.AcceptanceTestUtils import BaseAcceptanceTest, AcceptanceTestRun
     set_date, set_date_range, create_test_file
 from alexandriabase.domain import AlexDate, EventTypeIdentifier
 from tkgui.MainWindows import BaseWindow, EventWindow
-from tkgui.WindowManager import FILTER_DIALOG, GOTO_DIALOG, DATE_RANGE_DIALOG
 
 
 class BasicFunctionalityTest(BaseAcceptanceTest):
@@ -189,7 +188,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
     def check_goto_event(self):
         print("Checking going to nearest selected event works...", end='')
-        dialog = self.event_window.dialogs[GOTO_DIALOG]
+        dialog = self.event_window.dialogs[BaseWindow.GOTO_DIALOG]
 
         self.start_dialog(self.event_window._activate_record_dialog)
         set_date(dialog, AlexDate(1960, 1, 1))
@@ -200,7 +199,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
     def check_goto_document(self):
         print("Checking going to nearest selected document works...", end='')
-        dialog = self.document_window.dialogs[GOTO_DIALOG]
+        dialog = self.document_window.dialogs[BaseWindow.GOTO_DIALOG]
 
         self.start_dialog(self.document_window._activate_record_dialog)
         dialog.input = 7
@@ -211,7 +210,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
     def check_filtering_events(self):
         print("Checking filtering events works...", end='')
-        dialog = self.event_window.dialogs[FILTER_DIALOG]
+        dialog = self.event_window.dialogs[BaseWindow.FILTER_DIALOG]
 
         self.start_dialog(self.event_window._toggle_filter)
         dialog.earliest_date = AlexDate(1961, 1, 1)
@@ -232,7 +231,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
         
     def check_filtering_events_with_empty_selection(self):
         print("Checking filtering events works even if nothing is selected...", end='')
-        dialog = self.event_window.dialogs[FILTER_DIALOG]
+        dialog = self.event_window.dialogs[BaseWindow.FILTER_DIALOG]
 
         self.start_dialog(self.event_window._toggle_filter)
         dialog.earliest_date = AlexDate(1980, 1, 1)
@@ -253,7 +252,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
     def check_filtering_documents(self):
         print("Checking filtering documents works...", end='')
-        dialog = self.document_window.dialogs[FILTER_DIALOG]
+        dialog = self.document_window.dialogs[BaseWindow.FILTER_DIALOG]
 
         self.start_dialog(self.document_window._toggle_filter)
         dialog.search_term_entries[0].set("Zweites")
@@ -278,7 +277,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
 
     def check_filtering_documents_with_empty_selection(self):
         print("Checking filtering documents works even if nothing is selected...", end='')
-        dialog = self.document_window.dialogs[FILTER_DIALOG]
+        dialog = self.document_window.dialogs[BaseWindow.FILTER_DIALOG]
 
         self.start_dialog(self.document_window._toggle_filter)
         dialog.search_term_entries[0].set("no match")
@@ -648,7 +647,7 @@ class BasicFunctionalityTest(BaseAcceptanceTest):
     def check_create_event(self):
         print("Checking creation of event works...", end='')
 
-        dialog = self.event_window.dialogs[DATE_RANGE_DIALOG]
+        dialog = self.event_window.dialogs[EventWindow.DATE_RANGE_DIALOG]
 
         self.start_dialog(self.event_window._create_new)
         set_date_range(dialog, AlexDate(1941), AlexDate(1942))

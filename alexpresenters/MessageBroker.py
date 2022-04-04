@@ -3,7 +3,7 @@ Created on 03.05.2015
 
 @author: michael
 '''
-from injector import singleton, inject
+from injector import singleton
 
 
 REQ_SET_EVENT = "set event"

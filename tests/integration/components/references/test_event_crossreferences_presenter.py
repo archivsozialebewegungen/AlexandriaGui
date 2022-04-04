@@ -11,8 +11,6 @@ from alexpresenters.MessageBroker import Message, CONF_EVENT_CHANGED, \
     REQ_SET_EVENT
 from alexpresenters.Module import PresentersModule
 from ddt import ddt, data, unpack
-from alexandriabase.daos import EventDao, EventCrossreferencesDao
-from alexpresenters.ReferencePresenters import EventCrossReferencesPresenter
 from integration.components.references.basereferenceintegrationtest \
     import BaseReferenceIntegrationTest
 from tkgui import guiinjectorkeys
@@ -25,8 +23,8 @@ class EventCrossReferencesPresenterTest(BaseReferenceIntegrationTest):
     def setUp(self):
         super().setUp()
         self.injector = self.get_injector(PresentersModule())
-        self.event_dao = self.injector.get(EventDao)
-        self.presenter = self.injector.get(EventCrossReferencesPresenter)
+        self.event_dao = self.injector.get(baseinjectorkeys.EVENT_DAO_KEY)
+        self.presenter = self.injector.get(guiinjectorkeys.EVENT_CROSS_REFERENCES_PRESENTER_KEY)
         self.presenter.view = MagicMock(spec=EventCrossReferencesView)
 
     def testReceiveMessage(self):
@@ -70,7 +68,7 @@ class EventCrossReferencesPresenterTest(BaseReferenceIntegrationTest):
         self.assertFalse(event_id is None)
         
         # Assert that database has changed
-        event_crossreferences_dao = self.injector.get(EventCrossreferencesDao)
+        event_crossreferences_dao = self.injector.get(baseinjectorkeys.EVENT_CROSS_REFERENCES_DAO_KEY)
         cross_reference_ids = event_crossreferences_dao.get_cross_references(event_id)
         self.assertEqual(len(cross_reference_ids), len(reference_ids))
         for reference in reference_ids:
@@ -88,7 +86,7 @@ class EventCrossReferencesPresenterTest(BaseReferenceIntegrationTest):
         self.presenter.add_new_cross_reference()
         
         # Assert that database has not changed
-        event_crossreferences_dao = self.injector.get(EventCrossreferencesDao)
+        event_crossreferences_dao = self.injector.get(baseinjectorkeys.EVENT_CROSS_REFERENCES_DAO_KEY)
         cross_reference_ids = event_crossreferences_dao.get_cross_references(1940000001)
         self.assertEqual(len(cross_reference_ids), 2)
         self.assertIn(1950000001, cross_reference_ids)
@@ -106,7 +104,7 @@ class EventCrossReferencesPresenterTest(BaseReferenceIntegrationTest):
         self.presenter.delete_cross_reference()
         
         # Assert that database has changed
-        event_crossreferences_dao = self.injector.get(EventCrossreferencesDao)
+        event_crossreferences_dao = self.injector.get(baseinjectorkeys.EVENT_CROSS_REFERENCES_DAO_KEY)
         cross_reference_ids = event_crossreferences_dao.get_cross_references(1940000001)
         self.assertEqual(len(cross_reference_ids), 1)
         self.assertEqual(cross_reference_ids[0], 1950000001)
@@ -124,7 +122,7 @@ class EventCrossReferencesPresenterTest(BaseReferenceIntegrationTest):
         self.presenter.delete_cross_reference()
         
         # Assert that database has not changed
-        event_crossreferences_dao = self.injector.get(EventCrossreferencesDao)
+        event_crossreferences_dao = self.injector.get(baseinjectorkeys.EVENT_CROSS_REFERENCES_DAO_KEY)
         cross_reference_ids = event_crossreferences_dao.get_cross_references(1940000001)
 
         self.assertEqual(len(cross_reference_ids), 2)

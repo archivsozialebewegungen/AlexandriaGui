@@ -5,14 +5,13 @@ Created on 07.02.2018
 '''
 import re
 
+from alexandriabase import baseinjectorkeys
 from alexpresenters.MessageBroker import Message, REQ_QUIT, \
     CONF_DOCUMENT_CHANGED, REQ_SAVE_CURRENT_DOCUMENT, REQ_SET_DOCUMENT, \
     REQ_GOTO_FIRST_DOCUMENT, CONF_EVENT_CHANGED, REQ_SAVE_CURRENT_EVENT, \
-    REQ_SET_EVENT, REQ_GOTO_FIRST_EVENT, MessageBroker
-from injector import inject, singleton
+    REQ_SET_EVENT, REQ_GOTO_FIRST_EVENT
+from injector import inject
 from tkgui import guiinjectorkeys
-from alexandriabase.services import DocumentService, EventService,\
-    DocumentTypeService
 
 
 class BaseWindowPresenter:
@@ -105,7 +104,6 @@ class BaseWindowPresenter:
         else:
             return self.view.entity
         
-@singleton
 class DocumentWindowPresenter(BaseWindowPresenter):
     '''
     The presenter class for the document window
@@ -113,8 +111,8 @@ class DocumentWindowPresenter(BaseWindowPresenter):
 
     @inject
     def __init__(self,
-                 message_broker: MessageBroker,
-                 document_service: DocumentService,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 document_service: baseinjectorkeys.DOCUMENT_SERVICE_KEY,
                  post_processors: guiinjectorkeys.DOCUMENT_WINDOW_POST_PROCESSORS_KEY):
         '''
         Constructor
@@ -135,13 +133,12 @@ class DocumentWindowPresenter(BaseWindowPresenter):
         if message == REQ_GOTO_FIRST_DOCUMENT:
             self.goto_first()
 
-@singleton
 class EventWindowPresenter(BaseWindowPresenter):
     
     @inject
     def __init__(self,
-                 message_broker: MessageBroker,
-                 event_service: EventService,
+                 message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
+                 event_service: baseinjectorkeys.EVENT_SERVICE_KEY,
                  post_processors: guiinjectorkeys.EVENT_WINDOW_POST_PROCESSORS_KEY):
         super().__init__(message_broker, event_service, post_processors)
     '''
@@ -176,11 +173,10 @@ class EventWindowPresenter(BaseWindowPresenter):
         if message == REQ_GOTO_FIRST_EVENT:
             self.goto_first()
             
-@singleton
 class DocumentTypePostProcessor(object):
 
     @inject
-    def __init__(self, document_type_service: DocumentTypeService):
+    def __init__(self, document_type_service: baseinjectorkeys.DOCUMENT_TYPE_SERVICE_KEY):
         self.type_dict = document_type_service.get_document_type_dict()
         self.doctype_re = self.build_doctype_re()
         
@@ -196,11 +192,10 @@ class DocumentTypePostProcessor(object):
             entity.document_type = self.type_dict[matcher.group(1).upper()]
         return entity
 
-@singleton
 class JournalDocTypePostProcessor(object):
 
     @inject
-    def __init__(self, document_type_service: DocumentTypeService):
+    def __init__(self, document_type_service: baseinjectorkeys.DOCUMENT_TYPE_SERVICE_KEY):
         self.doc_type = document_type_service.get_by_id(13)
         month_pattern = r"\s*(\d{1,2}\.|Januar|Februar|März|April|Mai|" +\
             r"Juni|Juli|August|September|Oktober|November|Dezember|" +\
