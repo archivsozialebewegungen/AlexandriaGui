@@ -211,6 +211,23 @@ class AlexEntry(Entry):
         leading and trailing whitespaces.
         '''
         return super().get().strip()
+
+class AlexIntegerEntry(Entry):
+
+    def __init__(self, *params, **kw):
+        self.variable = IntVar()
+        kw['textvariable'] = self.variable
+        super().__init__(*params, **kw)
+    
+    def set(self, value):
+        
+        self.variable.set(value)
+        
+    def get(self):
+        
+        return self.variable.get()
+        
+        
         
 class AlexButton(AlexWidget, Button):
     '''
