@@ -13,6 +13,7 @@ from alexpresenters.MessageBroker import CONF_EVENT_CHANGED, Message, \
     REQ_SET_EVENT, ERROR_MESSAGE, REQ_SET_DOCUMENT
 from injector import inject
 from tkgui import guiinjectorkeys
+import traceback
 
 
 class EventTypeReferencesPresenter:
@@ -206,6 +207,10 @@ class DocumentFileReferencesPresenter():
                 Message(ERROR_MESSAGE,
                         message=_("Document %s not found" % exception.document_file_info),
                         messagetype='error'))
+        except Exception as exception:
+            print(exception)
+            traceback.print_stack()
+            raise exception
     
     def remove_file(self):
         file_info = self.view.selected_item

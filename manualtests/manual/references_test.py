@@ -11,14 +11,16 @@ from WindowTestHelpers import ReferenceServiceStub, EventServiceStub, \
     DocumentServiceStub
 from alexandriabase.config import Config
 from alexandriabase.domain import Document
-from alexpresenters.DialogPresenters import EventSelectionPresenter
+from alexpresenters.DialogPresenters import EventSelectionPresenter,\
+    GenericInputDialogPresenter
 from alexpresenters.MessageBroker import REQ_SET_EVENT, CONF_EVENT_CHANGED, \
     Message, REQ_SET_DOCUMENT, CONF_DOCUMENT_CHANGED, ERROR_MESSAGE, \
     MessageBroker
 from alexpresenters.ReferencePresenters import DocumentEventReferencesPresenter, \
     DocumentFileReferencesPresenter, EventCrossReferencesPresenter
 from manual.dialogs_test import DialogTest, DialogTestRunner
-from tkgui.Dialogs import EventSelectionWizard, FileSelectionDialog
+from tkgui.Dialogs import EventSelectionWizard, FileSelectionDialog,\
+    GenericBooleanSelectionDialog
 from tkgui.FileViewers import DefaultViewer
 from tkgui.References import DocumentFileReferencesView, \
     DocumentEventReferencesView, EventCrossReferencesView
@@ -71,9 +73,11 @@ class DocumentEventReferencesTest(ReferenceComponentTest):
             self.reference_service)
         dialog_presenter = EventSelectionPresenter(self.event_service)
         dialog_view = EventSelectionWizard(self.window_manager, dialog_presenter)
+        deletion_dialog = GenericBooleanSelectionDialog(self.window_manager, GenericInputDialogPresenter())
         DocumentEventReferencesView(master,
                                     self.document_event_references_presenter,
-                                    dialog_view).pack(side=TOP)
+                                    dialog_view,
+                                    deletion_dialog).pack(side=TOP)
 
     def add_button(self, master):
 
@@ -106,12 +110,14 @@ class DocumentFileReferencesTest(ReferenceComponentTest):
             self.message_broker,
             self.document_service)
         file_selection_dialog = FileSelectionDialog(self.config)
+        deletion_dialog = GenericBooleanSelectionDialog(self.window_manager, GenericInputDialogPresenter())
         viewers = {'default': DefaultViewer()}
         viewers['tif'] = viewers['default']
         view = DocumentFileReferencesView(
             master,
             presenter,
             file_selection_dialog,
+            deletion_dialog,
             viewers)
         view.pack(side=TOP)
 
@@ -151,10 +157,12 @@ class EventCrossReferencesTest(ReferenceComponentTest):
             self.service)
         self.event_selection_dialog = EventSelectionWizard(
             self.window_manager, self.event_selection_presenter)
+        deletion_dialog = GenericBooleanSelectionDialog(self.window_manager, GenericInputDialogPresenter())
         self.view = EventCrossReferencesView(
             master,
             self.event_cross_references_presenter,
-            self.event_selection_dialog)
+            self.event_selection_dialog,
+            deletion_dialog)
         self.view.pack(side=TOP)
 
     def add_button(self, master):

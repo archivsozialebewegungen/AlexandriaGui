@@ -23,6 +23,7 @@ from tkgui.FileViewers import DocumentViewersModule
 from tkgui.MainWindows import MainWindowsModule
 from tkgui.PluginManager import PluginManager
 from tkgui.References import WindowReferencesModule
+import locale
 
 
 class StartupTaskCheckDatabaseVersion():
@@ -195,7 +196,8 @@ class MainModule(Module):
         return [check_database_version, login, populate_windows]
 
 if __name__ == '__main__':
-    
+
+    locale.setlocale(locale.LC_TIME, "de_DE.UTF-8")    
     injector = build_injector()
     main_runner = injector.get(guiinjectorkeys.MAIN_RUNNER_KEY)
     main_runner.run()
