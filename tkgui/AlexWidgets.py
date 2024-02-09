@@ -221,11 +221,16 @@ class AlexIntegerEntry(Entry):
     
     def set(self, value):
         
+        self.set_value = value
         self.variable.set(value)
         
     def get(self):
         
-        return self.variable.get()
+        try:
+            return self.variable.get()
+        except TclError:
+            self.set(self.set_value)
+            return self.set_value
         
         
         

@@ -4,7 +4,8 @@ from alexandriabase.domain import InvalidDateException, Tree
 from alexpresenters.MessageBroker import MessageBroker, ERROR_MESSAGE, Message
 from manual.manual_tester import AbstractComponentTest, TestRunner
 from tkgui.AlexWidgets import AlexEntry, AlexButton, AlexLabel, \
-    AlexDateEntry, AlexMessageBar, AlexComboBox, AlexListBox, AlexTree
+    AlexDateEntry, AlexMessageBar, AlexComboBox, AlexListBox, AlexTree,\
+    AlexIntegerEntry
 
 
 class AlexDateEntryTest(AbstractComponentTest):
@@ -85,6 +86,40 @@ class AlexEntryTest(AbstractComponentTest):
 
         self.entry2 = AlexEntry(master)
         self.entry2.set("Entry 2 text")
+        self.entry2.grid(row=1, column=1)
+        
+        AlexButton(master, text='Switch input', command=self._switch_input).grid(row=2, column=1)
+        
+    def _switch_input(self):
+        
+        tmp = self.entry1.get()
+        self.entry1.set(self.entry2.get())
+        self.entry2.set(tmp)
+
+class AlexIntegerEntryTest(AbstractComponentTest):
+    
+    def __init__(self):
+        super().__init__()
+        self.name = "Alex integer entry test"
+
+    def test_component(self, master, message_label):
+        self.message_label = message_label
+        self.master = master
+        
+        label1 = AlexLabel(master)
+        label1.set('Entry 1:')
+        label1.grid(row=0, column=0)
+        
+        self.entry1 = AlexIntegerEntry(master)
+        self.entry1.set(7)
+        self.entry1.grid(row=0, column=1)
+        
+        label2 = AlexLabel(master)
+        label2.set('Entry 2:')
+        label2.grid(row=1, column=0)
+
+        self.entry2 = AlexIntegerEntry(master)
+        self.entry2.set(42)
         self.entry2.grid(row=1, column=1)
         
         AlexButton(master, text='Switch input', command=self._switch_input).grid(row=2, column=1)
@@ -260,6 +295,7 @@ if __name__ == '__main__':
     test_classes.append(AlexDateEntryTest)
     test_classes.append(AlexLabelTest)
     test_classes.append(AlexEntryTest)
+    test_classes.append(AlexIntegerEntryTest)
     test_classes.append(AlexMessageBarTest)
     test_classes.append(AlexComboBoxTest)
     test_classes.append(AlexListBoxTest)
