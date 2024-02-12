@@ -18,7 +18,7 @@ from injector import singleton, inject, Module, ClassProvider, InstanceProvider,
 from tkgui import _, guiinjectorkeys
 from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, AlexTk, \
     AlexLabel, AlexText, AlexRadioGroup, AlexButton, AlexShortcutBar, AlexEntry,\
-    AlexIntegerEntry
+    AlexIntegerEntry, AlexListBox, AlexComboBox
 
 
 class WindowManager():
@@ -369,6 +369,13 @@ class DocumentWindow(BaseWindow):
         double_widget_label.pack(side=LEFT)
         self._double_input_widget = AlexIntegerEntry(double_frame)
         self._double_input_widget.pack(side=LEFT)
+        double_widget_label = AlexLabel(double_frame, text=_("Storage: "))
+        double_widget_label.pack(side=LEFT)
+        self._storage_input_widget = AlexComboBox(
+                double_frame, items = ["", 
+                _("Holdings"), _("Journals"), _("Brochures"), _("Drawer A0"),
+                _("Drawer A1"), _("Drawer A2"), _("Drawer A3")])
+        self._storage_input_widget.pack(side=LEFT)
 
     def _view_to_entity(self):
         if self._entity == None:
@@ -386,6 +393,9 @@ class DocumentWindow(BaseWindow):
         if self._double_input_widget.get() != self._entity.doppel:
             self._entity_has_changed = True
             self._entity.doppel = self._double_input_widget.get()
+        if self._storage_input_widget.get() != self._entity.aufbewahrung:
+            self._entity_has_changed = True
+            self._entity.aufbewahrung = self._storage_input_widget.get()
         
         return self._entity
     
@@ -411,6 +421,10 @@ class DocumentWindow(BaseWindow):
         self._condition_widget.set(self._entity.condition)
         self._keywords_widget.set(self._entity.keywords)
         self._double_input_widget.set(self._entity.doppel)
+        if self._entity.aufbewahrung is None:
+            self._storage_input_widget.set("")
+        else:
+            self._storage_input_widget.set(self._entity.aufbewahrung)
 
 class EventProxy:
     

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-09 13:40+0100\n"
-"PO-Revision-Date: 2024-02-09 13:47+0100\n"
+"POT-Creation-Date: 2024-02-12 14:26+0100\n"
+"PO-Revision-Date: 2024-02-12 14:28+0100\n"
 "Last-Translator: Michael Koltan <admin@archivsozialebewegungen.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -302,59 +302,91 @@ msgstr "Schlüsselwörter"
 msgid "Number of doubles: "
 msgstr "Anzahl von Doppeln: "
 
-#: MainWindows.py:407
+#: MainWindows.py:372
+msgid "Storage: "
+msgstr "Aufbewahrung: "
+
+#: MainWindows.py:376
+msgid "Holdings"
+msgstr "Bestände"
+
+#: MainWindows.py:376
+msgid "Journals"
+msgstr "Zeitschriften"
+
+#: MainWindows.py:376
+msgid "Brochures"
+msgstr "Broschüren"
+
+#: MainWindows.py:376
+msgid "Drawer A0"
+msgstr "Schublade A0"
+
+#: MainWindows.py:377
+msgid "Drawer A1"
+msgstr "Schublade A1"
+
+#: MainWindows.py:377
+msgid "Drawer A2"
+msgstr "Schublade A2"
+
+#: MainWindows.py:377
+msgid "Drawer A3"
+msgstr "Schublade A3"
+
+#: MainWindows.py:417
 msgid "New document"
 msgstr "Neues Dokument"
 
-#: MainWindows.py:409
+#: MainWindows.py:419
 msgid "Document no.{0:d} ({1!s})"
 msgstr "Dokument Nr.{0:d} ({1!s})"
 
-#: MainWindows.py:492
+#: MainWindows.py:506
 msgid "Alexandria events"
 msgstr "Alexandria Ereignisse"
 
-#: MainWindows.py:560
+#: MainWindows.py:574
 msgid "No event to display!"
 msgstr "Kein Ereignis anzuzeigen!"
 
-#: MainWindows.py:597
+#: MainWindows.py:611
 msgid "not registered"
 msgstr "nicht erfasst"
 
-#: MainWindows.py:598
+#: MainWindows.py:612
 msgid "local"
 msgstr "lokal"
 
-#: MainWindows.py:599
+#: MainWindows.py:613
 msgid "countrywide"
 msgstr "landesweit"
 
-#: MainWindows.py:600
+#: MainWindows.py:614
 msgid "national"
 msgstr "national"
 
-#: MainWindows.py:601
+#: MainWindows.py:615
 msgid "international"
 msgstr "international"
 
-#: MainWindows.py:602
+#: MainWindows.py:616
 msgid "Location"
 msgstr "Ort"
 
-#: MainWindows.py:606
+#: MainWindows.py:620
 msgid "unconfirmed"
 msgstr "unbestätigt"
 
-#: MainWindows.py:606
+#: MainWindows.py:620
 msgid "probable"
 msgstr "wahrscheinlich"
 
-#: MainWindows.py:606
+#: MainWindows.py:620
 msgid "confirmed"
 msgstr "bestätigt"
 
-#: MainWindows.py:607
+#: MainWindows.py:621
 msgid "State"
 msgstr "Zustand"
 

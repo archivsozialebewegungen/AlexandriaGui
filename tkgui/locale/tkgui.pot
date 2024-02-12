@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-09 13:40+0100\n"
+"POT-Creation-Date: 2024-02-12 14:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -296,59 +296,91 @@ msgstr ""
 msgid "Number of doubles: "
 msgstr ""
 
-#: MainWindows.py:407
+#: MainWindows.py:372
+msgid "Storage: "
+msgstr ""
+
+#: MainWindows.py:376
+msgid "Holdings"
+msgstr ""
+
+#: MainWindows.py:376
+msgid "Journals"
+msgstr ""
+
+#: MainWindows.py:376
+msgid "Brochures"
+msgstr ""
+
+#: MainWindows.py:376
+msgid "Drawer A0"
+msgstr ""
+
+#: MainWindows.py:377
+msgid "Drawer A1"
+msgstr ""
+
+#: MainWindows.py:377
+msgid "Drawer A2"
+msgstr ""
+
+#: MainWindows.py:377
+msgid "Drawer A3"
+msgstr ""
+
+#: MainWindows.py:417
 msgid "New document"
 msgstr ""
 
-#: MainWindows.py:409
+#: MainWindows.py:419
 msgid "Document no.{0:d} ({1!s})"
 msgstr ""
 
-#: MainWindows.py:492
+#: MainWindows.py:506
 msgid "Alexandria events"
 msgstr ""
 
-#: MainWindows.py:560
+#: MainWindows.py:574
 msgid "No event to display!"
 msgstr ""
 
-#: MainWindows.py:597
+#: MainWindows.py:611
 msgid "not registered"
 msgstr ""
 
-#: MainWindows.py:598
+#: MainWindows.py:612
 msgid "local"
 msgstr ""
 
-#: MainWindows.py:599
+#: MainWindows.py:613
 msgid "countrywide"
 msgstr ""
 
-#: MainWindows.py:600
+#: MainWindows.py:614
 msgid "national"
 msgstr ""
 
-#: MainWindows.py:601
+#: MainWindows.py:615
 msgid "international"
 msgstr ""
 
-#: MainWindows.py:602
+#: MainWindows.py:616
 msgid "Location"
 msgstr ""
 
-#: MainWindows.py:606
+#: MainWindows.py:620
 msgid "unconfirmed"
 msgstr ""
 
-#: MainWindows.py:606
+#: MainWindows.py:620
 msgid "probable"
 msgstr ""
 
-#: MainWindows.py:606
+#: MainWindows.py:620
 msgid "confirmed"
 msgstr ""
 
-#: MainWindows.py:607
+#: MainWindows.py:621
 msgid "State"
 msgstr ""
 
