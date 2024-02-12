@@ -7,201 +7,102 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-11 13:28+0100\n"
-"PO-Revision-Date: 2018-02-11 13:29+0100\n"
+"POT-Creation-Date: 2024-02-09 13:40+0100\n"
+"PO-Revision-Date: 2024-02-09 13:47+0100\n"
 "Last-Translator: Michael Koltan <admin@archivsozialebewegungen.de>\n"
 "Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
 
-#: tkgui/AlexWidgets.py:62
+#: AlexWidgets.py:64
 msgid "Date"
 msgstr "Datum"
 
-#: tkgui/References.py:98
-msgid "Hint"
-msgstr "Hinweis"
-
-#: tkgui/References.py:121
-msgid "Crossreferences"
-msgstr "Querverweise"
-
-#: tkgui/References.py:129 tkgui/References.py:187 tkgui/References.py:299
-msgid "Goto"
-msgstr "Gehe zu"
-
-#: tkgui/References.py:130 tkgui/References.py:188 tkgui/References.py:247
-#: tkgui/References.py:300 tkgui/References.py:349
-msgid "New"
-msgstr "Neu"
-
-#: tkgui/References.py:131 tkgui/References.py:189 tkgui/References.py:248
-#: tkgui/References.py:301 tkgui/References.py:352
-msgid "Delete"
-msgstr "Löschen"
-
-#: tkgui/References.py:146
-msgid ""
-"Do you really want to\n"
-"delete the cross reference?"
-msgstr ""
-"Willst Du wirklich den\n"
-"Querverweis löschen?"
-
-#: tkgui/References.py:174
-msgid "Related documents"
-msgstr "Verknüpfte Dokumente"
-
-#: tkgui/References.py:208
-msgid ""
-"Do you really want to unlink\n"
-"event from document?"
-msgstr ""
-"Willst Du wirklich die Verknüpfung von\n"
-"Ereignis zu Dokument aufheben?"
-
-#: tkgui/References.py:235
-msgid "Event types"
-msgstr "Ereignistypen"
-
-#: tkgui/References.py:254
-msgid "Select new event type"
-msgstr "Neuen Ereignistyp auswählen"
-
-#: tkgui/References.py:268
-msgid ""
-"Do you really want to\n"
-"remove the event type?"
-msgstr ""
-"Willst Du wirklich den\n"
-"Ereignistyp entfernen?"
-
-#: tkgui/References.py:290
-msgid "Related events"
-msgstr "Verknüpfte Ereignisse"
-
-#: tkgui/References.py:317
-msgid ""
-"Do you really want to\n"
-"unlink event from document?"
-msgstr ""
-"Willst Du wirklich die Verknüpfung von\n"
-"Ereignis zu Dokument aufheben? "
-
-#: tkgui/References.py:341
-msgid "Document files"
-msgstr "Dokumentdateien"
-
-#: tkgui/References.py:350
-msgid "Replace"
-msgstr "Ersetzen"
-
-#: tkgui/References.py:351
-msgid "Show"
-msgstr "Anzeigen"
-
-#: tkgui/References.py:381
-msgid ""
-"Do you really want to remove\n"
-"the file from the document?"
-msgstr ""
-"Willst Du wirklich die Datei aus\n"
-"dem Dokument löschen?"
-
-#: tkgui/Dialogs.py:105 tkgui/Dialogs.py:833
+#: Dialogs.py:105 Dialogs.py:867
 msgid "OK"
 msgstr "OK"
 
-#: tkgui/Dialogs.py:106 tkgui/Dialogs.py:161 tkgui/Dialogs.py:677
-#: tkgui/Dialogs.py:834
+#: Dialogs.py:106 Dialogs.py:167 Dialogs.py:711 Dialogs.py:868
 msgid "Cancel"
 msgstr "Abbruch"
 
-#: tkgui/Dialogs.py:163
+#: Dialogs.py:169
 msgid "Next >>"
 msgstr "Nächster >>"
 
-#: tkgui/Dialogs.py:166
+#: Dialogs.py:172
 msgid "<< Prev"
 msgstr "<< Voriger"
 
-#: tkgui/Dialogs.py:169
+#: Dialogs.py:175
 msgid "Finish"
 msgstr "Abschließen"
 
-#: tkgui/Dialogs.py:221
+#: Dialogs.py:236
 msgid "Please edit string:"
 msgstr "Bitte Zeichenkette bearbeiten:"
 
-#: tkgui/Dialogs.py:257
-msgid "Please select:"
-msgstr "Bitte auswählen:"
-
-#: tkgui/Dialogs.py:281
-msgid "Select yes or no"
-msgstr "Wählen Sie JA oder NEIN"
-
-#: tkgui/Dialogs.py:283 tkgui/main.py:42
+#: Dialogs.py:304 main.py:45
 msgid "Yes"
 msgstr "Ja"
 
-#: tkgui/Dialogs.py:284 tkgui/main.py:42 tkgui/main.py:45
+#: Dialogs.py:305 main.py:45 main.py:48
 msgid "No"
 msgstr "Nein"
 
-#: tkgui/Dialogs.py:289
+#: Dialogs.py:313
 msgid "MO"
 msgstr "MO"
 
-#: tkgui/Dialogs.py:289
+#: Dialogs.py:313
 msgid "TU"
 msgstr "DI"
 
-#: tkgui/Dialogs.py:289
+#: Dialogs.py:313
 msgid "WE"
 msgstr "MI"
 
-#: tkgui/Dialogs.py:289
+#: Dialogs.py:313
 msgid "TH"
 msgstr "DO"
 
-#: tkgui/Dialogs.py:289
+#: Dialogs.py:313
 msgid "FR"
 msgstr "FR"
 
-#: tkgui/Dialogs.py:289
+#: Dialogs.py:313
 msgid "SA"
 msgstr "SA"
 
-#: tkgui/Dialogs.py:289
+#: Dialogs.py:313
 msgid "SU"
 msgstr "SO"
 
-#: tkgui/Dialogs.py:313
+#: Dialogs.py:337
 msgid "Please select year"
 msgstr "Bitte Jahr auswählen"
 
-#: tkgui/Dialogs.py:510
+#: Dialogs.py:534
 msgid "Enter document id:"
 msgstr "Bitte Dokumentid eingeben:"
 
-#: tkgui/Dialogs.py:535
+#: Dialogs.py:559
 msgid "Please enter the event date:"
 msgstr "Bitte das Ereignisdatum eingeben:"
 
-#: tkgui/Dialogs.py:544
+#: Dialogs.py:568
 msgid "Please select an event:"
 msgstr "Bitte ein Ereignis auswählen:"
 
-#: tkgui/Dialogs.py:588
+#: Dialogs.py:612
 msgid "Create new event"
 msgstr "Neues Ereignis anlegen"
 
-#: tkgui/Dialogs.py:590
+#: Dialogs.py:623
 #, python-format
 msgid ""
 "Events exist on %s. Please select the event you want or create a new one"
@@ -209,69 +110,60 @@ msgstr ""
 "Es existieren bereits Ereignisse am %s. Bitte wähle ein Ereignis aus oder "
 "erstelle ein neues."
 
-#: tkgui/Dialogs.py:601
+#: Dialogs.py:637
 msgid "Goto event"
 msgstr "Gehe zu Ereignis"
 
-#: tkgui/Dialogs.py:615
-msgid "Select a tree node"
-msgstr "Bitte Baumknoten auswählen"
-
-#: tkgui/Dialogs.py:628
+#: Dialogs.py:659
 msgid "Search tree:"
 msgstr "Baum durchsuchen:"
 
-#: tkgui/Dialogs.py:675
+#: Dialogs.py:667
+msgid "Select a tree node"
+msgstr "Bitte Baumknoten auswählen"
+
+#: Dialogs.py:709
 msgid "Set filter"
 msgstr "Filter setzen"
 
-#: tkgui/Dialogs.py:676
+#: Dialogs.py:710
 msgid "Clear form"
 msgstr "Formular löschen"
 
-#: tkgui/Dialogs.py:681
+#: Dialogs.py:715
 #, python-format
 msgid "%d. search expression:"
 msgstr "%d. Suchausdruck"
 
-#: tkgui/Dialogs.py:707
+#: Dialogs.py:741
 msgid "No event link:"
 msgstr "Nicht mit Ereignis verknüpft:"
 
-#: tkgui/Dialogs.py:713
+#: Dialogs.py:747
 msgid "Signature:"
 msgstr "Signatur:"
 
-#: tkgui/Dialogs.py:769
+#: Dialogs.py:803
 msgid "Earliest Date"
 msgstr "Frühestes Datum"
 
-#: tkgui/Dialogs.py:771
+#: Dialogs.py:805
 msgid "Latest Date"
 msgstr "Spätestes Datum"
 
-#: tkgui/Dialogs.py:774
+#: Dialogs.py:808
 msgid "Only local events"
 msgstr "Nur lokale Ereignisse"
 
-#: tkgui/Dialogs.py:779
+#: Dialogs.py:813
 msgid "Only unverified events"
 msgstr "Nur unbestätigte Ereignisse"
 
-#: tkgui/Dialogs.py:824
+#: Dialogs.py:858
 msgid "Please select user:"
 msgstr "Bitte Benutzer auswählen:"
 
-#: tkgui/main.py:40
-msgid "Database upgrade"
-msgstr "Datenbank-Aktualisierung"
-
-#: tkgui/main.py:41
-msgid "Your database needs an upgrade. Do you want to perform it now?"
-msgstr ""
-"Die Datenbank muß aktualisiert werden. Aktualisierung jetzt durchführen?"
-
-#: tkgui/FileViewers.py:28
+#: FileViewers.py:29
 #, python-format
 msgid ""
 "There is no viewer available\n"
@@ -280,176 +172,284 @@ msgstr ""
 "Für den Dateityp %s\n"
 "steht kein Betrachter zur Verfügung."
 
-#: tkgui/FileViewers.py:29
+#: FileViewers.py:30
 msgid "No viewer"
 msgstr "Kein Betrachter"
 
-#: tkgui/FileViewers.py:47
+#: FileViewers.py:48
 msgid "Zoom 15%"
 msgstr "Zoom 15%"
 
-#: tkgui/FileViewers.py:48
+#: FileViewers.py:49
 msgid "Zoom -15%"
 msgstr "Zoom -15%"
 
-#: tkgui/FileViewers.py:49
+#: FileViewers.py:50
 msgid "Zoom 50%"
 msgstr "Zoom 50%"
 
-#: tkgui/FileViewers.py:50
+#: FileViewers.py:51
 msgid "Zoom -50%"
 msgstr "Zoom -50%"
 
-#: tkgui/FileViewers.py:51 tkgui/MainWindows.py:181
+#: FileViewers.py:52 MainWindows.py:183
 msgid "Quit"
 msgstr "Beenden"
 
-#: tkgui/FileViewers.py:115
+#: FileViewers.py:116
 msgid "The external viewer {} is not accessible."
 msgstr "Auf das externe Anzeigeprogramm {} kann nicht zugegriffen werden."
 
-#: tkgui/FileViewers.py:117
+#: FileViewers.py:118
 msgid "Not accessible"
 msgstr "Kein Zugriff möglich"
 
-#: tkgui/MainWindows.py:161 tkgui/MainWindows.py:162 tkgui/MainWindows.py:165
-#: tkgui/MainWindows.py:168 tkgui/MainWindows.py:171 tkgui/MainWindows.py:174
-#: tkgui/MainWindows.py:177 tkgui/MainWindows.py:180
+#: main.py:43
+msgid "Database upgrade"
+msgstr "Datenbank-Aktualisierung"
+
+#: main.py:44
+msgid "Your database needs an upgrade. Do you want to perform it now?"
+msgstr ""
+"Die Datenbank muß aktualisiert werden. Aktualisierung jetzt durchführen?"
+
+#: MainWindows.py:163 MainWindows.py:164 MainWindows.py:167 MainWindows.py:170
+#: MainWindows.py:173 MainWindows.py:176 MainWindows.py:179 MainWindows.py:182
 msgid "Records"
 msgstr "Datensätze"
 
-#: tkgui/MainWindows.py:163
+#: MainWindows.py:165
 msgid "First record"
 msgstr "Erster Datensatz"
 
-#: tkgui/MainWindows.py:166
+#: MainWindows.py:168
 msgid "Last record"
 msgstr "Letzter Datensatz"
 
-#: tkgui/MainWindows.py:169
+#: MainWindows.py:171
 msgid "Next record"
 msgstr "Nächster Datensatz"
 
-#: tkgui/MainWindows.py:172
+#: MainWindows.py:174
 msgid "Previous record"
 msgstr "Voriger Datensatz"
 
-#: tkgui/MainWindows.py:175
+#: MainWindows.py:177
 msgid "New record"
 msgstr "Neuer Datensatz"
 
-#: tkgui/MainWindows.py:178
+#: MainWindows.py:180
 msgid "Delete record"
 msgstr "Datensatz löschen"
 
-#: tkgui/MainWindows.py:184 tkgui/MainWindows.py:185 tkgui/MainWindows.py:188
+#: MainWindows.py:186 MainWindows.py:187 MainWindows.py:190
 msgid "Navigation"
 msgstr "Navigation"
 
-#: tkgui/MainWindows.py:186
+#: MainWindows.py:188
 msgid "Goto record"
 msgstr "Gehe zu Datensatz"
 
-#: tkgui/MainWindows.py:189
+#: MainWindows.py:191
 msgid "Filtering"
 msgstr "Filtern"
 
-#: tkgui/MainWindows.py:200
+#: MainWindows.py:202
 msgid "Goto first record"
 msgstr "Gehe zum ersten Datensatz"
 
-#: tkgui/MainWindows.py:204
+#: MainWindows.py:206
 msgid "Go one record back"
 msgstr "Gehe einen Datensatz zurück"
 
-#: tkgui/MainWindows.py:208
+#: MainWindows.py:210
 msgid "Create a new record"
 msgstr "Lege einen neuen Datensatz an"
 
-#: tkgui/MainWindows.py:212
+#: MainWindows.py:214
 msgid "Go one record forward"
 msgstr "Gehe einen Datensatz vor"
 
-#: tkgui/MainWindows.py:216
+#: MainWindows.py:218
 msgid "Goto last record"
 msgstr "Gehe zum letzten Datensatz"
 
-#: tkgui/MainWindows.py:279
+#: MainWindows.py:281
 msgid "Filter is set!"
 msgstr "Filter ist gesetzt!"
 
-#: tkgui/MainWindows.py:314
+#: MainWindows.py:316
 msgid "Alexandria documents"
 msgstr "Alexandria Dokumente"
 
-#: tkgui/MainWindows.py:325 tkgui/MainWindows.py:338
+#: MainWindows.py:327 MainWindows.py:340
 msgid "No document available"
 msgstr "Kein Dokument vorhanden"
 
-#: tkgui/MainWindows.py:343
+#: MainWindows.py:345
 msgid "Description"
 msgstr "Beschreibung"
 
-#: tkgui/MainWindows.py:350
+#: MainWindows.py:352
 msgid "Condition"
 msgstr "Zustand"
 
-#: tkgui/MainWindows.py:357
+#: MainWindows.py:359
 msgid "Keywords"
 msgstr "Schlüsselwörter"
 
-#: tkgui/MainWindows.py:395
+#: MainWindows.py:368
+msgid "Number of doubles: "
+msgstr "Anzahl von Doppeln: "
+
+#: MainWindows.py:407
 msgid "New document"
 msgstr "Neues Dokument"
 
-#: tkgui/MainWindows.py:397
+#: MainWindows.py:409
 msgid "Document no.{0:d} ({1!s})"
 msgstr "Dokument Nr.{0:d} ({1!s})"
 
-#: tkgui/MainWindows.py:479
+#: MainWindows.py:492
 msgid "Alexandria events"
 msgstr "Alexandria Ereignisse"
 
-#: tkgui/MainWindows.py:547
+#: MainWindows.py:560
 msgid "No event to display!"
 msgstr "Kein Ereignis anzuzeigen!"
 
-#: tkgui/MainWindows.py:584
+#: MainWindows.py:597
 msgid "not registered"
 msgstr "nicht erfasst"
 
-#: tkgui/MainWindows.py:585
+#: MainWindows.py:598
 msgid "local"
 msgstr "lokal"
 
-#: tkgui/MainWindows.py:586
+#: MainWindows.py:599
 msgid "countrywide"
 msgstr "landesweit"
 
-#: tkgui/MainWindows.py:587
+#: MainWindows.py:600
 msgid "national"
 msgstr "national"
 
-#: tkgui/MainWindows.py:588
+#: MainWindows.py:601
 msgid "international"
 msgstr "international"
 
-#: tkgui/MainWindows.py:589
+#: MainWindows.py:602
 msgid "Location"
 msgstr "Ort"
 
-#: tkgui/MainWindows.py:593
+#: MainWindows.py:606
 msgid "unconfirmed"
 msgstr "unbestätigt"
 
-#: tkgui/MainWindows.py:593
+#: MainWindows.py:606
 msgid "probable"
 msgstr "wahrscheinlich"
 
-#: tkgui/MainWindows.py:593
+#: MainWindows.py:606
 msgid "confirmed"
 msgstr "bestätigt"
 
-#: tkgui/MainWindows.py:594
+#: MainWindows.py:607
 msgid "State"
 msgstr "Zustand"
+
+#: References.py:100
+msgid "Hint"
+msgstr "Hinweis"
+
+#: References.py:123
+msgid "Crossreferences"
+msgstr "Querverweise"
+
+#: References.py:131 References.py:189 References.py:301
+msgid "Goto"
+msgstr "Gehe zu"
+
+#: References.py:132 References.py:190 References.py:249 References.py:302
+#: References.py:351
+msgid "New"
+msgstr "Neu"
+
+#: References.py:133 References.py:191 References.py:250 References.py:303
+#: References.py:354
+msgid "Delete"
+msgstr "Löschen"
+
+#: References.py:148
+msgid ""
+"Do you really want to\n"
+"delete the cross reference?"
+msgstr ""
+"Willst Du wirklich den\n"
+"Querverweis löschen?"
+
+#: References.py:176
+msgid "Related documents"
+msgstr "Verknüpfte Dokumente"
+
+#: References.py:210
+msgid ""
+"Do you really want to unlink\n"
+"event from document?"
+msgstr ""
+"Willst Du wirklich die Verknüpfung von\n"
+"Ereignis zu Dokument aufheben?"
+
+#: References.py:237
+msgid "Event types"
+msgstr "Ereignistypen"
+
+#: References.py:256
+msgid "Select new event type"
+msgstr "Neuen Ereignistyp auswählen"
+
+#: References.py:270
+msgid ""
+"Do you really want to\n"
+"remove the event type?"
+msgstr ""
+"Willst Du wirklich den\n"
+"Ereignistyp entfernen?"
+
+#: References.py:292
+msgid "Related events"
+msgstr "Verknüpfte Ereignisse"
+
+#: References.py:319
+msgid ""
+"Do you really want to\n"
+"unlink event from document?"
+msgstr ""
+"Willst Du wirklich die Verknüpfung von\n"
+"Ereignis zu Dokument aufheben? "
+
+#: References.py:343
+msgid "Document files"
+msgstr "Dokumentdateien"
+
+#: References.py:352
+msgid "Replace"
+msgstr "Ersetzen"
+
+#: References.py:353
+msgid "Show"
+msgstr "Anzeigen"
+
+#: References.py:383
+msgid ""
+"Do you really want to remove\n"
+"the file from the document?"
+msgstr ""
+"Willst Du wirklich die Datei aus\n"
+"dem Dokument löschen?"
+
+#~ msgid "Please select:"
+#~ msgstr "Bitte auswählen:"
+
+#~ msgid "Select yes or no"
+#~ msgstr "Wählen Sie JA oder NEIN"
