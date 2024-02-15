@@ -24,6 +24,16 @@
 	</list>
 	<list key="additional_modules">
 	</list>
+	<list key="storagelocations">
+		<listentry>Bestände</listentry>
+		<listentry>Broschüren</listentry>
+		<listentry>Zeitschriften</listentry>
+		<listentry>Fotos</listentry>
+		<listentry>Schublade A0</listentry>
+		<listentry>Schublade A1</listentry>
+		<listentry>Schublade A2</listentry>
+		<listentry>Schublade A3</listentry>
+	</list>
 	<map key="filetypeviewers">
 		<mapentry key="default">DefaultViewer</mapentry>
 		<mapentry key="tif">GraphicsViewer</mapentry>

@@ -8,7 +8,7 @@ import sys
 from threading import Thread
 from tkinter import Frame, Toplevel
 from tkinter.constants import LEFT, NW, X, RIGHT, TOP, WORD, DISABLED, NORMAL, \
-    FLAT, CENTER, SUNKEN, BOTH, YES, RIDGE
+    FLAT, CENTER, BOTH, YES, RIDGE
 from tkinter.ttk import Notebook
 
 from alexpresenters.MessageBroker import Message, CONF_SETUP_FINISHED, \
@@ -17,8 +17,9 @@ from injector import singleton, inject, Module, ClassProvider, InstanceProvider,
     provider
 from tkgui import _, guiinjectorkeys
 from tkgui.AlexWidgets import AlexMessageBar, AlexMenuBar, AlexTk, \
-    AlexLabel, AlexText, AlexRadioGroup, AlexButton, AlexShortcutBar, AlexEntry,\
-    AlexIntegerEntry, AlexListBox, AlexComboBox
+    AlexLabel, AlexText, AlexRadioGroup, AlexButton, AlexShortcutBar, \
+    AlexIntegerEntry, AlexComboBox
+from alexandriabase.config import Config
 
 
 class WindowManager():
@@ -307,11 +308,13 @@ class DocumentWindow(BaseWindow):
                  message_broker: guiinjectorkeys.MESSAGE_BROKER_KEY,
                  presenter: guiinjectorkeys.DOCUMENT_WINDOW_PRESENTER_KEY,
                  dialogs: guiinjectorkeys.DOCUMENT_WINDOW_DIALOGS_KEY,
-                 document_menu_additions: guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY):
+                 document_menu_additions: guiinjectorkeys.DOCUMENT_MENU_ADDITIONS_KEY,
+                 configuration: Config):
         self.notebook = None
         self._description_widget = None
         self._condition_widget = None
         self._keywords_widget = None
+        self.configuration = configuration
         super().__init__(window_manager, message_broker, presenter, dialogs, document_menu_additions)
         self.window.title(_("Alexandria documents"))
         
@@ -371,10 +374,9 @@ class DocumentWindow(BaseWindow):
         self._double_input_widget.pack(side=LEFT)
         double_widget_label = AlexLabel(double_frame, text=_("Storage: "))
         double_widget_label.pack(side=LEFT)
+        items = [""] + self.configuration.storage_locations
         self._storage_input_widget = AlexComboBox(
-                double_frame, items = ["", 
-                _("Holdings"), _("Journals"), _("Brochures"), _("Drawer A0"),
-                _("Drawer A1"), _("Drawer A2"), _("Drawer A3")])
+                double_frame, items = items)
         self._storage_input_widget.pack(side=LEFT)
 
     def _view_to_entity(self):
