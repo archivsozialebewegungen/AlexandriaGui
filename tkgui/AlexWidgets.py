@@ -386,7 +386,10 @@ class AlexListBox(Frame):
     def get_items(self):
         
         return self.items
-        
+    
+    def append_item(self, item):
+        self.items.append(item)
+        self.listbox.insert(END, "%s" % item)
         
     def get(self):
         
